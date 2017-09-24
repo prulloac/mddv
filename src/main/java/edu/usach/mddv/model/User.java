@@ -4,41 +4,46 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long userId;
-    private String name;
+    @GeneratedValue
+    private long id;
     private String username;
+    private String name;
     private String password;
     private String mail;
     private boolean enabled;
 
     @ManyToMany
-    @JoinTable(name = "users_roles",joinColumns = {@JoinColumn(name = "user_id")},inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author",orphanRemoval = true)
     private Set<UploadFile> userUploads;
 
     @ManyToMany(mappedBy = "users")
     private Set<OrganizationalUnit> organizationalUnitSet;
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public User(String username, String name, String password, String mail) {
+        this.username = username;
         this.name = name;
+        this.password = password;
+        this.mail = mail;
+        this.enabled = true;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -47,6 +52,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -81,10 +94,19 @@ public class User {
         this.roles = roles;
     }
 
-    public User(String name, String username, String password, String mail) {
-        this.name = name;
-        this.username = username;
-        this.password = password;
-        this.mail = mail;
+    public Set<UploadFile> getUserUploads() {
+        return userUploads;
+    }
+
+    public void setUserUploads(Set<UploadFile> userUploads) {
+        this.userUploads = userUploads;
+    }
+
+    public Set<OrganizationalUnit> getOrganizationalUnitSet() {
+        return organizationalUnitSet;
+    }
+
+    public void setOrganizationalUnitSet(Set<OrganizationalUnit> organizationalUnitSet) {
+        this.organizationalUnitSet = organizationalUnitSet;
     }
 }

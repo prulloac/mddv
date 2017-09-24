@@ -1,6 +1,6 @@
 package edu.usach.mddv.extractor;
 
-import edu.usach.mddv.model.Structure;
+import edu.usach.mddv.model.TechnicalObject;
 
 import java.util.HashMap;
 
@@ -38,16 +38,17 @@ public abstract class AbstractExtractor {
         return datasourceConnectionParams;
     }
 
-    public void setDatasourceConnectionParams(HashMap<String, String> datasourceConnectionParams) {
-        this.datasourceConnectionParams = datasourceConnectionParams;
+    public void setDatasourceConnectionParams(String key, String value) {
+        this.datasourceConnectionParams.put(key,value);
     }
 
     public AbstractExtractor(String datasourceName, String datasourceType, String datasourceVersion) {
         this.datasourceName = datasourceName;
         this.datasourceType = datasourceType;
         this.datasourceVersion = datasourceVersion;
+        this.datasourceConnectionParams = new HashMap<String, String>();
     }
 
     public abstract boolean connect();
-    public abstract Structure extract();
+    public abstract TechnicalObject extract();
 }

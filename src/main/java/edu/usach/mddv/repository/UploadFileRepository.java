@@ -1,7 +1,10 @@
 package edu.usach.mddv.repository;
 
 import edu.usach.mddv.model.UploadFile;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface UploadFileRepository extends CrudRepository<UploadFile, Long> {
+import javax.transaction.Transactional;
+
+@Transactional
+public interface UploadFileRepository extends PagingAndSortingRepository<UploadFile,Long>{
 }

@@ -1,7 +1,10 @@
 package edu.usach.mddv.repository;
 
 import edu.usach.mddv.model.OrganizationalUnit;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface OrganizationalUnitRepository extends CrudRepository<OrganizationalUnit, Long> {
+import javax.transaction.Transactional;
+
+@Transactional
+public interface OrganizationalUnitRepository extends PagingAndSortingRepository<OrganizationalUnit,Long>{
 }

@@ -3,20 +3,22 @@ package edu.usach.mddv.model;
 import javax.persistence.*;
 
 @Entity
-@Inheritance
-public abstract class TechnicalObject extends MetadataObject{
+@DiscriminatorValue("technical")
+public class TechnicalObject extends MetadataObject{
+
+    @ManyToOne
+    @JoinColumn(name = "parentObject")
+    private TechnicalObject parentObject;
+
     public TechnicalObject(String name, String description, String version, String type) {
         super(name, description, version, type);
     }
 
-    @ManyToOne
-    private Structure parentObject;
-
-    public Structure getParentObject() {
+    public TechnicalObject getParentObject() {
         return parentObject;
     }
 
-    public void setParentObject(Structure parentObject) {
+    public void setParentObject(TechnicalObject parentObject) {
         this.parentObject = parentObject;
     }
 }

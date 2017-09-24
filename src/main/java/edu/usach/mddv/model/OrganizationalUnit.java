@@ -4,29 +4,64 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class OrganizationalUnit extends AbstractDescriptable {
+@Table(name = "organizationalUnits")
+public class OrganizationalUnit {
+
+    @Id
+    @GeneratedValue
+    private long organizationalUnitId;
+
+    private String name;
+
+    private String description;
 
     @ManyToMany
-    @JoinTable(name = "organizationalUnits_users",joinColumns = {@JoinColumn(name = "organizationalUnit_id")},inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    @JoinTable(
+            name = "organizationalUnits_users",
+            joinColumns = {@JoinColumn(name = "organizationalUnit_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
     private Set<User> users;
 
     @ManyToMany
-    @JoinTable(name = "organizationalUnits_roles",joinColumns = {@JoinColumn(name = "organizationalUnit_id")},inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    @JoinTable(
+            name = "organizationalUnits_roles",
+            joinColumns = {@JoinColumn(name = "organizationalUnit_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
     private Set<Role> roles;
 
     @ManyToOne
+    @JoinColumn(name = "belongsTo")
     private OrganizationalUnit belongsTo;
 
     public OrganizationalUnit(String name, String description) {
-        super(name, description);
+        this.name = name;
+        this.description = description;
     }
 
-    public OrganizationalUnit getBelongsTo() {
-        return belongsTo;
+    public long getOrganizationalUnitId() {
+        return organizationalUnitId;
     }
 
-    public void setBelongsTo(OrganizationalUnit belongsTo) {
-        this.belongsTo = belongsTo;
+    public void setOrganizationalUnitId(long organizationalUnitId) {
+        this.organizationalUnitId = organizationalUnitId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Set<User> getUsers() {
@@ -45,4 +80,11 @@ public class OrganizationalUnit extends AbstractDescriptable {
         this.roles = roles;
     }
 
+    public OrganizationalUnit getBelongsTo() {
+        return belongsTo;
+    }
+
+    public void setBelongsTo(OrganizationalUnit belongsTo) {
+        this.belongsTo = belongsTo;
+    }
 }

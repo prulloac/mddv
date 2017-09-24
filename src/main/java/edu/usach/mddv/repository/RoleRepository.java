@@ -1,7 +1,10 @@
 package edu.usach.mddv.repository;
 
 import edu.usach.mddv.model.Role;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface RoleRepository extends CrudRepository<Role, Long> {
+import javax.transaction.Transactional;
+
+@Transactional
+public interface RoleRepository extends PagingAndSortingRepository<Role,Long>{
 }
