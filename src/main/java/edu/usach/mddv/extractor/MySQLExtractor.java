@@ -1,12 +1,11 @@
 package edu.usach.mddv.extractor;
 
-import edu.usach.mddv.model.TechnicalObject;
+import edu.usach.mddv.model.TechnicalObjectMetadata;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
-import java.util.Set;
 
 public class MySQLExtractor extends AbstractExtractor{
 
@@ -45,7 +44,7 @@ public class MySQLExtractor extends AbstractExtractor{
     }
 
     @Override
-    public TechnicalObject extract() {
+    public TechnicalObjectMetadata extract() {
         return null;
     }
 

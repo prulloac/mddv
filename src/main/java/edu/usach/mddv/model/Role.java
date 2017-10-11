@@ -1,6 +1,7 @@
 package edu.usach.mddv.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
@@ -10,21 +11,25 @@ public class Role{
     @Id
     @GeneratedValue
     private long roleId;
+
+    @Column(unique = true, nullable = false)
     private String name;
+
     private String description;
 
-    @ManyToMany(mappedBy = "accessRoles")
-    private Set<MetadataObject> accesibles;
+    @ManyToMany(mappedBy = "roles")
+    private Set<AbstractObjectMetadata> accesibles;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<User> userSet;
+    private Set<User> users;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<OrganizationalUnit> organizationalUnitSet;
+    private Set<Repository> repositories;
 
-    public Role(String name, String description) {
-        this.name = name;
-        this.description = description;
+    @Column(columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP")
+    private Timestamp creationTime;
+
+    public Role() {
     }
 
     public long getRoleId() {
@@ -51,27 +56,35 @@ public class Role{
         this.description = description;
     }
 
-    public Set<MetadataObject> getAccesibles() {
+    public Set<AbstractObjectMetadata> getAccesibles() {
         return accesibles;
     }
 
-    public void setAccesibles(Set<MetadataObject> accesibles) {
+    public void setAccesibles(Set<AbstractObjectMetadata> accesibles) {
         this.accesibles = accesibles;
     }
 
-    public Set<User> getUserSet() {
-        return userSet;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setUserSet(Set<User> userSet) {
-        this.userSet = userSet;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
-    public Set<OrganizationalUnit> getOrganizationalUnitSet() {
-        return organizationalUnitSet;
+    public Set<Repository> getRepositories() {
+        return repositories;
     }
 
-    public void setOrganizationalUnitSet(Set<OrganizationalUnit> organizationalUnitSet) {
-        this.organizationalUnitSet = organizationalUnitSet;
+    public void setRepositories(Set<Repository> repositories) {
+        this.repositories = repositories;
+    }
+
+    public Timestamp getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(Timestamp creationTime) {
+        this.creationTime = creationTime;
     }
 }

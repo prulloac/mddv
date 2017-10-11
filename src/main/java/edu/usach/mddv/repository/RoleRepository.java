@@ -1,6 +1,7 @@
 package edu.usach.mddv.repository;
 
 import edu.usach.mddv.model.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import javax.transaction.Transactional;

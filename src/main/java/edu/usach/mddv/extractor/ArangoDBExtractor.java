@@ -1,6 +1,6 @@
 package edu.usach.mddv.extractor;
 
-import edu.usach.mddv.model.TechnicalObject;
+import edu.usach.mddv.model.TechnicalObjectMetadata;
 
 public class ArangoDBExtractor extends AbstractExtractor {
     public ArangoDBExtractor(String datasourceName, String datasourceType, String datasourceVersion) {
@@ -13,7 +13,7 @@ public class ArangoDBExtractor extends AbstractExtractor {
     }
 
     @Override
-    public TechnicalObject extract() {
+    public TechnicalObjectMetadata extract() {
         return null;
     }
 }

@@ -1,6 +1,6 @@
 package edu.usach.mddv.extractor;
 
-import edu.usach.mddv.model.TechnicalObject;
+import edu.usach.mddv.model.TechnicalObjectMetadata;
 
 import java.util.HashMap;
 
@@ -50,5 +50,5 @@ public abstract class AbstractExtractor {
     }
 
     public abstract boolean connect();
-    public abstract TechnicalObject extract();
+    public abstract TechnicalObjectMetadata extract();
 }

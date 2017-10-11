@@ -1,38 +1,45 @@
 package edu.usach.mddv.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
 @Table(name = "uploads")
-public class UploadFile{
+public class UploadFileInstance {
 
     @Id
     @GeneratedValue
     private long uploadId;
+
+    @Column(nullable = false)
     private String name;
+
     private String description;
+
+    @Column(nullable = false)
     private String version;
+
     private long size;
+
     private String url;
 
+    @Column(columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP")
+    private Timestamp modificationTime;
+
     @ManyToOne
-    @JoinColumn(name = "author_id")
-    private User author;
+    @JoinColumn(name = "uploadMetadataId",nullable = false)
+    private UploadFileMetadata fileMeta;
 
     @ManyToMany
     @JoinTable(
-            name = "objects_uploads",
-            joinColumns = {@JoinColumn(name = "upload_id")},
-            inverseJoinColumns = {@JoinColumn(name = "object_id")}
+            name = "objectsUploads",
+            joinColumns = {@JoinColumn(name = "uploadId")},
+            inverseJoinColumns = {@JoinColumn(name = "objectId")}
     )
-    private Set<MetadataObject> relatedObject;
+    private Set<ObjectInstance> relatedObject;
 
-    public UploadFile(String name, String description, String version) {
-        this.name = name;
-        this.description = description;
-        this.version = version;
+    public UploadFileInstance() {
     }
 
     public long getUploadId() {
@@ -83,19 +90,27 @@ public class UploadFile{
         this.url = url;
     }
 
-    public User getAuthor() {
-        return author;
+    public Timestamp getModificationTime() {
+        return modificationTime;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public void setModificationTime(Timestamp modificationTime) {
+        this.modificationTime = modificationTime;
     }
 
-    public Set<MetadataObject> getRelatedObject() {
+    public UploadFileMetadata getFileMeta() {
+        return fileMeta;
+    }
+
+    public void setFileMeta(UploadFileMetadata fileMeta) {
+        this.fileMeta = fileMeta;
+    }
+
+    public Set<ObjectInstance> getRelatedObject() {
         return relatedObject;
     }
 
-    public void setRelatedObject(Set<MetadataObject> relatedObject) {
+    public void setRelatedObject(Set<ObjectInstance> relatedObject) {
         this.relatedObject = relatedObject;
     }
 }
