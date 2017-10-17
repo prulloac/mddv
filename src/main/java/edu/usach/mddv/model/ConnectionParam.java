@@ -12,7 +12,7 @@ public class ConnectionParam {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "repositoryId")
-    private Repository repository;
+    private DataRepository dataRepository;
 
     @Column(nullable = false)
     private String name;
@@ -31,12 +31,12 @@ public class ConnectionParam {
         this.paramsId = paramsId;
     }
 
-    public Repository getRepository() {
-        return repository;
+    public DataRepository getDataRepository() {
+        return dataRepository;
     }
 
-    public void setRepository(Repository repository) {
-        this.repository = repository;
+    public void setDataRepository(DataRepository dataRepository) {
+        this.dataRepository = dataRepository;
     }
 
     public String getName() {

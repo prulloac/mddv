@@ -1,8 +1,10 @@
 package edu.usach.mddv.extractor;
 
+import edu.usach.mddv.model.DataRepository;
 import edu.usach.mddv.model.TechnicalObjectMetadata;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
@@ -11,31 +13,27 @@ public class MySQLExtractor extends AbstractExtractor{
 
     private Connection connection;
     private DatabaseMetaData databaseMetaData;
+    private SimpleDriverDataSource simpleDriverDataSource;
 
-    private SimpleDriverDataSource getDataSource() throws SQLException {
-        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-        dataSource.setDriver(new com.mysql.jdbc.Driver());
-        dataSource.setUrl(getDatasourceConnectionParams().get("url"));
-        dataSource.setUsername(getDatasourceConnectionParams().get("username"));
-        dataSource.setPassword(getDatasourceConnectionParams().get("password"));
-        return dataSource;
+    private void setDataSource() throws SQLException {
+        simpleDriverDataSource.setDriver(new com.mysql.jdbc.Driver());
+        simpleDriverDataSource.setUrl(getConnectionParam("url"));
+        simpleDriverDataSource.setUsername(getConnectionParam("username"));
+        simpleDriverDataSource.setPassword(getConnectionParam("password"));
     }
 
     private DatabaseMetaData getDatabaseMetaData() throws SQLException {
         return connection.getMetaData();
     }
 
-    public MySQLExtractor(String datasourceName, String datasourceType, String datasourceVersion, String datasourceUrl, String datasourceUsername, String datasourcePassword) {
-        super(datasourceName, datasourceType, datasourceVersion);
-        setDatasourceConnectionParams("url",datasourceUrl);
-        setDatasourceConnectionParams("username",datasourceUsername);
-        setDatasourceConnectionParams("password",datasourcePassword);
+    public MySQLExtractor(DataRepository dataRepository) {
+        super(dataRepository);
     }
 
     @Override
     public boolean connect() {
         try {
-            connection = getDataSource().getConnection();
+            connection = simpleDriverDataSource.getConnection();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,5 +45,6 @@ public class MySQLExtractor extends AbstractExtractor{
     public TechnicalObjectMetadata extract() {
         return null;
     }
+
 
 }

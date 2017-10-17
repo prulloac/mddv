@@ -15,25 +15,58 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 group = 'edu.usach'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
 }
 
-bootRun {
-	addResources = true
-}
-
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('mysql:mysql-connector-java:5.1.6')
 	runtime('org.springframework.boot:spring-boot-devtools')
-	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
-	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+}
 
+task gulpBower(type: Exec){
+	workingDir './src/main/resources/static'
+	commandLine 'gulp','bower'
+}
+
+task gulpWiredep(type: Exec){
+	workingDir './src/main/resources/static'
+	commandLine 'gulp','wiredep'
+}
+
+task gulpInject(type: Exec){
+	workingDir './src/main/resources/static'
+	commandLine 'gulp','inject'
+}
+
+task gulp{
+	dependsOn gulpBower
+	dependsOn gulpWiredep
+	dependsOn gulpInject
+}
+
+task startDatabase(type: Exec){
+    commandLine 'docker','run','-d','--name','mddv_mysql','-p','3306:3306','-e','MYSQL_ROOT_PASSWORD=root','-e','MYSQL_DATABASE=mddv','mysql:5.7'
+}
+
+task stopDatabase(type: Exec){
+    commandLine 'docker','container','rm','-f','mddv_mysql'
+}
+
+test {
+    dependsOn startDatabase
+    finalizedBy stopDatabase
+}
+
+bootRun {
+	dependsOn gulp
+    addResources = true
 }

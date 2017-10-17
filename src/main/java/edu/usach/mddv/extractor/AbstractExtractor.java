@@ -1,52 +1,27 @@
 package edu.usach.mddv.extractor;
 
+import edu.usach.mddv.model.DataRepository;
 import edu.usach.mddv.model.TechnicalObjectMetadata;
 
 import java.util.HashMap;
 
 public abstract class AbstractExtractor {
-    private String datasourceName;
-    private String datasourceType;
-    private String datasourceVersion;
-    private HashMap<String,String> datasourceConnectionParams;
+    private DataRepository dataRepository;
 
-    public String getDatasourceName() {
-        return datasourceName;
+    public AbstractExtractor(DataRepository dataRepository) {
+        this.dataRepository = dataRepository;
     }
 
-    public void setDatasourceName(String datasourceName) {
-        this.datasourceName = datasourceName;
+    public DataRepository getDataRepository() {
+        return dataRepository;
     }
 
-    public String getDatasourceType() {
-        return datasourceType;
+    public void setDataRepository(DataRepository dataRepository) {
+        this.dataRepository = dataRepository;
     }
 
-    public void setDatasourceType(String datasourceType) {
-        this.datasourceType = datasourceType;
-    }
-
-    public String getDatasourceVersion() {
-        return datasourceVersion;
-    }
-
-    public void setDatasourceVersion(String datasourceVersion) {
-        this.datasourceVersion = datasourceVersion;
-    }
-
-    public HashMap<String, String> getDatasourceConnectionParams() {
-        return datasourceConnectionParams;
-    }
-
-    public void setDatasourceConnectionParams(String key, String value) {
-        this.datasourceConnectionParams.put(key,value);
-    }
-
-    public AbstractExtractor(String datasourceName, String datasourceType, String datasourceVersion) {
-        this.datasourceName = datasourceName;
-        this.datasourceType = datasourceType;
-        this.datasourceVersion = datasourceVersion;
-        this.datasourceConnectionParams = new HashMap<String, String>();
+    public String getConnectionParam(String param){
+        return this.dataRepository.getConnectionParam(param);
     }
 
     public abstract boolean connect();

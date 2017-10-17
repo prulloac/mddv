@@ -24,7 +24,7 @@ public class Role{
     private Set<User> users;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<Repository> repositories;
+    private Set<DataRepository> repositories;
 
     @Column(columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP")
     private Timestamp creationTime;
@@ -72,11 +72,11 @@ public class Role{
         this.users = users;
     }
 
-    public Set<Repository> getRepositories() {
+    public Set<DataRepository> getRepositories() {
         return repositories;
     }
 
-    public void setRepositories(Set<Repository> repositories) {
+    public void setRepositories(Set<DataRepository> repositories) {
         this.repositories = repositories;
     }
 

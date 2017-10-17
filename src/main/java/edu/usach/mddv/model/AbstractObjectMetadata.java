@@ -37,7 +37,7 @@ public abstract class AbstractObjectMetadata {
     private Set<Role> roles;
 
     @ManyToMany(mappedBy = "objects")
-    private Set<Repository> repositories;
+    private Set<DataRepository> repositories;
 
     public AbstractObjectMetadata() {
     }
@@ -82,11 +82,11 @@ public abstract class AbstractObjectMetadata {
         this.roles = roles;
     }
 
-    public Set<Repository> getRepositories() {
+    public Set<DataRepository> getRepositories() {
         return repositories;
     }
 
-    public void setRepositories(Set<Repository> repositories) {
+    public void setRepositories(Set<DataRepository> repositories) {
         this.repositories = repositories;
     }
 }

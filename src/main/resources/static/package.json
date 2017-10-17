@@ -1,0 +1,11 @@
+{
+  "name": "mddv",
+  "version": "1.0.0",
+  "main": "index.html",
+  "author": "Pablo Ulloa <pablo.ulloac@usach.cl>",
+  "license": "GPL-3.0",
+  "private": false,
+  "dependencies": {
+    "webpack": "^3.8.0"
+  }
+}

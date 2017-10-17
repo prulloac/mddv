@@ -2,11 +2,12 @@ package edu.usach.mddv.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "repositories")
-public class Repository {
+public class DataRepository {
 
     @Id
     @GeneratedValue
@@ -22,6 +23,9 @@ public class Repository {
 
     @Column(nullable = false)
     private boolean outSourced;
+
+    @Column(nullable = false)
+    private String version;
 
     @ManyToMany
     @JoinTable(
@@ -42,10 +46,10 @@ public class Repository {
     @Column(columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP")
     private Timestamp creationTime;
 
-    @OneToMany(mappedBy = "repository",fetch = FetchType.EAGER,orphanRemoval = true)
-    private Set<ConnectionParam> connectionParams;
+    @OneToMany(mappedBy = "dataRepository",fetch = FetchType.EAGER,orphanRemoval = true)
+    private List<ConnectionParam> connectionParams;
 
-    public Repository() {
+    public DataRepository() {
     }
 
     public long getRepositoryId() {
@@ -112,11 +116,28 @@ public class Repository {
         this.creationTime = creationTime;
     }
 
-    public Set<ConnectionParam> getConnectionParams() {
+    public List<ConnectionParam> getConnectionParams() {
         return connectionParams;
     }
 
-    public void setConnectionParams(Set<ConnectionParam> connectionParams) {
+    public void setConnectionParams(List<ConnectionParam> connectionParams) {
         this.connectionParams = connectionParams;
+    }
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getConnectionParam(String param) {
+        for (int i = 0; i < connectionParams.size(); i++) {
+            if(connectionParams.get(i).getName().equals(param)){
+                return connectionParams.get(i).getValue();
+            }
+        }
+        return null;
     }
 }
