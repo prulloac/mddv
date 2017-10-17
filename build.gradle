@@ -58,7 +58,7 @@ task startDatabase(type: Exec){
 }
 
 task stopDatabase(type: Exec){
-    commandLine 'docker','container','rm','-f','mddv_mysql'
+    commandLine 'docker','rm','-f','mddv_mysql'
 }
 
 test {
