@@ -1,7 +1,14 @@
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
-src/main/resources/static/node_modules/
+**/node_modules/
+**/yarn-error.log
+**/bower_components/**/*.md
+**/bower_components/**/index.js
+**/bower_components/**/package.json
+**/bower_components/**/.bower.json
+**/bower_components/**/*.min.*
+
 
 ### STS ###
 .apt_generated
