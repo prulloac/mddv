@@ -33,6 +33,12 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+task buildFront(type: Exec){
+	workingDir './src/main/resources/frontend-dev'
+	commandLine 'ng','build','--op','../static'
+}
+
 bootRun {
+	dependsOn buildFront
     addResources = true
 }
