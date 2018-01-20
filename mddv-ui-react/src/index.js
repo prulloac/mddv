@@ -1,14 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 
-import App from 'components/App'
+import App from './components/App'
 
-ReactDOM.render((
-  <BrowserRouter>
+import './style.css'
+
+ReactDOM.render(
+  <HashRouter>
     <App />
-  </BrowserRouter>
-), document.querySelector('#root'))
+  </HashRouter>,
+  document.querySelector('#main'),
+)
 
 if (module.hot) {
   module.hot.accept()
