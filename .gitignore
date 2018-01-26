@@ -3,6 +3,9 @@
 !gradle/wrapper/gradle-wrapper.jar
 /src/main/resources/frontend-dev/node_modules/
 
+/**/node_modules
+/**/dist
+/**/out
 
 ### STS ###
 .apt_generated
