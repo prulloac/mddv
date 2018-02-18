@@ -1,19 +1,8 @@
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
-/src/main/resources/frontend-dev/node_modules/
-
-/**/node_modules
-/**/dist
-/**/out
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
+/**/node_modules/
+/**/dist/
 
 ### IntelliJ IDEA ###
 .idea
