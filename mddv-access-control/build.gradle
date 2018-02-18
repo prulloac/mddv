@@ -1,5 +1,5 @@
 buildscript {
-	ext {
+    ext {
 		springBootVersion = '1.5.10.RELEASE'
 	}
 	repositories {
@@ -28,7 +28,10 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.security:spring-security-jwt')
+	compile('org.springframework.security.oauth:spring-security-oauth2')
+	compile('log4j:log4j:1.2.17')
 	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.springframework.security:spring-security-test')
+    testCompile('org.springframework.security:spring-security-test')
+    testCompile('com.jayway.restassured:rest-assured:2.9.0')
 }
