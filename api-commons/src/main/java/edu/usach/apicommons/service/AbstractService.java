@@ -1,5 +1,6 @@
 package edu.usach.apicommons.service;
 
+import edu.usach.apicommons.annotations.ServiceOfEntity;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorCode;
 import edu.usach.apicommons.util.StringUtils;
@@ -15,8 +16,6 @@ import java.util.*;
 
 @Transactional
 public abstract class AbstractService<T extends Serializable> implements IService<T> {
-
-	private T t;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -85,6 +84,6 @@ public abstract class AbstractService<T extends Serializable> implements IServic
 	protected abstract PagingAndSortingRepository<T, Long> getDao();
 
 	protected String serviceOf() {
-		return t.getClass().getName();
-	};
+		return getClass().getAnnotation(ServiceOfEntity.class).value();
+	}
 }

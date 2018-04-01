@@ -1,5 +1,6 @@
 package edu.usach.apimain.service.impl;
 
+import edu.usach.apicommons.annotations.ServiceOfEntity;
 import edu.usach.apicommons.service.AbstractService;
 import edu.usach.apimain.dao.UserDAO;
 import edu.usach.apimain.model.User;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@ServiceOfEntity("User")
 public class UserService extends AbstractService<User> implements IUserService{
 
 	@Autowired

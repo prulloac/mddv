@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @CrossOrigin(maxAge = 7200)
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping("/users")
 public class UserResource extends AbstractResource<User> {
 
 	@Autowired

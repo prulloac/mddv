@@ -2,9 +2,9 @@ package edu.usach.apimain.service.impl;
 
 import edu.usach.apicommons.annotations.ServiceOfEntity;
 import edu.usach.apicommons.service.AbstractService;
-import edu.usach.apimain.dao.TechnicalObjectDAO;
-import edu.usach.apimain.model.TechnicalObject;
-import edu.usach.apimain.service.ITechnicalObjectService;
+import edu.usach.apimain.dao.ConnectionParamDAO;
+import edu.usach.apimain.model.ConnectionParameter;
+import edu.usach.apimain.service.IConnectionParameterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
@@ -12,14 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@ServiceOfEntity("TechnicalObject")
-public class TechnicalObjectService extends AbstractService<TechnicalObject> implements ITechnicalObjectService {
+@ServiceOfEntity("ConnectionParameter")
+public class ConnectionParameterService extends AbstractService<ConnectionParameter> implements IConnectionParameterService {
 
 	@Autowired
-	TechnicalObjectDAO dao;
-
+	ConnectionParamDAO dao;
 	@Override
-	protected PagingAndSortingRepository<TechnicalObject, Long> getDao() {
+	protected PagingAndSortingRepository<ConnectionParameter, Long> getDao() {
 		return dao;
 	}
 }

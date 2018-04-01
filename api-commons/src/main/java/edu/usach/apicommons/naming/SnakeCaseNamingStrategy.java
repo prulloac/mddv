@@ -1,4 +1,4 @@
-package edu.usach.apicommons.util;
+package edu.usach.apicommons.naming;
 
 import org.atteo.evo.inflector.English;
 import org.hibernate.boot.model.naming.Identifier;

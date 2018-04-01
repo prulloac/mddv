@@ -1,5 +1,6 @@
 package edu.usach.apimain.service.impl;
 
+import edu.usach.apicommons.annotations.ServiceOfEntity;
 import edu.usach.apicommons.service.AbstractService;
 import edu.usach.apimain.dao.RoleDAO;
 import edu.usach.apimain.model.Role;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@ServiceOfEntity("Role")
 public class RoleService extends AbstractService<Role> implements IRoleService {
 
 	@Autowired

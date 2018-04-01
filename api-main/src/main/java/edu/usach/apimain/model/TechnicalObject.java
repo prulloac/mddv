@@ -14,8 +14,11 @@ import java.io.Serializable;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class TechnicalObject extends AbstractMetadataObject implements Serializable {
 	@ManyToOne
-	@JoinColumn(name = "parentObjectId", nullable = true)
+	@JoinColumn(name = "parentObjectId")
 	private TechnicalObject parentObject;
+	@ManyToOne
+	@JoinColumn(name = "repositoryId")
+	private Repository repository;
 
 	public TechnicalObject getParentObject() {
 		return parentObject;
@@ -23,5 +26,13 @@ public class TechnicalObject extends AbstractMetadataObject implements Serializa
 
 	public void setParentObject(TechnicalObject parentObject) {
 		this.parentObject = parentObject;
+	}
+
+	public Repository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(Repository repository) {
+		this.repository = repository;
 	}
 }
