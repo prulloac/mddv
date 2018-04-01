@@ -1,2 +1,4 @@
 rootProject.name = 'mddv'
 
+include 'mddv-commons'
+include 'mddv-business', 'mddv-mysql', 'mddv-h2'

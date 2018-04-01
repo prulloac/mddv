@@ -1,11 +1,12 @@
-.gradle
-/build/
+/**/.gradle/
+/**/build/
+/**/out/
 !gradle/wrapper/gradle-wrapper.jar
 /**/node_modules/
 /**/dist/
 
 ### IntelliJ IDEA ###
-.idea
+/**/.idea/
 *.iws
 *.iml
 *.ipr
