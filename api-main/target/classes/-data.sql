@@ -1,2 +1,0 @@
--- users
---INSERT INTO users
