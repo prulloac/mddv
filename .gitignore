@@ -1,5 +1,6 @@
 /**/.gradle/
 /**/build/
+/**/target/
 /**/out/
 !gradle/wrapper/gradle-wrapper.jar
 /**/node_modules/
