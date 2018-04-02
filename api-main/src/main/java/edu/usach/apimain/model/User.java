@@ -1,6 +1,7 @@
 package edu.usach.apimain.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.usach.apicommons.model.AbstractIdentityEntity;
 
@@ -14,8 +15,11 @@ public class User extends AbstractIdentityEntity implements Serializable{
 
 	private String firstName;
 	private String lastName;
+	@Column(nullable = false)
 	private String password;
+	@Column(unique = true, nullable = false)
 	private String username;
+	@Column(nullable = false)
 	private String email;
 	@ManyToMany(mappedBy = "userList")
 	private List<Role> roleList;
