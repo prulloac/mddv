@@ -47,25 +47,42 @@ public abstract class AbstractService<T extends Serializable> implements IServic
 
 	@Override
 	public T create(final T entity) throws ApiException {
-		return getDao().save(entity);
+		try {
+			return getDao().save(entity);
+		} catch (RuntimeException e) {
+			throw new ApiException(ErrorCode.CREATION_ERROR, serviceOf());
+		}
 	}
 
 	@Override
 	public T update(final T entity) throws ApiException {
-		return getDao().save(entity);
+		try {
+			return getDao().save(entity);
+		} catch (RuntimeException e) {
+			throw new ApiException(ErrorCode.UPDATE_ERROR, serviceOf());
+		}
 	}
 
 	@Override
 	public void delete(final T entity) throws ApiException {
-		getDao().delete(entity);
+		try {
+			getDao().delete(entity);
+		} catch (RuntimeException e) {
+			throw new ApiException(ErrorCode.DELETE_ERROR, serviceOf());
+		}
 	}
 
 	@Override
 	public void deleteById(final long id) throws ApiException {
-		getDao().deleteById(id);
+		try {
+			getDao().deleteById(id);
+		} catch (RuntimeException e) {
+			throw new ApiException(ErrorCode.DELETE_ERROR, serviceOf());
+		}
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Map<String, Object> convertToMap(final long id, String filterString) throws ApiException {
 		Map<String, Object> dto = new HashMap<>();
 		String[] filters = filterString.split(",");
@@ -86,4 +103,5 @@ public abstract class AbstractService<T extends Serializable> implements IServic
 	protected String serviceOf() {
 		return getClass().getAnnotation(ServiceOfEntity.class).value();
 	}
+
 }

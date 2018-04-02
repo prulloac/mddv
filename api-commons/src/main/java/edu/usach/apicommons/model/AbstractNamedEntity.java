@@ -1,10 +1,12 @@
 package edu.usach.apicommons.model;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public abstract class AbstractNamedEntity extends AbstractIdentityEntity implements NamedEntityInterface {
 
+	@Column(nullable = false, unique = true)
 	private String name;
 
 	@Override

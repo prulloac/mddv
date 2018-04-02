@@ -5,7 +5,6 @@ import edu.usach.apicommons.errorhandling.ErrorResponse;
 import edu.usach.apicommons.service.IService;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,13 +13,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class AbstractResource<T> implements IResource<T> {
+public abstract class AbstractResource<T extends Serializable> implements IResource<T> {
 
 	protected final Logger logger = LogManager.getLogger(getClass());
 
 	protected abstract HttpServletRequest getHttpServletRequest();
-	protected abstract IService getService();
+	protected abstract IService<T> getService();
 
 	protected void log(Exception e) {
 		log(e,false);
@@ -33,7 +35,7 @@ public abstract class AbstractResource<T> implements IResource<T> {
 			logger.error(e.getLocalizedMessage(), e);
 	}
 
-	protected ResponseEntity errorEntity(ApiException e, HttpStatus httpStatus) {
+	protected ResponseEntity<ErrorResponse> errorEntity(ApiException e, HttpStatus httpStatus) {
 		log(e);
 		ErrorResponse errorResponse = new ErrorResponse(e, getHttpServletRequest());
 		errorResponse.setStatus(httpStatus.value());
@@ -43,7 +45,7 @@ public abstract class AbstractResource<T> implements IResource<T> {
 		);
 	}
 
-	protected ResponseEntity errorEntity(Exception e) {
+	protected ResponseEntity<ErrorResponse> errorEntity(Exception e) {
 		log(e);
 		ErrorResponse errorResponse = new ErrorResponse(getHttpServletRequest());
 		errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -69,7 +71,7 @@ public abstract class AbstractResource<T> implements IResource<T> {
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}", params = { "show" })
 	public ResponseEntity getByIdAndFilterOutput(@PathVariable Long id, @RequestParam("show") String filterString){
 		try {
-			return new ResponseEntity<>(getService().convertToMap(id, filterString), HttpStatus.OK);
+			return new ResponseEntity<Map<String, Object>>(getService().convertToMap(id, filterString), HttpStatus.OK);
 		} catch (ApiException e) {
 			return errorEntity(e, HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
@@ -81,7 +83,7 @@ public abstract class AbstractResource<T> implements IResource<T> {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity getAll() {
 		try {
-			return new ResponseEntity<>(getService().findAll(), HttpStatus.OK);
+			return new ResponseEntity<java.util.List<T>>(getService().findAll(), HttpStatus.OK);
 		} catch (ApiException e) {
 			return errorEntity(e, HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
@@ -93,7 +95,7 @@ public abstract class AbstractResource<T> implements IResource<T> {
 	@RequestMapping(method = RequestMethod.GET, params = { "page", "size" })
 	public ResponseEntity getAllPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
 		try {
-			return new ResponseEntity<>(getService().findPaginated(page, size), HttpStatus.OK);
+			return new ResponseEntity<org.springframework.data.domain.Page<T>>(getService().findPaginated(page, size), HttpStatus.OK);
 		} catch (ApiException e) {
 			return errorEntity(e, HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
@@ -116,22 +118,74 @@ public abstract class AbstractResource<T> implements IResource<T> {
 
 	@Override
 	public ResponseEntity create(T entity) {
-		return null;
+		try {
+			Map<String, Object> response = new HashMap<>();
+			response.put("entity", getService().create(entity));
+			response.put("success", true);
+			response.put("message", "Entity successfully created");
+			return new ResponseEntity<>(
+					response,
+					HttpStatus.OK
+			);
+		} catch (ApiException e) {
+			return errorEntity(e, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return errorEntity(e);
+		}
 	}
 
 	@Override
 	public ResponseEntity update(T entity) {
-		return null;
+		try {
+			Map<String, Object> response = new HashMap<>();
+			response.put("entity", getService().update(entity));
+			response.put("success", true);
+			response.put("message", "Entity successfully updated");
+			return new ResponseEntity<>(
+					response,
+					HttpStatus.OK
+			);
+		} catch (ApiException e) {
+			return errorEntity(e, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return errorEntity(e);
+		}
 	}
 
 	@Override
 	public ResponseEntity delete(T entity) {
-		return null;
+		try {
+			getService().delete(entity);
+			Map<String, Object> response = new HashMap<>();
+			response.put("success", true);
+			response.put("message", "Entity successfully deleted");
+			return new ResponseEntity<>(
+					response,
+					HttpStatus.OK
+			);
+		} catch (ApiException e) {
+			return errorEntity(e, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return errorEntity(e);
+		}
 	}
 
 	@Override
-	public ResponseEntity deleteById(long entity) {
-		return null;
+	public ResponseEntity deleteById(long id) {
+		try {
+			getService().deleteById(id);
+			Map<String, Object> response = new HashMap<>();
+			response.put("success", true);
+			response.put("message", "Entity successfully deleted");
+			return new ResponseEntity<>(
+					response,
+					HttpStatus.OK
+			);
+		} catch (ApiException e) {
+			return errorEntity(e, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return errorEntity(e);
+		}
 	}
 
 }

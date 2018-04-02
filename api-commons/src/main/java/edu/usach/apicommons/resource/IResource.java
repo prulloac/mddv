@@ -2,7 +2,9 @@ package edu.usach.apicommons.resource;
 
 import org.springframework.http.ResponseEntity;
 
-public interface IResource<T> {
+import java.io.Serializable;
+
+public interface IResource<T extends Serializable> {
 
 	ResponseEntity getById(Long id);
 
@@ -20,6 +22,6 @@ public interface IResource<T> {
 
 	ResponseEntity delete(T entity);
 
-	ResponseEntity deleteById(long entity);
+	ResponseEntity deleteById(long id);
 
 }
