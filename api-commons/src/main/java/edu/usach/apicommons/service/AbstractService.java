@@ -1,21 +1,26 @@
 package edu.usach.apicommons.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.usach.apicommons.annotations.ServiceOfEntity;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorCode;
-import edu.usach.apicommons.util.StringUtils;
+import edu.usach.apicommons.model.IEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 
 @Transactional
-public abstract class AbstractService<T extends Serializable> implements IService<T> {
+public abstract class AbstractService<T extends IEntity> implements IService<T> {
+
+	protected final Logger logger = LogManager.getLogger(getClass());
 
 	@Override
 	@Transactional(readOnly = true)
@@ -46,6 +51,7 @@ public abstract class AbstractService<T extends Serializable> implements IServic
 	}
 
 	@Override
+	@Transactional
 	public T create(final T entity) throws ApiException {
 		try {
 			return getDao().save(entity);
@@ -55,6 +61,7 @@ public abstract class AbstractService<T extends Serializable> implements IServic
 	}
 
 	@Override
+	@Transactional
 	public T update(final T entity) throws ApiException {
 		try {
 			return getDao().save(entity);
@@ -64,6 +71,7 @@ public abstract class AbstractService<T extends Serializable> implements IServic
 	}
 
 	@Override
+	@Transactional
 	public void delete(final T entity) throws ApiException {
 		try {
 			getDao().delete(entity);
@@ -73,6 +81,7 @@ public abstract class AbstractService<T extends Serializable> implements IServic
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(final long id) throws ApiException {
 		try {
 			getDao().deleteById(id);
@@ -83,19 +92,17 @@ public abstract class AbstractService<T extends Serializable> implements IServic
 
 	@Override
 	@Transactional(readOnly = true)
-	public Map<String, Object> convertToMap(final long id, String filterString) throws ApiException {
-		Map<String, Object> dto = new HashMap<>();
-		String[] filters = filterString.split(",");
+	public JSONObject findAndFilter(final long id, String filterString) throws ApiException {
 		T entity = getDao().findById(id).get();
+		ObjectMapper mapper = new ObjectMapper();
 		try {
-			for (String filter : filters) {
-				Method method = entity.getClass().getMethod("get"+ StringUtils.capitalize(filter));
-				dto.put(filter, method.invoke(entity));
-			}
-		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+			JSONParser parser = new JSONParser();
+			JSONObject dto = (JSONObject) parser.parse(mapper.writeValueAsString(entity));
+			for(String property : filterString.split(",")) dto.remove(property);
+			return dto;
+		} catch (ParseException | JsonProcessingException e) {
 			throw new ApiException(ErrorCode.INVALID_FILTERS, serviceOf());
 		}
-		return dto;
 	}
 
 	protected abstract PagingAndSortingRepository<T, Long> getDao();

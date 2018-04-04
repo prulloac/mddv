@@ -1,12 +1,14 @@
 package edu.usach.apimain.model;
 
+import edu.usach.apicommons.model.IEntity;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @DiscriminatorValue(value = "businessObject")
-public class BusinessObject extends AbstractMetadataObject implements Serializable {
+public class BusinessObject extends AbstractMetadataObject implements IEntity {
 
 	@ManyToMany
 	@JoinTable(

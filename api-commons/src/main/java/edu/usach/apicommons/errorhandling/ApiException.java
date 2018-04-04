@@ -5,7 +5,7 @@ public final class ApiException extends Exception {
 	private IErrorCode errorCode;
 
 	public ApiException(IErrorCode errorCode) {
-		super(errorCode.getMessage(""));
+		super(errorCode.getMessage());
 		this.errorCode = errorCode;
 	}
 	public ApiException(IErrorCode errorCode, String detail) {
@@ -14,7 +14,7 @@ public final class ApiException extends Exception {
 	}
 
 	public ApiException(IErrorCode errorCode, Exception e) {
-		super(errorCode.getMessage(""));
+		super(errorCode.getMessage());
 		this.initCause(e);
 		this.errorCode = errorCode;
 	}

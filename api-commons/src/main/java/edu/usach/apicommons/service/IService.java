@@ -1,17 +1,20 @@
 package edu.usach.apicommons.service;
 
+import edu.usach.apicommons.dto.IDTO;
 import edu.usach.apicommons.errorhandling.ApiException;
+import edu.usach.apicommons.model.IEntity;
+import org.json.simple.JSONObject;
 import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface IService<T extends Serializable> {
+public interface IService<T extends IEntity> {
 
 	T findOne(final long id) throws ApiException;
 
-	Map<String, Object> convertToMap(final long id, final String filterString) throws ApiException;
+	JSONObject findAndFilter(final long id, final String filterString) throws ApiException;
 
 	List<T> findAll() throws ApiException;
 

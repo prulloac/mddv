@@ -1,8 +1,6 @@
 package edu.usach.apicommons.model;
 
-import java.io.Serializable;
-
-public interface IdentityEntityInterface extends Serializable {
+public interface IdentityEntityInterface extends IEntity {
 
 	Long getId();
 	void setId(Long id);

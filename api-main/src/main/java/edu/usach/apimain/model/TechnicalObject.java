@@ -2,6 +2,7 @@ package edu.usach.apimain.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import edu.usach.apicommons.model.IEntity;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import java.io.Serializable;
 @Entity
 @DiscriminatorValue(value = "techincalObject")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class TechnicalObject extends AbstractMetadataObject implements Serializable {
+public class TechnicalObject extends AbstractMetadataObject implements IEntity {
 	@ManyToOne
 	@JoinColumn(name = "parentObjectId")
 	private TechnicalObject parentObject;

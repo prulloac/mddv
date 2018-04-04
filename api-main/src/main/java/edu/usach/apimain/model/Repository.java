@@ -1,6 +1,7 @@
 package edu.usach.apimain.model;
 
 import edu.usach.apicommons.model.AbstractAuditableNamedEntity;
+import edu.usach.apicommons.model.IEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -9,7 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Repository extends AbstractAuditableNamedEntity implements Serializable {
+public class Repository extends AbstractAuditableNamedEntity implements IEntity {
 
 	private String location;
 	private Boolean outsourced;

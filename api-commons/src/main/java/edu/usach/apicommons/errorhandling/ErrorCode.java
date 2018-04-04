@@ -16,6 +16,11 @@ public enum ErrorCode implements IErrorCode {
 	}
 
 	@Override
+	public String getMessage() {
+		return message;
+	};
+
+	@Override
 	public String getMessage(String detail) {
 		return message.replace("'{0}'", detail);
 	}

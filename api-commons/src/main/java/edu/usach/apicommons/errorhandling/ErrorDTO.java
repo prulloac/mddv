@@ -1,33 +1,38 @@
 package edu.usach.apicommons.errorhandling;
 
+import org.json.simple.JSONObject;
+
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.format.DateTimeFormatter;
 
-public class ErrorResponse {
-	private Integer status;
+public class ErrorDTO {
 	private Integer errorCode;
+	private String errorCodeName;
 	private String errorMessage;
-	private Map<String, Map<String, Object>> errorData;
-	private ZonedDateTime errorTimestamp;
+	private JSONObject errorData;
+	private String errorTimestamp;
 	private String requestedURL;
 	private String httpVerb;
 
-	public ErrorResponse(HttpServletRequest httpServletRequest) {
-		this.errorData = new HashMap<>();
+	public ErrorDTO(HttpServletRequest httpServletRequest) {
+		this.errorData = new JSONObject();
 		this.requestedURL = httpServletRequest.getRequestURL().toString();
 		this.httpVerb = httpServletRequest.getMethod();
-		this.errorData.put("requestedParams", new HashMap<>());
+		this.errorData.put("requestedParams", new JSONObject());
+		this.errorCode = ErrorCode.UNEXPECTED_ERROR.getCode();
+		this.errorCodeName = ErrorCode.UNEXPECTED_ERROR.getCodeName();
+		this.errorMessage = ErrorCode.UNEXPECTED_ERROR.getMessage();
 		setErrorTimestamp();
 	}
 
-	public ErrorResponse(ApiException exception, HttpServletRequest httpServletRequest) {
-		this.errorData = new HashMap<>();
+	public ErrorDTO(ApiException exception, HttpServletRequest httpServletRequest) {
+		this.errorData = new JSONObject();
 		this.requestedURL = httpServletRequest.getRequestURL().toString();
 		this.httpVerb = httpServletRequest.getMethod();
-		this.errorData.put("requestedParams", new HashMap<>());
+		this.errorData.put("requestedParams", new JSONObject());
 		this.errorCode = exception.getErrorCode().getCode();
+		this.errorCodeName = exception.getErrorCode().getCodeName();
 		this.errorMessage = exception.getMessage();
 		setErrorTimestamp();
 	}
@@ -38,20 +43,20 @@ public class ErrorResponse {
 	}
 
 
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
 	public Integer getErrorCode() {
 		return errorCode;
 	}
 
 	public void setErrorCode(Integer errorCode) {
 		this.errorCode = errorCode;
+	}
+
+	public String getErrorCodeName() {
+		return errorCodeName;
+	}
+
+	public void setErrorCodeName(String errorCodeName) {
+		this.errorCodeName = errorCodeName;
 	}
 
 	public String getErrorMessage() {
@@ -62,23 +67,23 @@ public class ErrorResponse {
 		this.errorMessage = errorMessage;
 	}
 
-	public Map<String, Map<String, Object>> getErrorData() {
+	public JSONObject getErrorData() {
 		return errorData;
 	}
 
-	public void setErrorData(Map<String, Map<String, Object>> errorData) {
+	public void setErrorData(JSONObject errorData) {
 		this.errorData = errorData;
 	}
 
-	public ZonedDateTime getErrorTimestamp() {
+	public String getErrorTimestamp() {
 		return errorTimestamp;
 	}
 
 	private void setErrorTimestamp() {
-		this.errorTimestamp = ZonedDateTime.now();
+		this.errorTimestamp = ZonedDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
 	}
 
-	public void setErrorTimestamp(ZonedDateTime errorTimestamp) {
+	public void setErrorTimestamp(String errorTimestamp) {
 		this.errorTimestamp = errorTimestamp;
 	}
 
@@ -97,4 +102,5 @@ public class ErrorResponse {
 	public void setHttpVerb(String httpVerb) {
 		this.httpVerb = httpVerb;
 	}
+
 }

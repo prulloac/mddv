@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.usach.apicommons.model.AbstractIdentityEntity;
+import edu.usach.apicommons.model.IEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class User extends AbstractIdentityEntity implements Serializable{
+public class User extends AbstractIdentityEntity implements IEntity {
 
 	private String firstName;
 	private String lastName;

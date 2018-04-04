@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.usach.apicommons.model.AbstractAuditableNamedDescriptableEntity;
+import edu.usach.apicommons.model.IEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class OrganizationalUnit extends AbstractAuditableNamedDescriptableEntity implements Serializable {
+public class OrganizationalUnit extends AbstractAuditableNamedDescriptableEntity implements IEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "parentUnitId")

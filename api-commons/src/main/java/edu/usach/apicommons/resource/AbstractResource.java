@@ -1,10 +1,12 @@
 package edu.usach.apicommons.resource;
 
 import edu.usach.apicommons.errorhandling.ApiException;
-import edu.usach.apicommons.errorhandling.ErrorResponse;
+import edu.usach.apicommons.errorhandling.ErrorDTO;
+import edu.usach.apicommons.model.IEntity;
 import edu.usach.apicommons.service.IService;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractResource<T extends Serializable> implements IResource<T> {
+public abstract class AbstractResource<T extends IEntity> implements IResource<T> {
 
 	protected final Logger logger = LogManager.getLogger(getClass());
 
@@ -35,35 +38,41 @@ public abstract class AbstractResource<T extends Serializable> implements IResou
 			logger.error(e.getLocalizedMessage(), e);
 	}
 
-	protected ResponseEntity<ErrorResponse> errorEntity(ApiException e, HttpStatus httpStatus) {
-		log(e);
-		ErrorResponse errorResponse = new ErrorResponse(e, getHttpServletRequest());
-		errorResponse.setStatus(httpStatus.value());
-		return new ResponseEntity<>(
-				new ErrorResponse(e, getHttpServletRequest()),
-				httpStatus
-		);
+	protected JSONObject responseEntity(Object data) {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("data", data);
+		jsonObject.put("error", null);
+		jsonObject.put("timestamp", ZonedDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+		return jsonObject;
 	}
 
-	protected ResponseEntity<ErrorResponse> errorEntity(Exception e) {
+	protected JSONObject responseEntity(Object data, Object error) {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("data", data);
+		jsonObject.put("error", error);
+		jsonObject.put("timestamp", ZonedDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+		return jsonObject;
+	}
+
+	protected ErrorDTO handleError(ApiException e) {
 		log(e);
-		ErrorResponse errorResponse = new ErrorResponse(getHttpServletRequest());
-		errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
-		return new ResponseEntity<>(
-				new ErrorResponse(getHttpServletRequest()),
-				HttpStatus.BAD_REQUEST
-		);
+		return new ErrorDTO(e, getHttpServletRequest());
+	}
+
+	protected ErrorDTO handleError(Exception e) {
+		log(e);
+		return new ErrorDTO(getHttpServletRequest());
 	}
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity getById(@PathVariable Long id) {
 		try {
-			return new ResponseEntity<>(getService().findOne(id), HttpStatus.OK);
+			return new ResponseEntity<>(responseEntity(getService().findOne(id)), HttpStatus.OK);
 		} catch (ApiException e) {
-			return errorEntity(e, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return errorEntity(e);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -71,11 +80,11 @@ public abstract class AbstractResource<T extends Serializable> implements IResou
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}", params = { "show" })
 	public ResponseEntity getByIdAndFilterOutput(@PathVariable Long id, @RequestParam("show") String filterString){
 		try {
-			return new ResponseEntity<Map<String, Object>>(getService().convertToMap(id, filterString), HttpStatus.OK);
+			return new ResponseEntity<>(responseEntity(getService().findAndFilter(id, filterString)), HttpStatus.OK);
 		} catch (ApiException e) {
-			return errorEntity(e, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return errorEntity(e);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -83,11 +92,11 @@ public abstract class AbstractResource<T extends Serializable> implements IResou
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity getAll() {
 		try {
-			return new ResponseEntity<java.util.List<T>>(getService().findAll(), HttpStatus.OK);
+			return new ResponseEntity<>(responseEntity(getService().findAll()), HttpStatus.OK);
 		} catch (ApiException e) {
-			return errorEntity(e, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return errorEntity(e);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -95,11 +104,11 @@ public abstract class AbstractResource<T extends Serializable> implements IResou
 	@RequestMapping(method = RequestMethod.GET, params = { "page", "size" })
 	public ResponseEntity getAllPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
 		try {
-			return new ResponseEntity<org.springframework.data.domain.Page<T>>(getService().findPaginated(page, size), HttpStatus.OK);
+			return new ResponseEntity<>(responseEntity(getService().findPaginated(page, size)), HttpStatus.OK);
 		} catch (ApiException e) {
-			return errorEntity(e, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return errorEntity(e);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -107,11 +116,11 @@ public abstract class AbstractResource<T extends Serializable> implements IResou
 	@RequestMapping(method = RequestMethod.GET, params = { "size" })
 	public ResponseEntity getAllPaginated(@RequestParam("size") int size) {
 		try {
-			return new ResponseEntity<>(getService().findPaginated(1, size), HttpStatus.OK);
+			return new ResponseEntity<>(responseEntity(getService().findPaginated(1, size)), HttpStatus.OK);
 		} catch (ApiException e) {
-			return errorEntity(e, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return errorEntity(e);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -119,36 +128,30 @@ public abstract class AbstractResource<T extends Serializable> implements IResou
 	@Override
 	public ResponseEntity create(T entity) {
 		try {
-			Map<String, Object> response = new HashMap<>();
-			response.put("entity", getService().create(entity));
-			response.put("success", true);
-			response.put("message", "Entity successfully created");
-			return new ResponseEntity<>(
-					response,
-					HttpStatus.OK
-			);
+			getService().create(entity);
+			JSONObject data = new JSONObject();
+			data.put("success", true);
+			data.put("message", "Entity successfully created");
+			return new ResponseEntity<>(responseEntity(data), HttpStatus.OK);
 		} catch (ApiException e) {
-			return errorEntity(e, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return errorEntity(e);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@Override
 	public ResponseEntity update(T entity) {
 		try {
-			Map<String, Object> response = new HashMap<>();
-			response.put("entity", getService().update(entity));
-			response.put("success", true);
-			response.put("message", "Entity successfully updated");
-			return new ResponseEntity<>(
-					response,
-					HttpStatus.OK
-			);
+			getService().update(entity);
+			JSONObject data = new JSONObject();
+			data.put("success", true);
+			data.put("message", "Entity successfully updated");
+			return new ResponseEntity<>(responseEntity(data), HttpStatus.OK);
 		} catch (ApiException e) {
-			return errorEntity(e, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return errorEntity(e);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -156,17 +159,14 @@ public abstract class AbstractResource<T extends Serializable> implements IResou
 	public ResponseEntity delete(T entity) {
 		try {
 			getService().delete(entity);
-			Map<String, Object> response = new HashMap<>();
-			response.put("success", true);
-			response.put("message", "Entity successfully deleted");
-			return new ResponseEntity<>(
-					response,
-					HttpStatus.OK
-			);
+			JSONObject data = new JSONObject();
+			data.put("success", true);
+			data.put("message", "Entity successfully deleted");
+			return new ResponseEntity<>(responseEntity(data), HttpStatus.OK);
 		} catch (ApiException e) {
-			return errorEntity(e, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return errorEntity(e);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -174,17 +174,14 @@ public abstract class AbstractResource<T extends Serializable> implements IResou
 	public ResponseEntity deleteById(long id) {
 		try {
 			getService().deleteById(id);
-			Map<String, Object> response = new HashMap<>();
-			response.put("success", true);
-			response.put("message", "Entity successfully deleted");
-			return new ResponseEntity<>(
-					response,
-					HttpStatus.OK
-			);
+			JSONObject data = new JSONObject();
+			data.put("success", true);
+			data.put("message", "Entity successfully deleted");
+			return new ResponseEntity<>(responseEntity(data), HttpStatus.OK);
 		} catch (ApiException e) {
-			return errorEntity(e, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return errorEntity(e);
+			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

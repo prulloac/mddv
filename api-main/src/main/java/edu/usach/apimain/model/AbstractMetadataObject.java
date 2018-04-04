@@ -3,6 +3,7 @@ package edu.usach.apimain.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.usach.apicommons.model.AbstractAuditableNamedDescriptableEntity;
+import edu.usach.apicommons.model.IEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.util.List;
 @DiscriminatorColumn(name = "objectType")
 @Table(name = "metadataObjects")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class AbstractMetadataObject extends AbstractAuditableNamedDescriptableEntity implements Serializable{
+public class AbstractMetadataObject extends AbstractAuditableNamedDescriptableEntity implements IEntity {
 	private String version;
 	private String type;
 	@ManyToMany

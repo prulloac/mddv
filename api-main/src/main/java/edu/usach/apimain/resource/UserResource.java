@@ -37,13 +37,13 @@ public class UserResource extends AbstractResource<User> {
 	public ResponseEntity login(@RequestBody UserCredentialsDTO credentials) {
 		try {
 			return new ResponseEntity<>(
-					service.validateCredentials(credentials.getUsernameOrEmail(), credentials.getPassword()),
+					responseEntity(service.validateCredentials(credentials.getUsernameOrEmail(), credentials.getPassword())),
 					HttpStatus.OK
 			);
 		} catch (ApiException e) {
-			return errorEntity(e, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(responseEntity(null,	handleError(e)), HttpStatus.UNAUTHORIZED);
 		} catch (Exception e) {
-			return errorEntity(e);
+			return new ResponseEntity<>(responseEntity(null,handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
