@@ -1,14 +1,14 @@
 package edu.usach.apimain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.usach.apicommons.model.IEntity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @DiscriminatorValue(value = "businessObject")
-public class BusinessObject extends AbstractMetadataObject implements IEntity {
+public class BusinessObject extends MetadataObject implements IEntity {
 
 	@ManyToMany
 	@JoinTable(
@@ -16,6 +16,7 @@ public class BusinessObject extends AbstractMetadataObject implements IEntity {
 			joinColumns = {@JoinColumn(name = "businessObjectId", referencedColumnName = "id")},
 			inverseJoinColumns = {@JoinColumn(name = "repositoryId", referencedColumnName = "id")}
 	)
+	@JsonIgnore
 	private List<Repository> linkedRepositories;
 
 	public List<Repository> getLinkedRepositories() {

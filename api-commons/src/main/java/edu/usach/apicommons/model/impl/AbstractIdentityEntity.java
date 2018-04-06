@@ -1,7 +1,9 @@
-package edu.usach.apicommons.model;
+package edu.usach.apicommons.model.impl;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import edu.usach.apicommons.model.IdentityEntityInterface;
+import io.swagger.annotations.ApiModel;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +12,7 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@ApiModel
 public abstract class AbstractIdentityEntity implements IdentityEntityInterface {
 
 	@Id

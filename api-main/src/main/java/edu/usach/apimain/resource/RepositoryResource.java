@@ -17,15 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class RepositoryResource extends AbstractResource<Repository> {
 
 	@Autowired
-	HttpServletRequest httpServletRequest;
-
-	@Autowired
 	IRepositoryService service;
-
-	@Override
-	protected HttpServletRequest getHttpServletRequest() {
-		return httpServletRequest;
-	}
 
 	@Override
 	protected IService getService() {

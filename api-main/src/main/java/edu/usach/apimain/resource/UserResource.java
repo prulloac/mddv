@@ -1,11 +1,14 @@
 package edu.usach.apimain.resource;
 
 import edu.usach.apicommons.errorhandling.ApiException;
+import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apicommons.service.IService;
+import edu.usach.apicommons.util.Constants;
 import edu.usach.apimain.dto.UserCredentialsDTO;
 import edu.usach.apimain.model.User;
 import edu.usach.apimain.service.IUserService;
 import edu.usach.apicommons.resource.AbstractResource;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserResource extends AbstractResource<User> {
 
 	@Autowired
-	HttpServletRequest httpServletRequest;
-	@Autowired
 	IUserService service;
-
-	@Override
-	protected HttpServletRequest getHttpServletRequest() {
-		return httpServletRequest;
-	}
 
 	@Override
 	protected IService getService() {
@@ -37,13 +33,13 @@ public class UserResource extends AbstractResource<User> {
 	public ResponseEntity login(@RequestBody UserCredentialsDTO credentials) {
 		try {
 			return new ResponseEntity<>(
-					responseEntity(service.validateCredentials(credentials.getUsernameOrEmail(), credentials.getPassword())),
+					response(service.validateCredentials(credentials.getUsernameOrEmail(), credentials.getPassword())),
 					HttpStatus.OK
 			);
 		} catch (ApiException e) {
-			return new ResponseEntity<>(responseEntity(null,	handleError(e)), HttpStatus.UNAUTHORIZED);
+			return responseUnauthorized(Constants.OBJECT,	new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			return new ResponseEntity<>(responseEntity(null,handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
+			return responseInternalServerError(Constants.OBJECT,new ErrorDTO(httpServletRequest));
 		}
 	}
 

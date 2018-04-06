@@ -1,12 +1,11 @@
 package edu.usach.apimain.model;
 
-import edu.usach.apicommons.model.AbstractNamedEntity;
 import edu.usach.apicommons.model.IEntity;
+import edu.usach.apicommons.model.impl.AbstractNamedEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.io.Serializable;
 
 @Entity
 public class ConnectionParameter extends AbstractNamedEntity implements IEntity {

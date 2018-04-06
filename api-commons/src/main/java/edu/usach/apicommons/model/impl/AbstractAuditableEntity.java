@@ -1,4 +1,7 @@
-package edu.usach.apicommons.model;
+package edu.usach.apicommons.model.impl;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.usach.apicommons.model.AuditableEntityInterface;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -7,8 +10,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class AbstractAuditableEntity extends AbstractIdentityEntity implements AuditableEntityInterface {
 
+	@JsonIgnore
 	private LocalDateTime modificationTimestamp;
 	@Column(updatable = false)
+	@JsonIgnore
 	private LocalDateTime creationTimestamp;
 
 	public AbstractAuditableEntity() {

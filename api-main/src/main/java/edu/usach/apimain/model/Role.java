@@ -3,19 +3,18 @@ package edu.usach.apimain.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import edu.usach.apicommons.model.AbstractNamedDescriptableEntity;
 import edu.usach.apicommons.model.IEntity;
+import edu.usach.apicommons.model.impl.AbstractDescriptableEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Role extends AbstractNamedDescriptableEntity implements IEntity {
+public class Role extends AbstractDescriptableEntity implements IEntity {
 
 	@ManyToMany
 	@JoinTable(
@@ -23,6 +22,7 @@ public class Role extends AbstractNamedDescriptableEntity implements IEntity {
 			joinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")},
 			inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")}
 	)
+	@JsonIgnore
 	private List<User> userList;
 	@ManyToMany
 	@JoinTable(
@@ -30,9 +30,11 @@ public class Role extends AbstractNamedDescriptableEntity implements IEntity {
 			joinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")},
 			inverseJoinColumns = {@JoinColumn(name = "organizationalUnitId", referencedColumnName = "id")}
 	)
+	@JsonIgnore
 	private List<OrganizationalUnit> organizationalUnitList;
 	@ManyToMany(mappedBy = "accessRoles")
-	private List<AbstractMetadataObject> metadataObjectList;
+	@JsonIgnore
+	private List<MetadataObject> metadataObjectList;
 
 	public List<User> getUserList() {
 		return userList;
@@ -50,11 +52,11 @@ public class Role extends AbstractNamedDescriptableEntity implements IEntity {
 		this.organizationalUnitList = organizationalUnitList;
 	}
 
-	public List<AbstractMetadataObject> getMetadataObjectList() {
+	public List<MetadataObject> getMetadataObjectList() {
 		return metadataObjectList;
 	}
 
-	public void setMetadataObjectList(List<AbstractMetadataObject> metadataObjectList) {
+	public void setMetadataObjectList(List<MetadataObject> metadataObjectList) {
 		this.metadataObjectList = metadataObjectList;
 	}
 }

@@ -17,15 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class BusinessObjectResource extends AbstractResource<BusinessObject> {
 
 	@Autowired
-	HttpServletRequest httpServletRequest;
-
-	@Autowired
 	IBusinessObjectService service;
-
-	@Override
-	protected HttpServletRequest getHttpServletRequest() {
-		return httpServletRequest;
-	}
 
 	@Override
 	protected IService getService() {

@@ -4,5 +4,5 @@ import edu.usach.apimain.model.TechnicalObject;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface TechnicalObjectDAO extends BaseAbstractMetadataObjectDAO<TechnicalObject> {
+public interface TechnicalObjectDAO extends BaseMetadataObjectDAO<TechnicalObject> {
 }

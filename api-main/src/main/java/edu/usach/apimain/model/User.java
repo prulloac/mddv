@@ -3,20 +3,22 @@ package edu.usach.apimain.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import edu.usach.apicommons.model.AbstractIdentityEntity;
 import edu.usach.apicommons.model.IEntity;
+import edu.usach.apicommons.model.impl.AbstractIdentityEntity;
+import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@ApiModel(parent = AbstractIdentityEntity.class)
 public class User extends AbstractIdentityEntity implements IEntity {
 
 	private String firstName;
 	private String lastName;
 	@Column(nullable = false)
+	@JsonIgnore
 	private String password;
 	@Column(unique = true, nullable = false)
 	private String username;
@@ -32,6 +34,7 @@ public class User extends AbstractIdentityEntity implements IEntity {
 	)
 	private List<OrganizationalUnit> organizationalUnitList;
 	@OneToMany(mappedBy = "uploader")
+	@JsonIgnore
 	private List<Document> documentList;
 
 	public String getFirstName() {

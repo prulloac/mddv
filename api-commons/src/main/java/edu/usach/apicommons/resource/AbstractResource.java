@@ -4,49 +4,34 @@ import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apicommons.model.IEntity;
 import edu.usach.apicommons.service.IService;
+import edu.usach.apicommons.util.Constants;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.ParameterizedType;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class AbstractResource<T extends IEntity> implements IResource<T> {
 
 	protected final Logger logger = LogManager.getLogger(getClass());
 
-	protected abstract HttpServletRequest getHttpServletRequest();
+	private Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+
+	@Autowired
+	protected HttpServletRequest httpServletRequest;
+
 	protected abstract IService<T> getService();
 
-	protected void log(Exception e) {
-		log(e,false);
-	}
-
-	protected void log(Exception e, boolean debug) {
-		if (debug)
-			logger.info(e.getLocalizedMessage(), e);
-		else
-			logger.error(e.getLocalizedMessage(), e);
-	}
-
-	protected JSONObject responseEntity(Object data) {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("data", data);
-		jsonObject.put("error", null);
-		jsonObject.put("timestamp", ZonedDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
-		return jsonObject;
-	}
-
-	protected JSONObject responseEntity(Object data, Object error) {
+	protected JSONObject responseObject(Object data, Object error) {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("data", data);
 		jsonObject.put("error", error);
@@ -54,25 +39,33 @@ public abstract class AbstractResource<T extends IEntity> implements IResource<T
 		return jsonObject;
 	}
 
-	protected ErrorDTO handleError(ApiException e) {
-		log(e);
-		return new ErrorDTO(e, getHttpServletRequest());
+	protected ResponseEntity response(Object data) {
+		return new ResponseEntity<>(responseObject(data, null), HttpStatus.OK);
 	}
 
-	protected ErrorDTO handleError(Exception e) {
-		log(e);
-		return new ErrorDTO(getHttpServletRequest());
+	protected ResponseEntity responseNotFound(Object data, Object error) {
+		return new ResponseEntity<>(responseObject(data, error), HttpStatus.NOT_FOUND);
+	}
+
+	protected ResponseEntity responseUnauthorized(Object data, Object error) {
+		return new ResponseEntity<>(responseObject(data, error), HttpStatus.UNAUTHORIZED);
+	}
+
+	protected ResponseEntity responseInternalServerError(Object data, Object error) {
+		return new ResponseEntity<>(responseObject(data, error), HttpStatus.NOT_FOUND);
 	}
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity getById(@PathVariable Long id) {
 		try {
-			return new ResponseEntity<>(responseEntity(getService().findOne(id)), HttpStatus.OK);
+			return response(getService().findOne(id));
 		} catch (ApiException e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.NOT_FOUND);
+			logger.error(e.getMessage(), e);
+			return responseNotFound(Constants.OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(Constants.OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
 
@@ -80,11 +73,13 @@ public abstract class AbstractResource<T extends IEntity> implements IResource<T
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}", params = { "show" })
 	public ResponseEntity getByIdAndFilterOutput(@PathVariable Long id, @RequestParam("show") String filterString){
 		try {
-			return new ResponseEntity<>(responseEntity(getService().findAndFilter(id, filterString)), HttpStatus.OK);
+			return response(getService().findAndFilter(id, filterString));
 		} catch (ApiException e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.NOT_FOUND);
+			logger.error(e.getMessage(), e);
+			return responseNotFound(Constants.OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(Constants.OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
 
@@ -92,11 +87,13 @@ public abstract class AbstractResource<T extends IEntity> implements IResource<T
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity getAll() {
 		try {
-			return new ResponseEntity<>(responseEntity(getService().findAll()), HttpStatus.OK);
+			return response(getService().findAll());
 		} catch (ApiException e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.NOT_FOUND);
+			logger.error(e.getMessage(), e);
+			return responseNotFound(Constants.ARRAY, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(Constants.ARRAY, new ErrorDTO(httpServletRequest));
 		}
 	}
 
@@ -104,84 +101,100 @@ public abstract class AbstractResource<T extends IEntity> implements IResource<T
 	@RequestMapping(method = RequestMethod.GET, params = { "page", "size" })
 	public ResponseEntity getAllPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
 		try {
-			return new ResponseEntity<>(responseEntity(getService().findPaginated(page, size)), HttpStatus.OK);
+			return response(getService().findPaginated(page, size));
 		} catch (ApiException e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.NOT_FOUND);
+			logger.error(e.getMessage(), e);
+			return responseNotFound(Constants.ARRAY, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(Constants.ARRAY, new ErrorDTO(httpServletRequest));
 		}
 	}
 
 	@Override
-	@RequestMapping(method = RequestMethod.GET, params = { "size" })
-	public ResponseEntity getAllPaginated(@RequestParam("size") int size) {
+	@RequestMapping(method = RequestMethod.GET, params = { "page" })
+	public ResponseEntity getAllPaginated(@RequestParam("page") int page) {
 		try {
-			return new ResponseEntity<>(responseEntity(getService().findPaginated(1, size)), HttpStatus.OK);
+			return response(getService().findPaginated(page, 10));
 		} catch (ApiException e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.NOT_FOUND);
+			logger.error(e.getMessage(), e);
+			return responseNotFound(Constants.ARRAY, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(Constants.ARRAY, new ErrorDTO(httpServletRequest));
 		}
 	}
 
 
 	@Override
-	public ResponseEntity create(T entity) {
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity create(@RequestBody T entity) {
 		try {
 			getService().create(entity);
 			JSONObject data = new JSONObject();
 			data.put("success", true);
-			data.put("message", "Entity successfully created");
-			return new ResponseEntity<>(responseEntity(data), HttpStatus.OK);
+			data.put("message", tClass.getName() + " successfully created");
+			return response(data);
 		} catch (ApiException e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.BAD_REQUEST);
+			logger.error(e.getMessage(), e);
+			return responseNotFound(Constants.OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(Constants.OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
 
 	@Override
-	public ResponseEntity update(T entity) {
+	@RequestMapping(method = RequestMethod.PUT)
+	public ResponseEntity update(@RequestBody T entity) {
 		try {
 			getService().update(entity);
 			JSONObject data = new JSONObject();
 			data.put("success", true);
-			data.put("message", "Entity successfully updated");
-			return new ResponseEntity<>(responseEntity(data), HttpStatus.OK);
+			data.put("message", tClass.getName() + " successfully updated");
+			return response(data);
 		} catch (ApiException e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.BAD_REQUEST);
+			logger.error(e.getMessage(), e);
+			return responseNotFound(Constants.OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(Constants.OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
 
 	@Override
-	public ResponseEntity delete(T entity) {
+	@RequestMapping(method = RequestMethod.DELETE)
+	public ResponseEntity delete(@RequestBody T entity) {
 		try {
 			getService().delete(entity);
 			JSONObject data = new JSONObject();
 			data.put("success", true);
-			data.put("message", "Entity successfully deleted");
-			return new ResponseEntity<>(responseEntity(data), HttpStatus.OK);
+			data.put("message", tClass.getName() + " successfully deleted");
+			return response(data);
 		} catch (ApiException e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.BAD_REQUEST);
+			logger.error(e.getMessage(), e);
+			return responseNotFound(Constants.OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(Constants.OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
 
 	@Override
-	public ResponseEntity deleteById(long id) {
+	@RequestMapping(method = RequestMethod.DELETE, params = { "id"} )
+	public ResponseEntity deleteById(@RequestParam("id") long id) {
 		try {
 			getService().deleteById(id);
 			JSONObject data = new JSONObject();
 			data.put("success", true);
-			data.put("message", "Entity successfully deleted");
-			return new ResponseEntity<>(responseEntity(data), HttpStatus.OK);
+			data.put("message", tClass.getName() + " successfully deleted");
+			return response(data);
 		} catch (ApiException e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.BAD_REQUEST);
+			logger.error(e.getMessage(), e);
+			return responseNotFound(Constants.OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			return new ResponseEntity<>(responseEntity(new JSONObject(),handleError(e)), HttpStatus.INTERNAL_SERVER_ERROR);
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(Constants.OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
 

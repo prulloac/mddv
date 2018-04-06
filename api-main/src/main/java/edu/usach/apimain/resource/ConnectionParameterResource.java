@@ -17,15 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ConnectionParameterResource extends AbstractResource<ConnectionParameter> {
 
 	@Autowired
-	HttpServletRequest httpServletRequest;
-
-	@Autowired
 	IConnectionParameterService service;
-
-	@Override
-	protected HttpServletRequest getHttpServletRequest() {
-		return httpServletRequest;
-	}
 
 	@Override
 	protected IService getService() {

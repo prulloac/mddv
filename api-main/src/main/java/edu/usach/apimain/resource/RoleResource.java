@@ -17,15 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class RoleResource extends AbstractResource<Role> {
 
 	@Autowired
-	HttpServletRequest httpServletRequest;
-
-	@Autowired
 	IRoleService service;
-
-	@Override
-	protected HttpServletRequest getHttpServletRequest() {
-		return httpServletRequest;
-	}
 
 	@Override
 	protected IService getService() {

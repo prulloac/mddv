@@ -1,12 +1,12 @@
 package edu.usach.apimain.model;
 
-import edu.usach.apicommons.model.AbstractAuditableNamedEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.usach.apicommons.model.IEntity;
+import edu.usach.apicommons.model.impl.AbstractAuditableNamedEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -16,10 +16,13 @@ public class Repository extends AbstractAuditableNamedEntity implements IEntity 
 	private Boolean outsourced;
 	private String type;
 	@OneToMany(mappedBy = "repository")
+	@JsonIgnore
 	private List<ConnectionParameter> connectionParameters;
 	@ManyToMany(mappedBy = "linkedRepositories")
+	@JsonIgnore
 	private List<BusinessObject> businessObjectList;
 	@OneToMany(mappedBy = "repository")
+	@JsonIgnore
 	private List<TechnicalObject> technicalObjectList;
 
 	public String getLocation() {

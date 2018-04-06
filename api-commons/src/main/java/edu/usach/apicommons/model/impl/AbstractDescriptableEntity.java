@@ -1,9 +1,11 @@
-package edu.usach.apicommons.model;
+package edu.usach.apicommons.model.impl;
+
+import edu.usach.apicommons.model.DescriptableEntityInterface;
 
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbstractDescriptableEntity extends AbstractIdentityEntity implements DescriptableEntityInterface {
+public abstract class AbstractDescriptableEntity extends AbstractNamedEntity implements DescriptableEntityInterface {
 
 	private String description;
 

@@ -1,12 +1,12 @@
 package edu.usach.apimain.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import edu.usach.apicommons.model.AbstractAuditableNamedDescriptableEntity;
 import edu.usach.apicommons.model.IEntity;
+import edu.usach.apicommons.model.impl.AbstractAuditableDescriptableEntity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -14,7 +14,7 @@ import java.util.List;
 @DiscriminatorColumn(name = "objectType")
 @Table(name = "metadataObjects")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class AbstractMetadataObject extends AbstractAuditableNamedDescriptableEntity implements IEntity {
+public class MetadataObject extends AbstractAuditableDescriptableEntity implements IEntity {
 	private String version;
 	private String type;
 	@ManyToMany
@@ -23,6 +23,7 @@ public class AbstractMetadataObject extends AbstractAuditableNamedDescriptableEn
 			joinColumns = {@JoinColumn(name = "objectId", referencedColumnName = "id")},
 			inverseJoinColumns = {@JoinColumn(name = "documentId", referencedColumnName = "id")}
 	)
+	@JsonIgnore
 	private List<Document> documentList;
 	@ManyToMany
 	@JoinTable(
@@ -30,13 +31,14 @@ public class AbstractMetadataObject extends AbstractAuditableNamedDescriptableEn
 			joinColumns = {@JoinColumn(name = "objectA", referencedColumnName = "id")},
 			inverseJoinColumns = {@JoinColumn(name = "documentB", referencedColumnName = "id")}
 	)
-	private List<AbstractMetadataObject> linkedObjects;
+	private List<MetadataObject> linkedObjects;
 	@ManyToMany
 	@JoinTable(
 			name = "objectsRoles",
 			joinColumns = {@JoinColumn(name = "objectId", referencedColumnName = "id")},
 			inverseJoinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")}
 	)
+	@JsonIgnore
 	private List<Role> accessRoles;
 
 	public String getVersion() {
@@ -63,11 +65,11 @@ public class AbstractMetadataObject extends AbstractAuditableNamedDescriptableEn
 		this.documentList = documentList;
 	}
 
-	public List<AbstractMetadataObject> getLinkedObjects() {
+	public List<MetadataObject> getLinkedObjects() {
 		return linkedObjects;
 	}
 
-	public void setLinkedObjects(List<AbstractMetadataObject> linkedObjects) {
+	public void setLinkedObjects(List<MetadataObject> linkedObjects) {
 		this.linkedObjects = linkedObjects;
 	}
 

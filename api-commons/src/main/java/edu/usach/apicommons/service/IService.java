@@ -1,14 +1,10 @@
 package edu.usach.apicommons.service;
 
-import edu.usach.apicommons.dto.IDTO;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.model.IEntity;
 import org.json.simple.JSONObject;
 import org.springframework.data.domain.Page;
-
-import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 public interface IService<T extends IEntity> {
 

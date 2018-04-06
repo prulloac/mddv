@@ -6,4 +6,8 @@ public class StringUtils {
 		return string.substring(0,1).toUpperCase().concat(string.substring(1));
 	}
 
+	private StringUtils() throws IllegalAccessException {
+		throw new IllegalAccessException("Utility class");
+	}
+
 }

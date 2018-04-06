@@ -2,7 +2,7 @@ package edu.usach.apicommons.model;
 
 import java.time.LocalDateTime;
 
-public interface DeletableEntityInterface {
+public interface DeletableEntityInterface extends AuditableEntityInterface{
 
 	boolean isDeleted();
 	void setDeleted(boolean deleted);

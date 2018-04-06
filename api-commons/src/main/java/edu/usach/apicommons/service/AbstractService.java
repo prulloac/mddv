@@ -2,9 +2,9 @@ package edu.usach.apicommons.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.usach.apicommons.annotations.ServiceOfEntity;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorCode;
+import edu.usach.apicommons.model.DeletableEntityInterface;
 import edu.usach.apicommons.model.IEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,14 +13,24 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.lang.reflect.ParameterizedType;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Transactional
 public abstract class AbstractService<T extends IEntity> implements IService<T> {
 
 	protected final Logger logger = LogManager.getLogger(getClass());
+
+	private Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+
+	protected String serviceOf() {
+		return tClass.getName();
+	}
+
 
 	@Override
 	@Transactional(readOnly = true)
@@ -74,7 +84,14 @@ public abstract class AbstractService<T extends IEntity> implements IService<T> 
 	@Transactional
 	public void delete(final T entity) throws ApiException {
 		try {
-			getDao().delete(entity);
+			if (entity instanceof DeletableEntityInterface) {
+				if (((DeletableEntityInterface) entity).isDeleted()) return;
+				((DeletableEntityInterface) entity).setDeleted(true);
+				((DeletableEntityInterface) entity).setDeletedTimestamp(LocalDateTime.now());
+				getDao().save(entity);
+			} else {
+				getDao().delete(entity);
+			}
 		} catch (RuntimeException e) {
 			throw new ApiException(ErrorCode.DELETE_ERROR, serviceOf());
 		}
@@ -84,7 +101,8 @@ public abstract class AbstractService<T extends IEntity> implements IService<T> 
 	@Transactional
 	public void deleteById(final long id) throws ApiException {
 		try {
-			getDao().deleteById(id);
+			T entity = getDao().getOne(id);
+			delete(entity);
 		} catch (RuntimeException e) {
 			throw new ApiException(ErrorCode.DELETE_ERROR, serviceOf());
 		}
@@ -105,10 +123,6 @@ public abstract class AbstractService<T extends IEntity> implements IService<T> 
 		}
 	}
 
-	protected abstract PagingAndSortingRepository<T, Long> getDao();
-
-	protected String serviceOf() {
-		return getClass().getAnnotation(ServiceOfEntity.class).value();
-	}
+	protected abstract JpaRepository<T, Long> getDao();
 
 }

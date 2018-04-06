@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-### Start access-control
+### Compiles everything
+mvn clean install
 
-
-### Start gateway
-
-### Start backend services
+### Start main api
+cd api-main
+mvn clean install spring-boot:run
 
 ### Start frontend

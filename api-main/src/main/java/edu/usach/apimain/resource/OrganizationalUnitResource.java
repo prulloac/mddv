@@ -17,15 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class OrganizationalUnitResource extends AbstractResource<OrganizationalUnit> {
 
 	@Autowired
-	HttpServletRequest httpServletRequest;
-
-	@Autowired
 	IOrganizationalUnitService service;
-
-	@Override
-	protected HttpServletRequest getHttpServletRequest() {
-		return httpServletRequest;
-	}
 
 	@Override
 	protected IService getService() {

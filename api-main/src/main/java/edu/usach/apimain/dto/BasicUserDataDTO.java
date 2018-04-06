@@ -4,6 +4,7 @@ import edu.usach.apicommons.dto.AbstractDTO;
 import edu.usach.apicommons.dto.IDTO;
 import edu.usach.apimain.model.User;
 
+
 public class BasicUserDataDTO extends AbstractDTO<User> implements IDTO {
 
 	private String username;

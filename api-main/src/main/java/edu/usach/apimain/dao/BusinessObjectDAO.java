@@ -4,5 +4,5 @@ import edu.usach.apimain.model.BusinessObject;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface BusinessObjectDAO extends BaseAbstractMetadataObjectDAO<BusinessObject> {
+public interface BusinessObjectDAO extends BaseMetadataObjectDAO<BusinessObject> {
 }
