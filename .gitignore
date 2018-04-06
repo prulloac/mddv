@@ -11,3 +11,5 @@
 *.iws
 *.iml
 *.ipr
+.project
+.settings/
