@@ -18,7 +18,7 @@
   <dependencies>
     <dependency>
       <groupId>edu.usach</groupId>
-      <artifactId>mddv-api-commons</artifactId>
+      <artifactId>api-commons</artifactId>
       <version>0.0.2-SNAPSHOT</version>
     </dependency>
 
