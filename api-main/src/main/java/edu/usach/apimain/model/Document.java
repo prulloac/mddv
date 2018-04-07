@@ -21,7 +21,7 @@ public class Document extends AbstractAuditableDescriptableEntity implements IEn
 	@ManyToOne
 	@JoinColumn(name = "uploaderId")
 	@JsonIgnore
-	private User uploader;
+	private AppUser uploader;
 	@ManyToMany(mappedBy = "documentList")
 	@JsonIgnore
 	private List<MetadataObject> metadataObjectList;
@@ -50,11 +50,11 @@ public class Document extends AbstractAuditableDescriptableEntity implements IEn
 		this.url = url;
 	}
 
-	public User getUploader() {
+	public AppUser getUploader() {
 		return uploader;
 	}
 
-	public void setUploader(User uploader) {
+	public void setUploader(AppUser uploader) {
 		this.uploader = uploader;
 	}
 

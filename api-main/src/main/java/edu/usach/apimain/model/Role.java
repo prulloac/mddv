@@ -23,7 +23,7 @@ public class Role extends AbstractDescriptableEntity implements IEntity {
 			inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")}
 	)
 	@JsonIgnore
-	private List<User> userList;
+	private List<AppUser> appUserList;
 	@ManyToMany
 	@JoinTable(
 			name = "organizationalUnitRoles",
@@ -36,12 +36,12 @@ public class Role extends AbstractDescriptableEntity implements IEntity {
 	@JsonIgnore
 	private List<MetadataObject> metadataObjectList;
 
-	public List<User> getUserList() {
-		return userList;
+	public List<AppUser> getAppUserList() {
+		return appUserList;
 	}
 
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
+	public void setAppUserList(List<AppUser> appUserList) {
+		this.appUserList = appUserList;
 	}
 
 	public List<OrganizationalUnit> getOrganizationalUnitList() {

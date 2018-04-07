@@ -31,6 +31,7 @@
       <json.simple.version>1.1.1</json.simple.version>
       <jackson.version>2.9.4</jackson.version>
       <evo.inflector.version>1.2.2</evo.inflector.version>
+      <jjwt.version>0.7.0</jjwt.version>
     </properties>
 
     <dependencyManagement>
@@ -63,6 +64,11 @@
         <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-devtools</artifactId>
+          <version>${spring.boot.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-security</artifactId>
           <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
@@ -105,6 +111,12 @@
           <artifactId>evo-inflector</artifactId>
           <version>${evo.inflector.version}</version>
         </dependency>
+        <dependency>
+          <groupId>io.jsonwebtoken</groupId>
+          <artifactId>jjwt</artifactId>
+          <version>${jjwt.version}</version>
+        </dependency>
+        
       </dependencies>
     </dependencyManagement>
 

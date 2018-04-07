@@ -2,13 +2,14 @@ package edu.usach.apimain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.usach.apicommons.model.IEntity;
+import edu.usach.apicommons.model.ISecureEntity;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @DiscriminatorValue(value = "businessObject")
-public class BusinessObject extends MetadataObject implements IEntity {
+public class BusinessObject extends MetadataObject implements IEntity, ISecureEntity {
 
 	@ManyToMany
 	@JoinTable(

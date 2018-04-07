@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.usach.apicommons.model.IEntity;
+import edu.usach.apicommons.model.ISecureEntity;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue(value = "techincalObject")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class TechnicalObject extends MetadataObject implements IEntity {
+public class TechnicalObject extends MetadataObject implements IEntity, ISecureEntity {
 	@ManyToOne
 	@JoinColumn(name = "parentObjectId")
 	private TechnicalObject parentObject;

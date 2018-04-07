@@ -1,15 +1,16 @@
 package edu.usach.apimain.resource;
 
+import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apicommons.resource.AbstractResource;
 import edu.usach.apicommons.service.IService;
+import edu.usach.apicommons.util.SecurityUtils;
 import edu.usach.apimain.model.Repository;
 import edu.usach.apimain.service.IRepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import static edu.usach.apicommons.util.Constants.OBJECT;
 
 @CrossOrigin(maxAge = 7200)
 @RestController
@@ -23,4 +24,16 @@ public class RepositoryResource extends AbstractResource<Repository> {
 	protected IService getService() {
 		return service;
 	}
+
+	@Override
+	@RequestMapping(
+			method = {RequestMethod.GET}
+	)
+	public ResponseEntity getAll() {
+		if (isAuthenticated())
+			return super.getAll();
+		else
+			return responseUnauthorized(OBJECT, new ErrorDTO(httpServletRequest));
+	}
+
 }
