@@ -3,9 +3,8 @@ const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const DashboardPlugin = require('webpack-dashboard/plugin')
 
-module.exports = {
+const config = {
   entry: {
     app: './src/index.js',
   },
@@ -72,6 +71,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/template.html',
     }),
-    new DashboardPlugin(),
   ],
 }
+
+module.exports = config
