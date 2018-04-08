@@ -15,7 +15,9 @@ import java.util.List;
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Document extends AbstractAuditableDescriptableEntity implements IEntity {
-	private String version;
+  private static final long serialVersionUID = 1L;
+
+  private String version;
 	private String size;
 	private String url;
 	@ManyToOne

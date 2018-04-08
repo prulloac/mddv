@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class OrganizationalUnit extends AbstractAuditableDescriptableEntity implements IEntity {
+  private static final long serialVersionUID = 1L;
 
 	@ManyToOne
 	@JoinColumn(name = "parentUnitId")

@@ -9,18 +9,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/techincal-objects")
 public class TechnicalObjectResource extends AbstractResource<TechnicalObject> {
 
 	@Autowired
-	ITechnicalObjectService service;
+	private ITechnicalObjectService service;
 
 	@Override
-	protected IService getService() {
+	protected IService<TechnicalObject> getService() {
 		return service;
 	}
 }

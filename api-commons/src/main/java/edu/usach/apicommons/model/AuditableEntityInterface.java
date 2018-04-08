@@ -1,6 +1,5 @@
 package edu.usach.apicommons.model;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public interface AuditableEntityInterface extends IdentityEntityInterface {

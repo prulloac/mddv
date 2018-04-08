@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class ConnectionParameter extends AbstractNamedEntity implements IEntity {
+  private static final long serialVersionUID = 1L;
 
 	private String value;
 	@ManyToOne

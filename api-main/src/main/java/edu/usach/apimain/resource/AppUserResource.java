@@ -26,7 +26,7 @@ import static edu.usach.apicommons.util.SecurityUtils.TOKEN_PREFIX;
 public class AppUserResource extends AbstractResource<AppUser> {
 
 	@Autowired
-	IAppUserService service;
+	private IAppUserService service;
 
 	private ResponseEntity validateCredentials(UserCredentialsDTO credentials) throws ApiException {
 		AppUser user = service.validateCredentials(credentials.getUsernameOrEmail(), credentials.getPassword());
@@ -39,7 +39,7 @@ public class AppUserResource extends AbstractResource<AppUser> {
 	}
 
 	@Override
-	protected IService getService() {
+	protected IService<AppUser> getService() {
 		return service;
 	}
 

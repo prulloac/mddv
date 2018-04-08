@@ -15,7 +15,9 @@ import javax.persistence.ManyToOne;
 @DiscriminatorValue(value = "techincalObject")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class TechnicalObject extends MetadataObject implements IEntity, ISecureEntity {
-	@ManyToOne
+  private static final long serialVersionUID = 1L;
+
+  @ManyToOne
 	@JoinColumn(name = "parentObjectId")
 	private TechnicalObject parentObject;
 	@ManyToOne

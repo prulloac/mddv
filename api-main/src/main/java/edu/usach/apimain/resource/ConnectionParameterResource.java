@@ -9,18 +9,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/connection-parameters")
 public class ConnectionParameterResource extends AbstractResource<ConnectionParameter> {
 
 	@Autowired
-	IConnectionParameterService service;
+	private IConnectionParameterService service;
 
 	@Override
-	protected IService getService() {
+	protected IService<ConnectionParameter> getService() {
 		return service;
 	}
 }

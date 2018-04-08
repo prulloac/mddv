@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 public abstract class AbstractAuditableEntity extends AbstractIdentityEntity implements AuditableEntityInterface {
+  private static final long serialVersionUID = 1L;
 
 	@JsonIgnore
 	private LocalDateTime modificationTimestamp;

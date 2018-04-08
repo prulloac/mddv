@@ -7,6 +7,8 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import static com.google.common.base.CaseFormat.*;
 
 public class SnakeCaseNamingStrategy extends PhysicalNamingStrategyStandardImpl {
+  private static final long serialVersionUID = 1L;
+
 	public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
 		return new Identifier(
 				UPPER_CAMEL.to(LOWER_UNDERSCORE, name.getText().endsWith("s") ? name.getText() : English.plural(name.getText())),

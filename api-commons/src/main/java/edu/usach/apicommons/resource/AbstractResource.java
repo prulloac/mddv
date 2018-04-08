@@ -6,7 +6,6 @@ import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apicommons.model.IEntity;
 import edu.usach.apicommons.model.ISecureEntity;
 import edu.usach.apicommons.service.IService;
-import edu.usach.apicommons.util.Constants;
 import edu.usach.apicommons.util.SecurityUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -46,7 +45,7 @@ public abstract class AbstractResource<T extends IEntity> implements IResource<T
 		return SecurityUtils.hasAccess(httpServletRequest.getHeader(HEADER_STRING), entity);
 	}
 
-	protected abstract IService getService();
+	protected abstract IService<T> getService();
 
 	protected JSONObject responseObject(Object data, Object error) {
 		JSONObject jsonObject = new JSONObject();

@@ -9,18 +9,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/roles")
 public class RoleResource extends AbstractResource<Role> {
 
 	@Autowired
-	IRoleService service;
+	private IRoleService service;
 
 	@Override
-	protected IService getService() {
+	protected IService<Role> getService() {
 		return service;
 	}
 }

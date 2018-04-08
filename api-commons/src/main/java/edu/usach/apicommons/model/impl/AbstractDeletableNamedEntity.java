@@ -7,6 +7,7 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public abstract class AbstractDeletableNamedEntity extends AbstractDeletableEntity implements NamedEntityInterface {
+  private static final long serialVersionUID = 1L;
 
 	@Column(nullable = false, unique = true)
 	private String name;

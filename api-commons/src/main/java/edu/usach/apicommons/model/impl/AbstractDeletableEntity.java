@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 public abstract class AbstractDeletableEntity extends AbstractAuditableEntity implements DeletableEntityInterface {
+  private static final long serialVersionUID = 1L;
 
 	@JsonIgnore
 	private Boolean deleted;

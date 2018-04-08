@@ -6,6 +6,7 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public abstract class AbstractDescriptableEntity extends AbstractNamedEntity implements DescriptableEntityInterface {
+  private static final long serialVersionUID = 1L;
 
 	private String description;
 

@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 @DiscriminatorValue(value = "businessObject")
 public class BusinessObject extends MetadataObject implements IEntity, ISecureEntity {
+  private static final long serialVersionUID = 1L;
 
 	@ManyToMany
 	@JoinTable(

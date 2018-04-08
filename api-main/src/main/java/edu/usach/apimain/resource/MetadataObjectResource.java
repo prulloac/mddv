@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class MetadataObjectResource extends AbstractResource<MetadataObject> {
 
 	@Autowired
-	IMetadataObjectService service;
+	private IMetadataObjectService service;
 
 	@Override
-	protected IService getService() {
+	protected IService<MetadataObject> getService() {
 		return service;
 	}
 }

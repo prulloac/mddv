@@ -18,7 +18,9 @@ import java.util.stream.Collectors;
 @Table(name = "metadataObjects")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class MetadataObject extends AbstractAuditableDescriptableEntity implements IEntity, ISecureEntity {
-	private String version;
+  private static final long serialVersionUID = 1L;
+
+  private String version;
 	private String type;
 	@ManyToMany
 	@JoinTable(

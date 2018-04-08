@@ -14,6 +14,7 @@ import javax.persistence.MappedSuperclass;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @ApiModel
 public abstract class AbstractIdentityEntity implements IdentityEntityInterface {
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

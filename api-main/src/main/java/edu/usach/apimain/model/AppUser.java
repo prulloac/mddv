@@ -14,6 +14,7 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @ApiModel(parent = AbstractIdentityEntity.class)
 public class AppUser extends AbstractIdentityEntity implements IEntity {
+  private static final long serialVersionUID = 1L;
 
 	private String firstName;
 	private String lastName;

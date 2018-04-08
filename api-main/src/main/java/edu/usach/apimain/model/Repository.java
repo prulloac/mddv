@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 public class Repository extends AbstractAuditableNamedEntity implements IEntity {
+  private static final long serialVersionUID = 1L;
 
 	private String location;
 	private Boolean outsourced;

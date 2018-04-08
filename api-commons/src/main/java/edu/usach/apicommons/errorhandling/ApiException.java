@@ -1,6 +1,7 @@
 package edu.usach.apicommons.errorhandling;
 
 public final class ApiException extends Exception {
+  private static final long serialVersionUID = 1L;
 
 	private IErrorCode errorCode;
 

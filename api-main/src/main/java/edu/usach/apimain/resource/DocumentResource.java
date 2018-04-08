@@ -9,18 +9,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/documents")
 public class DocumentResource extends AbstractResource<Document> {
 
 	@Autowired
-	IDocumentService service;
+	private IDocumentService service;
 
 	@Override
-	protected IService getService() {
+	protected IService<Document> getService() {
 		return service;
 	}
 }

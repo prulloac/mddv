@@ -9,18 +9,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/business-objects")
 public class BusinessObjectResource extends AbstractResource<BusinessObject> {
 
 	@Autowired
-	IBusinessObjectService service;
+	private IBusinessObjectService service;
 
 	@Override
-	protected IService getService() {
+	protected IService<BusinessObject> getService() {
 		return service;
 	}
 }

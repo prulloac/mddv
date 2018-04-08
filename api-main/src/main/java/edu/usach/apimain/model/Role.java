@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Role extends AbstractDescriptableEntity implements IEntity {
+  private static final long serialVersionUID = 1L;
 
 	@ManyToMany
 	@JoinTable(

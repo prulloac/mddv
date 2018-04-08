@@ -3,7 +3,6 @@ package edu.usach.apimain.resource;
 import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apicommons.resource.AbstractResource;
 import edu.usach.apicommons.service.IService;
-import edu.usach.apicommons.util.SecurityUtils;
 import edu.usach.apimain.model.Repository;
 import edu.usach.apimain.service.IRepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,10 @@ import static edu.usach.apicommons.util.Constants.OBJECT;
 public class RepositoryResource extends AbstractResource<Repository> {
 
 	@Autowired
-	IRepositoryService service;
+	private IRepositoryService service;
 
 	@Override
-	protected IService getService() {
+	protected IService<Repository> getService() {
 		return service;
 	}
 
