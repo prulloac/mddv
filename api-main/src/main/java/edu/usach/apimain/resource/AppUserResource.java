@@ -33,9 +33,7 @@ public class AppUserResource extends AbstractResource<AppUser> {
 		String token = SecurityUtils.tokenize(new UserTokenDataDTO(user));
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HEADER_STRING, TOKEN_PREFIX + token);
-		JSONObject response = new JSONObject();
-		response.put("login", true);
-		return new ResponseEntity<>(response, headers, HttpStatus.OK);
+		return new ResponseEntity<>(new UserTokenDataDTO(user), headers, HttpStatus.OK);
 	}
 
 	@Override
