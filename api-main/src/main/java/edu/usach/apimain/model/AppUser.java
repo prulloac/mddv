@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @ApiModel(parent = AbstractIdentityEntity.class)
-public class User extends AbstractIdentityEntity implements IEntity {
+public class AppUser extends AbstractIdentityEntity implements IEntity {
 
 	private String firstName;
 	private String lastName;
@@ -22,9 +22,9 @@ public class User extends AbstractIdentityEntity implements IEntity {
 	private String password;
 	@Column(unique = true, nullable = false)
 	private String username;
-	@Column(nullable = false)
+	@Column(unique = true, nullable = false)
 	private String email;
-	@ManyToMany(mappedBy = "userList")
+	@ManyToMany(mappedBy = "appUserList")
 	private List<Role> roleList;
 	@ManyToMany
 	@JoinTable(

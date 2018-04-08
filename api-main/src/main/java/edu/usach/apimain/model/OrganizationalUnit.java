@@ -23,7 +23,7 @@ public class OrganizationalUnit extends AbstractAuditableDescriptableEntity impl
 
 	@ManyToMany(mappedBy = "organizationalUnitList")
 	@JsonIgnore
-	private List<User> userList;
+	private List<AppUser> appUserList;
 
 	@ManyToMany(mappedBy = "organizationalUnitList")
 	private List<Role> roleList;
@@ -36,12 +36,12 @@ public class OrganizationalUnit extends AbstractAuditableDescriptableEntity impl
 		this.parentUnit = parentUnit;
 	}
 
-	public List<User> getUserList() {
-		return userList;
+	public List<AppUser> getAppUserList() {
+		return appUserList;
 	}
 
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
+	public void setAppUserList(List<AppUser> appUserList) {
+		this.appUserList = appUserList;
 	}
 
 	public List<Role> getRoleList() {

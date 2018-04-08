@@ -1,35 +1,30 @@
-import React from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import React, { Component } from 'react'
+import { HashRouter, Route } from 'react-router-dom'
 import LoginPage from 'components/LoginPage'
 import Dashboard from 'components/Dashboard'
-import FakeAuth from 'utils/FakeAuth'
+import { connect } from 'react-redux'
+import PrivateRoute from '../PrivateRoute'
 
 import './App.scss'
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props => (
-    FakeAuth.isAuthenticated() ? (
-      <Component {...props} />
-    ) : (
-      <Redirect
-        to={{
-          pathname: '/login',
-          state: { from: props.location },
-        }}
-      />
-    ))}
-  />
-)
+class ConnectedApp extends Component {
+  render() {
+    const { isAuthenticated } = this.props
+    return (
+      <HashRouter>
+        <div>
+          <Route path="/login" component={LoginPage} />
+          <PrivateRoute exact path="/" auth={isAuthenticated} component={Dashboard} />
+        </div>
+      </HashRouter>)
+  }
+}
 
-const App = () => (
-  <div>
-    <Route path="/login" component={LoginPage} />
-    <PrivateRoute path="/dashboard" component={Dashboard} />
-    <Redirect from="/" to={FakeAuth.isAuthenticated() ? '/dashboard' : '/login'} />
-  )
-  </div>
-)
+const mapStateToProps = state => {
+  const { isAuthenticated } = state.userReducer
+  return { isAuthenticated }
+}
+
+const App = connect(mapStateToProps)(ConnectedApp)
 
 export default App

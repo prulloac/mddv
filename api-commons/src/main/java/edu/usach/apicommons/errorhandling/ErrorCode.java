@@ -7,7 +7,8 @@ public enum ErrorCode implements IErrorCode {
 	INVALID_FILTERS("Invalid filters for object of type '{0}'"),
 	CREATION_ERROR("Couldn't create '{0}' object"),
 	UPDATE_ERROR("Error updating '{0}' object"),
-	DELETE_ERROR("Couldn't delete '{0}' object");
+	DELETE_ERROR("Couldn't delete '{0}' object"),
+	UNAUTHORIZED("Unauthorized access");
 
 	private String message;
 

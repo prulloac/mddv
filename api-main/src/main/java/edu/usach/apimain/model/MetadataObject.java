@@ -4,17 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.usach.apicommons.model.IEntity;
+import edu.usach.apicommons.model.ISecureEntity;
 import edu.usach.apicommons.model.impl.AbstractAuditableDescriptableEntity;
+import edu.usach.apicommons.model.impl.AbstractNamedEntity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "objectType")
 @Table(name = "metadataObjects")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class MetadataObject extends AbstractAuditableDescriptableEntity implements IEntity {
+public class MetadataObject extends AbstractAuditableDescriptableEntity implements IEntity, ISecureEntity {
 	private String version;
 	private String type;
 	@ManyToMany
@@ -80,4 +83,10 @@ public class MetadataObject extends AbstractAuditableDescriptableEntity implemen
 	public void setAccessRoles(List<Role> accessRoles) {
 		this.accessRoles = accessRoles;
 	}
+
+	@Override
+	public List<String> roleNames() {
+		return this.accessRoles.stream().map(AbstractNamedEntity::getName).collect(Collectors.toList());
+	}
+
 }
