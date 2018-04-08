@@ -1,26 +1,33 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import { Menu, Container, Image, Header, Segment, List, Divider, Icon, Sidebar } from 'semantic-ui-react'
+import { connect } from 'react-redux'
 import img from 'utils/Img'
-import FakeAuth from 'utils/FakeAuth/FakeAuth'
+import userActions from '../../redux/actions/user.actions'
 
 import './Dashboard.scss'
 
-class Dashboard extends Component {
-  state = {
-    sidebarVisible: false,
-    logoutRedirect: false,
+class ConnectedDashboard extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      sidebarVisible: false,
+    }
+    this.logout = this.logout.bind(this)
+    this.toggleSidebarVisibility = this.toggleSidebarVisibility.bind(this)
   }
 
   toggleSidebarVisibility = () => this.setState({ sidebarVisible: !this.state.sidebarVisible })
 
-  logout = () => (
-    FakeAuth.signout(() => this.setState({ logoutRedirect: true }))
-  )
+  logout = () => {
+    const { dispatch } = this.props
+    dispatch(userActions.logout())
+  }
 
   render() {
-    const { sidebarVisible, logoutRedirect } = this.state
-    if (logoutRedirect) {
+    const { sidebarVisible } = this.state
+    const { isAuthenticated } = this.props
+    if (!isAuthenticated) {
       return (
         <Redirect to="/login" />
       )
@@ -109,5 +116,12 @@ which is useful for single column layouts.
     )
   }
 }
+
+const mapStateToProps = state => {
+  const { token, isAuthenticated } = state.userReducer
+  return { token, isAuthenticated }
+}
+
+const Dashboard = connect(mapStateToProps)(ConnectedDashboard)
 
 export default Dashboard

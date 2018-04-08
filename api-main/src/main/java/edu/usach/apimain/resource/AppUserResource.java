@@ -20,7 +20,7 @@ import static edu.usach.apicommons.util.Constants.OBJECT;
 import static edu.usach.apicommons.util.SecurityUtils.HEADER_STRING;
 import static edu.usach.apicommons.util.SecurityUtils.TOKEN_PREFIX;
 
-@CrossOrigin(maxAge = 7200)
+@CrossOrigin(maxAge = 7200, exposedHeaders = {"Authorization"})
 @RestController
 @RequestMapping("/users")
 public class AppUserResource extends AbstractResource<AppUser> {
