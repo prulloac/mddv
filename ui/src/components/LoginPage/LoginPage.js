@@ -3,7 +3,7 @@ import { Redirect } from 'react-router'
 import { Grid, Header, Image, Form, Segment, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import img from 'utils/Img'
-import userActions from '../../redux/actions/user.actions'
+import userActions from '../../redux/actions/user-actions'
 
 import './LoginPage.scss'
 

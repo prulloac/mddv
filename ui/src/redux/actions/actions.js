@@ -1,3 +1,7 @@
-import { userActions } from './user.actions'
+import userActions from './user-actions'
 
-export default userActions
+const actions = {
+  userActions,
+}
+
+export default actions

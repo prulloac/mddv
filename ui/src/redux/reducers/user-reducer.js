@@ -17,7 +17,8 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        token: action.payload,
+        token: action.payload.token,
+        user: action.payload.user,
         isAuthenticated: true,
       }
     case userActionTypes.FETCH_TOKEN_FAILURE:

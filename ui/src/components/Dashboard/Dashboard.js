@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Menu, Container, Image, Header, Segment, List, Divider, Icon, Sidebar } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import img from 'utils/Img'
-import userActions from '../../redux/actions/user.actions'
+import userActions from '../../redux/actions/user-actions'
 
 import './Dashboard.scss'
 
@@ -26,7 +27,7 @@ class ConnectedDashboard extends Component {
 
   render() {
     const { sidebarVisible } = this.state
-    const { isAuthenticated } = this.props
+    const { isAuthenticated, user } = this.props
     if (!isAuthenticated) {
       return (
         <Redirect to="/login" />
@@ -45,7 +46,7 @@ class ConnectedDashboard extends Component {
             />
             MDDV
           </Menu.Item>
-          <Menu.Item as="a">Inicio</Menu.Item>
+          <Menu.Item as="a">{user.firstName} {user.lastName}</Menu.Item>
           <Menu.Item as="a" onClick={this.logout} position="right">Cerrar Sesión</Menu.Item>
         </Menu>
         <Sidebar.Pushable as={Segment} style={{ border: 0, marginTop: '4em' }}>
@@ -59,9 +60,9 @@ class ConnectedDashboard extends Component {
             vertical
             inverted
             >
-            <Menu.Item name="home">
-              <Icon name="home" />
-              Home
+            <Menu.Item as={Link} to="repositories" name="repositorios">
+              <Icon name="database" />
+              Repositorios
             </Menu.Item>
             <Menu.Item name="gamepad">
               <Icon name="gamepad" />
@@ -118,8 +119,8 @@ which is useful for single column layouts.
 }
 
 const mapStateToProps = state => {
-  const { token, isAuthenticated } = state.userReducer
-  return { token, isAuthenticated }
+  const { token, isAuthenticated, user } = state.userReducer
+  return { token, isAuthenticated, user }
 }
 
 const Dashboard = connect(mapStateToProps)(ConnectedDashboard)

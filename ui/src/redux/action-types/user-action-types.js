@@ -1,4 +1,4 @@
-const userActionsTypes = {
+const userActionTypes = {
   FETCH_TOKEN: 'FETCH_TOKEN',
   FETCH_TOKEN_SUCCESS: 'FETCH_TOKEN_SUCCESS',
   FETCH_TOKEN_FAILURE: 'FETCH_TOKEN_FAILURE',
@@ -14,4 +14,4 @@ const userActionsTypes = {
   LOAD_USER_FAILURE: 'LOAD_USER_FAILURE',
 }
 
-export default userActionsTypes
+export default userActionTypes
