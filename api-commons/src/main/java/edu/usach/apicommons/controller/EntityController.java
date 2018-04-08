@@ -1,11 +1,11 @@
-package edu.usach.apicommons.resource;
+package edu.usach.apicommons.controller;
 
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorCode;
 import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apicommons.model.IEntity;
 import edu.usach.apicommons.model.ISecureEntity;
-import edu.usach.apicommons.service.IService;
+import edu.usach.apicommons.service.IEntityService;
 import edu.usach.apicommons.util.SecurityUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +24,7 @@ import static edu.usach.apicommons.util.Constants.ARRAY;
 import static edu.usach.apicommons.util.Constants.OBJECT;
 import static edu.usach.apicommons.util.SecurityUtils.HEADER_STRING;
 
-public abstract class AbstractResource<T extends IEntity> implements IResource<T> {
+public abstract class EntityController<T extends IEntity> implements IEntityController<T> {
 
 	protected final Logger logger = LogManager.getLogger(getClass());
 
@@ -45,7 +45,7 @@ public abstract class AbstractResource<T extends IEntity> implements IResource<T
 		return SecurityUtils.hasAccess(httpServletRequest.getHeader(HEADER_STRING), entity);
 	}
 
-	protected abstract IService<T> getService();
+	protected abstract IEntityService<T> getService();
 
 	protected JSONObject responseObject(Object data, Object error) {
 		JSONObject jsonObject = new JSONObject();

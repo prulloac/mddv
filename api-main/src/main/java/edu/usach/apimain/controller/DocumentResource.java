@@ -1,7 +1,7 @@
-package edu.usach.apimain.resource;
+package edu.usach.apimain.controller;
 
-import edu.usach.apicommons.resource.AbstractResource;
-import edu.usach.apicommons.service.IService;
+import edu.usach.apicommons.controller.EntityController;
+import edu.usach.apicommons.service.IEntityService;
 import edu.usach.apimain.model.Document;
 import edu.usach.apimain.service.IDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/documents")
-public class DocumentResource extends AbstractResource<Document> {
+public class DocumentResource extends EntityController<Document> {
 
 	@Autowired
 	private IDocumentService service;
 
 	@Override
-	protected IService<Document> getService() {
+	protected IEntityService<Document> getService() {
 		return service;
 	}
 }

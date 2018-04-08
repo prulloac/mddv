@@ -1,7 +1,7 @@
-package edu.usach.apimain.resource;
+package edu.usach.apimain.controller;
 
-import edu.usach.apicommons.resource.AbstractResource;
-import edu.usach.apicommons.service.IService;
+import edu.usach.apicommons.controller.EntityController;
+import edu.usach.apicommons.service.IEntityService;
 import edu.usach.apimain.model.ConnectionParameter;
 import edu.usach.apimain.service.IConnectionParameterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/connection-parameters")
-public class ConnectionParameterResource extends AbstractResource<ConnectionParameter> {
+public class ConnectionParameterResource extends EntityController<ConnectionParameter> {
 
 	@Autowired
 	private IConnectionParameterService service;
 
 	@Override
-	protected IService<ConnectionParameter> getService() {
+	protected IEntityService<ConnectionParameter> getService() {
 		return service;
 	}
 }

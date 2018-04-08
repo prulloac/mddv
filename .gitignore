@@ -5,12 +5,13 @@
 !gradle/wrapper/gradle-wrapper.jar
 /**/node_modules/
 /**/dist/
+/**/bin/
 
 ### IntelliJ IDEA ###
 /**/.idea/
 *.iws
 *.iml
 *.ipr
-.project
-.settings/
-.vscode/
+**/.project
+**/.settings/
+**/.vscode/

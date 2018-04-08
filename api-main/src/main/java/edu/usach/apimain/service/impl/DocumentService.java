@@ -1,6 +1,6 @@
 package edu.usach.apimain.service.impl;
 
-import edu.usach.apicommons.service.AbstractService;
+import edu.usach.apicommons.service.EntityService;
 import edu.usach.apimain.dao.DocumentDAO;
 import edu.usach.apimain.model.Document;
 import edu.usach.apimain.service.IDocumentService;
@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class DocumentService extends AbstractService<Document> implements IDocumentService {
+public class DocumentService extends EntityService<Document> implements IDocumentService {
 
 	@Autowired
-	DocumentDAO dao;
+	private DocumentDAO dao;
 
 	@Override
 	protected JpaRepository<Document, Long> getDao() {

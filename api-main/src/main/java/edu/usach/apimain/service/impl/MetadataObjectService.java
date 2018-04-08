@@ -1,6 +1,6 @@
 package edu.usach.apimain.service.impl;
 
-import edu.usach.apicommons.service.AbstractService;
+import edu.usach.apicommons.service.EntityService;
 import edu.usach.apimain.dao.MetadataObjectDAO;
 import edu.usach.apimain.model.MetadataObject;
 import edu.usach.apimain.service.IMetadataObjectService;
@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class MetadataObjectService extends AbstractService<MetadataObject> implements IMetadataObjectService {
+public class MetadataObjectService extends EntityService<MetadataObject> implements IMetadataObjectService {
 
 	@Autowired
-	MetadataObjectDAO dao;
+	private MetadataObjectDAO dao;
 
 	@Override
 	protected JpaRepository<MetadataObject, Long> getDao() {

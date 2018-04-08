@@ -1,6 +1,6 @@
 package edu.usach.apimain.service.impl;
 
-import edu.usach.apicommons.service.AbstractService;
+import edu.usach.apicommons.service.EntityService;
 import edu.usach.apimain.dao.ConnectionParamDAO;
 import edu.usach.apimain.model.ConnectionParameter;
 import edu.usach.apimain.service.IConnectionParameterService;
@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ConnectionParameterService extends AbstractService<ConnectionParameter> implements IConnectionParameterService {
+public class ConnectionParameterService extends EntityService<ConnectionParameter> implements IConnectionParameterService {
 
 	@Autowired
-	ConnectionParamDAO dao;
+	private ConnectionParamDAO dao;
 	@Override
 	protected JpaRepository<ConnectionParameter, Long> getDao() {
 		return dao;

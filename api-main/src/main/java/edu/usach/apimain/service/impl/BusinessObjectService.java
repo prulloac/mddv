@@ -1,6 +1,6 @@
 package edu.usach.apimain.service.impl;
 
-import edu.usach.apicommons.service.AbstractService;
+import edu.usach.apicommons.service.EntityService;
 import edu.usach.apimain.dao.BusinessObjectDAO;
 import edu.usach.apimain.model.BusinessObject;
 import edu.usach.apimain.service.IBusinessObjectService;
@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class BusinessObjectService extends AbstractService<BusinessObject> implements IBusinessObjectService {
+public class BusinessObjectService extends EntityService<BusinessObject> implements IBusinessObjectService {
 
 	@Autowired
-	BusinessObjectDAO dao;
+	private BusinessObjectDAO dao;
 
 	@Override
 	protected JpaRepository<BusinessObject, Long> getDao() {

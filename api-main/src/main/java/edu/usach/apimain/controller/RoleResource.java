@@ -1,7 +1,7 @@
-package edu.usach.apimain.resource;
+package edu.usach.apimain.controller;
 
-import edu.usach.apicommons.resource.AbstractResource;
-import edu.usach.apicommons.service.IService;
+import edu.usach.apicommons.controller.EntityController;
+import edu.usach.apicommons.service.IEntityService;
 import edu.usach.apimain.model.Role;
 import edu.usach.apimain.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/roles")
-public class RoleResource extends AbstractResource<Role> {
+public class RoleResource extends EntityController<Role> {
 
 	@Autowired
 	private IRoleService service;
 
 	@Override
-	protected IService<Role> getService() {
+	protected IEntityService<Role> getService() {
 		return service;
 	}
 }

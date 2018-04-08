@@ -1,15 +1,14 @@
-package edu.usach.apimain.resource;
+package edu.usach.apimain.controller;
 
+import edu.usach.apicommons.controller.EntityController;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorDTO;
-import edu.usach.apicommons.service.IService;
+import edu.usach.apicommons.service.IEntityService;
 import edu.usach.apicommons.util.SecurityUtils;
 import edu.usach.apimain.dto.UserCredentialsDTO;
 import edu.usach.apimain.dto.UserTokenDataDTO;
 import edu.usach.apimain.model.AppUser;
 import edu.usach.apimain.service.IAppUserService;
-import edu.usach.apicommons.resource.AbstractResource;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ import static edu.usach.apicommons.util.SecurityUtils.TOKEN_PREFIX;
 @CrossOrigin(maxAge = 7200, exposedHeaders = {"Authorization"})
 @RestController
 @RequestMapping("/users")
-public class AppUserResource extends AbstractResource<AppUser> {
+public class AppUserResource extends EntityController<AppUser> {
 
 	@Autowired
 	private IAppUserService service;
@@ -37,7 +36,7 @@ public class AppUserResource extends AbstractResource<AppUser> {
 	}
 
 	@Override
-	protected IService<AppUser> getService() {
+	protected IEntityService<AppUser> getService() {
 		return service;
 	}
 

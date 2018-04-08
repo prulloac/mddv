@@ -6,6 +6,8 @@ import java.util.Map;
 
 public interface IExtractor {
 	void connect();
-	void connect(Map<String, String> connectionParams);
 	JSONObject extract();
+	String databaseType();
+	boolean isRelational();
+	String[] supportedVersions();
 }

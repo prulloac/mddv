@@ -1,9 +1,9 @@
-package edu.usach.apicommons.resource;
+package edu.usach.apicommons.controller;
 
 import edu.usach.apicommons.model.IEntity;
 import org.springframework.http.ResponseEntity;
 
-public interface IResource<T extends IEntity> {
+public interface IEntityController<T extends IEntity> {
 
 	ResponseEntity getById(Long id);
 

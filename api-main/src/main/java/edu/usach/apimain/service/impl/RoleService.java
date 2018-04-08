@@ -1,6 +1,6 @@
 package edu.usach.apimain.service.impl;
 
-import edu.usach.apicommons.service.AbstractService;
+import edu.usach.apicommons.service.EntityService;
 import edu.usach.apimain.dao.RoleDAO;
 import edu.usach.apimain.model.Role;
 import edu.usach.apimain.service.IRoleService;
@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class RoleService extends AbstractService<Role> implements IRoleService {
+public class RoleService extends EntityService<Role> implements IRoleService {
 
 	@Autowired
-	RoleDAO dao;
+	private RoleDAO dao;
 
 	@Override
 	protected JpaRepository<Role, Long> getDao() {

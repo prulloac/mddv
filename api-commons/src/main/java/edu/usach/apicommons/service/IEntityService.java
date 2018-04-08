@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 import org.springframework.data.domain.Page;
 import java.util.List;
 
-public interface IService<T extends IEntity> {
+public interface IEntityService<T extends IEntity> {
 
 	T findOne(final long id) throws ApiException;
 

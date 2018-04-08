@@ -1,7 +1,7 @@
 package edu.usach.apimain.service.impl;
 
 import edu.usach.apicommons.errorhandling.ApiException;
-import edu.usach.apicommons.service.AbstractService;
+import edu.usach.apicommons.service.EntityService;
 import edu.usach.apimain.dao.AppUserDAO;
 import edu.usach.apimain.errorhandling.ErrorCode;
 import edu.usach.apimain.model.AppUser;
@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class AppUserService extends AbstractService<AppUser> implements IAppUserService {
+public class AppUserService extends EntityService<AppUser> implements IAppUserService {
 
 	@Autowired
-	AppUserDAO dao;
+	private AppUserDAO dao;
 
 	@Override
 	protected JpaRepository<AppUser, Long> getDao() {
