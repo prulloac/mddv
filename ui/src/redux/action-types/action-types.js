@@ -1,9 +1,11 @@
-import userActionsTypes from './user-action-types'
-import repositoryActionsTypes from './repository-action-types'
+import userActionTypes from './user-action-types'
+import repositoryActionTypes from './repository-action-types'
+import objectActionTypes from './object-action-types'
 
 const actionTypes = {
-  userActionsTypes,
-  repositoryActionsTypes,
+  userActionTypes,
+  repositoryActionTypes,
+  objectActionTypes,
 }
 
 export default actionTypes

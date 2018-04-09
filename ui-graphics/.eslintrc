@@ -20,6 +20,9 @@
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/prop-types": [0],
     "semi": [2, "never"],
-    "react/prefer-stateless-function": [0]
+    "react/prefer-stateless-function": [0],
+    "jsx-a11y/anchor-is-valid": [0],
+    "max-len": [2, { "code": 120 }],
+    "max-params": [2, { "max": 4 }]
   }
 }

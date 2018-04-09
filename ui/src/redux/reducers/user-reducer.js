@@ -1,8 +1,7 @@
 import userActionTypes from '../action-types/user-action-types'
 
 const initialState = {
-  user: {
-  },
+  user: {},
   token: '',
   loading: false,
   error: '',
@@ -14,21 +13,9 @@ const userReducer = (state = initialState, action) => {
     case userActionTypes.FETCH_TOKEN:
       return { ...state, loading: true }
     case userActionTypes.FETCH_TOKEN_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        token: action.payload.token,
-        user: action.payload.user,
-        isAuthenticated: true,
-      }
+      return { ...state, loading: false, token: action.payload.token, user: action.payload.user, isAuthenticated: true }
     case userActionTypes.FETCH_TOKEN_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        token: '',
-        isAuthenticated: false,
-        error: action.payload,
-      }
+      return { ...state, loading: false, token: '', isAuthenticated: false, error: action.payload }
     case userActionTypes.TOKEN_RESET:
       return initialState
     default:

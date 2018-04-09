@@ -3,6 +3,7 @@ import { HashRouter, Route } from 'react-router-dom'
 import LoginPage from 'components/LoginPage'
 import Dashboard from 'components/Dashboard'
 import { connect } from 'react-redux'
+import Repositories from '../Repositories'
 import PrivateRoute from '../PrivateRoute'
 
 import './App.scss'
@@ -14,7 +15,9 @@ class ConnectedApp extends Component {
       <HashRouter>
         <div>
           <Route path="/login" component={LoginPage} />
-          <PrivateRoute exact path="/" auth={isAuthenticated} component={Dashboard} />
+          <PrivateRoute path="/" auth={isAuthenticated} component={Dashboard}>
+            <Route path="/repositories" auth={isAuthenticated} component={Repositories} />
+          </PrivateRoute>
         </div>
       </HashRouter>)
   }

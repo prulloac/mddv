@@ -8,28 +8,18 @@ const intiialState = {
 
 const repositoryReducer = (state = intiialState, action) => {
   switch (action.type) {
-    case repositoryActionTypes.CREATE_REPOSITORY:
+    case repositoryActionTypes.C_REPO:
       return { ...state, loading: true }
-    case repositoryActionTypes.CREATE_REPOSITORY_SUCCESS:
+    case repositoryActionTypes.C_REPO_SUCCESS:
       return { ...state, loading: false, repository: action.payload }
-    case repositoryActionTypes.CREATE_REPOSITORY_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        repository: {},
-        error: action.payload,
-      }
-    case repositoryActionTypes.LOAD_REPOSITORY:
+    case repositoryActionTypes.C_REPO_FAILURE:
+      return { ...state, loading: false, repository: {}, error: action.payload }
+    case repositoryActionTypes.R_REPO:
       return { ...state, loading: true }
-    case repositoryActionTypes.LOAD_REPOSITORY_SUCCESS:
+    case repositoryActionTypes.R_REPO_SUCCESS:
       return { ...state, loading: false, repository: action.payload }
-    case repositoryActionTypes.LOAD_REPOSITORY_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        repository: {},
-        error: action.payload,
-      }
+    case repositoryActionTypes.R_REPO_FAILURE:
+      return { ...state, loading: false, repository: {}, error: action.payload }
     default:
       return state
   }

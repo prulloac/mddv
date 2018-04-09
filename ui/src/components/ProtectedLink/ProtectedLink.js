@@ -1,17 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
-import FakeAuth from 'utils/FakeAuth'
 import './ProtectedLink.scss'
 
 const ProtectedLink = ({
-  roles,
-  to,
+  roles = [''],
+  to = '',
   children,
+  user = { roles: [''] },
   ...rest
 }) => (
-  roles.findIndex((x) => x === FakeAuth.role) !== -1 ? (
-    <Menu.Item {...rest} link><Link to={to}>{children}</Link></Menu.Item>
+  roles.filter(x => user.roles.indexOf(x) > -1).length > 0 ? (
+    <Menu.Item as={Link} to={to} {...rest}>{children}</Menu.Item>
   ) : (
     null
   )
