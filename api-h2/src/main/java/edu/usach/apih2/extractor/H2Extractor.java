@@ -1,50 +1,49 @@
 package edu.usach.apih2.extractor;
 
+import edu.usach.apicommons.dto.ConnectionParamsDTO;
 import edu.usach.apicommons.extractor.AbstractExtractor;
+import edu.usach.apicommons.extractor.AbstractSQLExtractor;
 import edu.usach.apicommons.extractor.IExtractor;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class H2Extractor extends AbstractExtractor implements IExtractor {
+public class H2Extractor extends AbstractSQLExtractor implements IExtractor {
 
-	private Connection connection;
-
-	public H2Extractor(String url, String username, String password) {
-		super(url, username, password);
+	public H2Extractor(ConnectionParamsDTO connectionParams) {
+		super(connectionParams);
 	}
 
 	@Override
-	public void connect() {
-		try {
-			String url = this.databaseParams.get("url");
-			String username = this.databaseParams.get("username");
-			String password = this.databaseParams.get("password");
-			this.connection = DriverManager.getConnection(url, username, password);
-		} catch (SQLException e) {
-			logger.error(e.getMessage(), e);
-		}
+	protected String jdbcUrl() {
+		return "jdbc:h2:tcp://" + connectionParams().getHost() + ":" + connectionParams().getHost() + "/" + connectionParams().getDatabase();
 	}
 
 	@Override
-	public JSONObject extract() {
-		return null;
-	}
-
-	@Override
-	public String databaseType() {
-		return "MySQL";
-	}
-
-	@Override
-	public boolean isRelational() {
-		return true;
+	public String databaseEngine() {
+		return "H2";
 	}
 
 	@Override
 	public String[] supportedVersions() {
-		return new String[]{"5.7"};
+		return new String[]{"1.4.196"};
+	}
+
+	@Override
+	public JSONArray extractTables() {
+		return null;
+	}
+
+	@Override
+	public JSONArray extractColumns() {
+		return null;
+	}
+
+	@Override
+	public JSONArray extractRelations() {
+		return null;
 	}
 }

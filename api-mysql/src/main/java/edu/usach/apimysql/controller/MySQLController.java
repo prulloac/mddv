@@ -1,6 +1,6 @@
 package edu.usach.apimysql.controller;
 
-import edu.usach.apimysql.dto.ConnectionDTO;
+import edu.usach.apicommons.dto.ConnectionParamsDTO;
 import edu.usach.apimysql.service.IMySQLService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class MySQLController {
 	private IMySQLService mySQLService;
 
 	@RequestMapping(value = "/connect")
-	public ResponseEntity connect(@RequestBody ConnectionDTO connectionDTO) {
+	public ResponseEntity connect(@RequestBody ConnectionParamsDTO connectionDTO) {
 		return mySQLService.connect(connectionDTO);
 	}
 

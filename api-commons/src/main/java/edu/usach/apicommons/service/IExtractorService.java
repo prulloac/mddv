@@ -1,4 +1,6 @@
 package edu.usach.apicommons.service;
 
-public interface IExtractorService {
+import edu.usach.apicommons.extractor.IExtractor;
+
+public interface IExtractorService<T extends IExtractor> {
 }

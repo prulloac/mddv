@@ -1,6 +1,6 @@
 package edu.usach.apih2.controller;
 
-import edu.usach.apih2.dto.ConnectionDTO;
+import edu.usach.apicommons.dto.ConnectionParamsDTO;
 import edu.usach.apih2.service.IH2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class H2Controller {
 	private IH2Service mySQLService;
 
 	@RequestMapping(value = "/connect")
-	public ResponseEntity connect(@RequestBody ConnectionDTO connectionDTO) {
+	public ResponseEntity connect(@RequestBody ConnectionParamsDTO connectionDTO) {
 		return mySQLService.connect(connectionDTO);
 	}
 
