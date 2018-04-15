@@ -1,10 +1,8 @@
 package edu.usach.apimysql.service;
 
-import edu.usach.apicommons.dto.ConnectionParamsDTO;
 import edu.usach.apicommons.service.IExtractorService;
-import org.springframework.http.ResponseEntity;
+import edu.usach.apimysql.extractor.MySQLExtractor;
 
-public interface IMySQLService extends IExtractorService {
+public interface IMySQLService extends IExtractorService<MySQLExtractor> {
 
-	ResponseEntity connect(ConnectionParamsDTO connectionDTO);
 }

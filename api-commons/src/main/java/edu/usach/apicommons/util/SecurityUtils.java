@@ -24,7 +24,7 @@ public class SecurityUtils {
 	public static String tokenize(TokenizableDTO entity) {
 		return Jwts.builder()
 				.setClaims(JSONUtils.toJSONObject(entity))
-				.setSubject("authenticated")
+				.setSubject(entity.getSubject())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
 				.compact();

@@ -115,8 +115,9 @@ public abstract class EntityService<T extends IEntity> implements IEntityService
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			JSONParser parser = new JSONParser();
-			JSONObject dto = (JSONObject) parser.parse(mapper.writeValueAsString(entity));
-			for(String property : filterString.split(",")) dto.remove(property);
+			JSONObject predto = (JSONObject) parser.parse(mapper.writeValueAsString(entity));
+			JSONObject dto = new JSONObject();
+			for(String property : filterString.split(",")) dto.put(property, predto.get(property));
 			return dto;
 		} catch (ParseException | JsonProcessingException e) {
 			throw new ApiException(ErrorCode.INVALID_FILTERS, serviceOf());

@@ -6,14 +6,14 @@ public class ConnectionParams {
     private String database;
     private String username;
     private String password;
-    private boolean authrRequired;
+    private boolean authRequired;
 
-    public boolean isAuthrRequired() {
-        return authrRequired;
+    public boolean isAuthRequired() {
+        return authRequired;
     }
 
-    public void setAuthrRequired(boolean authrRequired) {
-        this.authrRequired = authrRequired;
+    public void setAuthRequired(boolean authRequired) {
+        this.authRequired = authRequired;
     }
 
     public String getHost() {

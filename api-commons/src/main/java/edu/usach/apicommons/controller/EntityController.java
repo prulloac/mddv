@@ -7,31 +7,19 @@ import edu.usach.apicommons.model.IEntity;
 import edu.usach.apicommons.model.ISecureEntity;
 import edu.usach.apicommons.service.IEntityService;
 import edu.usach.apicommons.util.SecurityUtils;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.ParameterizedType;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static edu.usach.apicommons.util.Constants.ARRAY;
 import static edu.usach.apicommons.util.Constants.OBJECT;
 import static edu.usach.apicommons.util.SecurityUtils.HEADER_STRING;
 
-public abstract class EntityController<T extends IEntity> implements IEntityController<T> {
-
-	protected final Logger logger = LogManager.getLogger(getClass());
+public abstract class EntityController<T extends IEntity> extends AbstractController implements IEntityController<T> {
 
 	private Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-
-	@Autowired
-	protected HttpServletRequest httpServletRequest;
 
 	protected boolean isAuthenticated() {
 		return SecurityUtils.isAuthenticated(httpServletRequest.getHeader(HEADER_STRING));
@@ -46,34 +34,6 @@ public abstract class EntityController<T extends IEntity> implements IEntityCont
 	}
 
 	protected abstract IEntityService<T> getService();
-
-	protected JSONObject responseObject(Object data, Object error) {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("data", data);
-		jsonObject.put("error", error);
-		jsonObject.put("timestamp", ZonedDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
-		return jsonObject;
-	}
-
-	protected ResponseEntity response(Object data) {
-		return new ResponseEntity<>(responseObject(data, null), HttpStatus.OK);
-	}
-
-	protected ResponseEntity responseCreated(Object data) {
-		return new ResponseEntity<>(responseObject(data, null), HttpStatus.CREATED);
-	}
-
-	protected ResponseEntity responseNotFound(Object data, Object error) {
-		return new ResponseEntity<>(responseObject(data, error), HttpStatus.NOT_FOUND);
-	}
-
-	protected ResponseEntity responseUnauthorized(Object data, Object error) {
-		return new ResponseEntity<>(responseObject(data, error), HttpStatus.UNAUTHORIZED);
-	}
-
-	protected ResponseEntity responseInternalServerError(Object data, Object error) {
-		return new ResponseEntity<>(responseObject(data, error), HttpStatus.NOT_FOUND);
-	}
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")

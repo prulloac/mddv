@@ -1,10 +1,9 @@
 package edu.usach.apicommons.extractor;
 
-import org.json.simple.JSONArray;
+import edu.usach.apicommons.dto.ConnectionParamsDTO;
+import org.json.simple.JSONObject;
 
 public interface SQLExtractor extends IExtractor {
     boolean isRelational = true;
-    JSONArray extractTables();
-    JSONArray extractColumns();
-    JSONArray extractRelations();
+    JSONObject extract(ConnectionParamsDTO connectionParams);
 }
