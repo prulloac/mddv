@@ -2,7 +2,7 @@ package edu.usach.apicommons.extractor;
 
 public class ConnectionParams {
     private String host;
-    private String port;
+    private int port;
     private String database;
     private String username;
     private String password;
@@ -24,11 +24,11 @@ public class ConnectionParams {
         this.host = host;
     }
 
-    public String getPort() {
+    public int getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(int port) {
         this.port = port;
     }
 
