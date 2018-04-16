@@ -1,4 +1,4 @@
-FROM mddv-base:latest
+FROM maven:3.3-jdk-8
 
 RUN mkdir -p /usr/src/mddv/commons
 
