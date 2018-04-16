@@ -1,4 +1,4 @@
-FROM maven:3.3-jdk-8
+FROM mddv-commons:latest
 
 COPY ./ /usr/src/api
 

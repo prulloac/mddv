@@ -1,5 +1,11 @@
 version: '3'
 services:
+  mddv-base:
+    build: ./
+    image: mddv-base:latest
+  api-commons:
+    build: ./api-commons
+    image: mddv-commons:latest
   api-main:
     build: ./api-main
     image: mddv-api-main:latest
