@@ -6,7 +6,7 @@ const config = merge(baseConfig, {
   devServer: {
     open: true,
     contentBase: './dist',
-    port: 7979,
+    port: 9999,
   },
   mode: 'development',
 })

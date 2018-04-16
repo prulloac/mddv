@@ -1,0 +1,26 @@
+version: '3'
+services:
+  api-main:
+    build: ./api-main
+    image: mddv-api-main:latest
+    ports: 8080:8080
+  api-mysql:
+    build: ./api-mysql
+    image: mddv-api-mysql:latest
+    ports: 8081:8081
+  api-arango:
+    build: ./api-arango
+    image: mddv-api-arango:latest
+    ports: 8082:8082
+  api-h2:
+    build: ./api-h2
+    image: mddv-api-h2:latest
+    ports: 8083:8083
+  api-mongo:
+    build: ./api-mongo
+    image: mddv-api-mongo:latest
+    ports: 8084:8084
+  ui:
+    build: ./ui
+    image: mddv-ui:latest
+    ports: 80:9999
