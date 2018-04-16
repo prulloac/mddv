@@ -1,7 +1,9 @@
 FROM maven:3.3-jdk-8
 
-COPY ./pom.xml /usr/src/parent
+RUN mkdir -p /usr/src/mddv
 
-WORKDIR /usr/src/parent
+COPY ./pom.xml /usr/src/mddv
 
-RUN mvn clean install
+WORKDIR /usr/src/mddv
+
+CMD [ "mvn", "clean", "install" ]

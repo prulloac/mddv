@@ -1,8 +1,10 @@
 FROM mddv-commons:latest
 
-COPY ./ /usr/src/api
+RUN mkdir -p /usr/src/mddv/mongo
 
-WORKDIR /usr/src/api
+COPY ./ /usr/src/mddv/mongo
+
+WORKDIR /usr/src/mddv/mongo
 
 EXPOSE 8084
 

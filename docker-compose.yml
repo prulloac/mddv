@@ -3,30 +3,64 @@ services:
   mddv-base:
     build: ./
     image: mddv-base:latest
+    volumes:
+      - mvn-repo:/root/.m2
   api-commons:
     build: ./api-commons
     image: mddv-commons:latest
+    volumes:
+      - mvn-repo:/root/.m2
+    depends_on:
+      - mddv-base
   api-main:
     build: ./api-main
     image: mddv-api-main:latest
-    ports: 8080:8080
+    volumes:
+      - mvn-repo:/root/.m2
+    ports: 
+      - "8080:8080"
+    depends_on:
+      - api-commons
   api-mysql:
     build: ./api-mysql
     image: mddv-api-mysql:latest
-    ports: 8081:8081
+    volumes:
+      - mvn-repo:/root/.m2
+    ports:
+      - "8081:8081"
+    depends_on:
+      - api-commons
   api-arango:
     build: ./api-arango
     image: mddv-api-arango:latest
-    ports: 8082:8082
+    volumes:
+      - mvn-repo:/root/.m2
+    ports:
+      - "8082:8082"
+    depends_on:
+      - api-commons
   api-h2:
     build: ./api-h2
     image: mddv-api-h2:latest
-    ports: 8083:8083
+    volumes:
+      - mvn-repo:/root/.m2
+    ports:
+      - "8083:8083"
+    depends_on:
+      - api-commons
   api-mongo:
     build: ./api-mongo
     image: mddv-api-mongo:latest
-    ports: 8084:8084
+    volumes:
+      - mvn-repo:/root/.m2
+    ports:
+      - "8084:8084"
+    depends_on:
+      - api-commons
   ui:
     build: ./ui
     image: mddv-ui:latest
-    ports: 80:9999
+    ports:
+      - "80:9999"
+volumes:
+  mvn-repo

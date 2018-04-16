@@ -1,8 +1,10 @@
 FROM mddv-commons:latest
 
-COPY ./ /usr/src/api
+RUN mkdir -p /usr/src/mddv/mysql
 
-WORKDIR /usr/src/api
+COPY ./ /usr/src/mddv/mysql
+
+WORKDIR /usr/src/mddv/mysql
 
 EXPOSE 8081
 

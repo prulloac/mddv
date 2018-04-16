@@ -1,7 +1,9 @@
 FROM mddv-base:latest
 
-COPY ./ /usr/src/commons
+RUN mkdir -p /usr/src/mddv/commons
 
-WORKDIR /usr/src/commons
+COPY ./ /usr/src/mddv/commons
 
-RUN mvn clean install
+WORKDIR /usr/src/mddv/commons
+
+CMD ["mvn", "clean", "install"]

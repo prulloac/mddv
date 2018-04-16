@@ -1,8 +1,10 @@
 FROM mddv-commons:latest
 
-COPY ./ /usr/src/api
+RUN mkdir -p /usr/src/mddv/main
 
-WORKDIR /usr/src/api
+COPY ./ /usr/src/mddv/main
+
+WORKDIR /usr/src/mddv/main
 
 EXPOSE 8080
 

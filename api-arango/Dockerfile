@@ -1,8 +1,10 @@
 FROM mddv-commons:latest
 
-COPY ./ /usr/src/api
+RUN mkdir -p /usr/src/mddv/arango
 
-WORKDIR /usr/src/api
+COPY ./ /usr/src/mddv/arango
+
+WORKDIR /usr/src/mddv/arango
 
 EXPOSE 8082
 
