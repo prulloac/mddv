@@ -60,7 +60,7 @@ class Dashboard extends Component {
             vertical
             inverted
             style={{ border: 0, top: '4.6em' }}
-            >
+          >
             <Menu.Item name="repositorios" to="/repositorios" onClick={this.handleRedirect}>
               <Icon name="database" />
               Repositorios
@@ -84,7 +84,7 @@ class Dashboard extends Component {
           inverted
           vertical
           style={{ margin: '5em 0em 0em', padding: '1em 0em' }}
-          >
+        >
           <Container textAlign="center">
             <Divider inverted section />
             <Image
