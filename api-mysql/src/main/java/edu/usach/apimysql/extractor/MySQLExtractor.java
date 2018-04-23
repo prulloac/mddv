@@ -2,7 +2,6 @@ package edu.usach.apimysql.extractor;
 
 import edu.usach.apicommons.dto.ConnectionParamsDTO;
 import edu.usach.apicommons.extractor.AbstractSQLExtractor;
-import edu.usach.apicommons.extractor.IExtractor;
 import edu.usach.apicommons.extractor.SQLExtractor;
 import org.json.simple.JSONObject;
 
@@ -13,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"unchecked", "unused"})
 public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor {
 
 	@Override

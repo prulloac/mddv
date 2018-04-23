@@ -4,6 +4,7 @@ const intiialState = {
   repository: {},
   loading: false,
   error: '',
+  repositories: [],
 }
 
 const repositoryReducer = (state = intiialState, action) => {
@@ -17,7 +18,7 @@ const repositoryReducer = (state = intiialState, action) => {
     case repositoryActionTypes.R_REPO:
       return { ...state, loading: true }
     case repositoryActionTypes.R_REPO_SUCCESS:
-      return { ...state, loading: false, repository: action.payload }
+      return { ...state, loading: false, repositories: action.payload }
     case repositoryActionTypes.R_REPO_FAILURE:
       return { ...state, loading: false, repository: {}, error: action.payload }
     default:

@@ -17,6 +17,7 @@ import static edu.usach.apicommons.util.Constants.ARRAY;
 import static edu.usach.apicommons.util.Constants.OBJECT;
 import static edu.usach.apicommons.util.SecurityUtils.HEADER_STRING;
 
+@SuppressWarnings("unchecked")
 public abstract class EntityController<T extends IEntity> extends AbstractController implements IEntityController<T> {
 
 	private Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -37,7 +38,7 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public ResponseEntity getById(@PathVariable Long id) {
+	public ResponseEntity<Object> getById(@PathVariable Long id) {
 		try {
 			return response(getService().findOne(id));
 		} catch (ApiException e) {
@@ -51,7 +52,7 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}", params = { "show" })
-	public ResponseEntity getByIdAndFilterOutput(@PathVariable Long id, @RequestParam("show") String filterString){
+	public ResponseEntity<Object> getByIdAndFilterOutput(@PathVariable Long id, @RequestParam("show") String filterString){
 		try {
 			return response(getService().findAndFilter(id, filterString));
 		} catch (ApiException e) {
@@ -65,7 +66,7 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity getAll() {
+	public ResponseEntity<Object> getAll() {
 		try {
 			return response(getService().findAll());
 		} catch (ApiException e) {
@@ -79,7 +80,7 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET, params = { "page", "size" })
-	public ResponseEntity getAllPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
+	public ResponseEntity<Object> getAllPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
 		try {
 			return response(getService().findPaginated(page, size));
 		} catch (ApiException e) {
@@ -93,7 +94,7 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET, params = { "page" })
-	public ResponseEntity getAllPaginated(@RequestParam("page") int page) {
+	public ResponseEntity<Object> getAllPaginated(@RequestParam("page") int page) {
 		try {
 			return response(getService().findPaginated(page, 10));
 		} catch (ApiException e) {
@@ -108,7 +109,7 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity create(@RequestBody T entity) {
+	public ResponseEntity<Object> create(@RequestBody T entity) {
 		try {
 			if (!isAuthorized("sadmin", "admin"))
 				return responseUnauthorized(OBJECT, new ErrorDTO(new ApiException(ErrorCode.UNAUTHORIZED), httpServletRequest));
@@ -128,7 +129,7 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity update(@RequestBody T entity) {
+	public ResponseEntity<Object> update(@RequestBody T entity) {
 		try {
 			if (!isAuthorized("sadmin", "admin"))
 				return responseUnauthorized(OBJECT, new ErrorDTO(new ApiException(ErrorCode.UNAUTHORIZED), httpServletRequest));
@@ -148,7 +149,7 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity delete(@RequestBody T entity) {
+	public ResponseEntity<Object> delete(@RequestBody T entity) {
 		try {
 			if (!isAuthorized("sadmin", "admin"))
 				return responseUnauthorized(OBJECT, new ErrorDTO(new ApiException(ErrorCode.UNAUTHORIZED), httpServletRequest));
@@ -168,7 +169,7 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.DELETE, params = { "id"} )
-	public ResponseEntity deleteById(@RequestParam("id") long id) {
+	public ResponseEntity<Object> deleteById(@RequestParam("id") long id) {
 		try {
 			if (!isAuthorized("sadmin", "admin"))
 				return responseUnauthorized(OBJECT, new ErrorDTO(new ApiException(ErrorCode.UNAUTHORIZED), httpServletRequest));

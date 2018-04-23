@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router'
 import { Grid, Header, Image, Form, Segment, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import img from 'utils/Img'
 import userActions from '../../redux/actions/user-actions'
+import navigationActions from '../../redux/actions/navigation-actions'
 
 import './LoginPage.scss'
 
-class ConnectedLoginPage extends Component {
+class LoginPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -17,6 +17,7 @@ class ConnectedLoginPage extends Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.props.dispatch(navigationActions.goTo('login'))
   }
 
   handleChange = (event) => {
@@ -35,18 +36,12 @@ class ConnectedLoginPage extends Component {
   }
 
   render() {
-    const { from } = this.props.location.state || { from: '/' }
     const {
       username,
       password,
       submitted,
     } = this.state
-    const { loggingIn, token } = this.props
-    if (token) {
-      return (
-        <Redirect to={from} />
-      )
-    }
+    const { loggingIn } = this.props
     return (
       <div className="login-form">
         <Grid
@@ -102,9 +97,8 @@ class ConnectedLoginPage extends Component {
 
 const mapStateToProps = state => {
   const { loading, token } = state.userReducer
-  return { loading, token }
+  const { navigationHistory } = state.navigationReducer
+  return { loading, token, navigationHistory }
 }
 
-const LoginPage = connect(mapStateToProps)(ConnectedLoginPage)
-
-export default LoginPage
+export default connect(mapStateToProps)(LoginPage)

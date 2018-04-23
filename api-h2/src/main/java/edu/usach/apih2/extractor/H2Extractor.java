@@ -1,10 +1,8 @@
 package edu.usach.apih2.extractor;
 
 import edu.usach.apicommons.dto.ConnectionParamsDTO;
-import edu.usach.apicommons.extractor.AbstractExtractor;
 import edu.usach.apicommons.extractor.AbstractSQLExtractor;
 import edu.usach.apicommons.extractor.IExtractor;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.sql.Connection;
@@ -14,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"unchecked", "unused"})
 public class H2Extractor extends AbstractSQLExtractor implements IExtractor {
 
 	@Override

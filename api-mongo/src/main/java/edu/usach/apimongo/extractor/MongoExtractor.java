@@ -1,7 +1,6 @@
 package edu.usach.apimongo.extractor;
 
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
@@ -14,6 +13,7 @@ import org.json.simple.JSONObject;
 
 import java.util.Arrays;
 
+@SuppressWarnings("unchecked")
 public class MongoExtractor extends AbstractExtractor implements NoSQLExtractor {
 	@Override
 	public String databaseEngine() {
@@ -42,7 +42,8 @@ public class MongoExtractor extends AbstractExtractor implements NoSQLExtractor 
 		MongoClient mongoClient = new MongoClient(new ServerAddress(connectionParams.getHost(), connectionParams.getPort()), Arrays.asList(credential));
 		MongoDatabase database = mongoClient.getDatabase(connectionParams.getDatabase());
 		Document collections = database.runCommand(new Document("listCollections", 1));
-		object.put("collections", collections);
+    object.put("collections", collections);
+    mongoClient.close();
 		return object;
 	}
 }

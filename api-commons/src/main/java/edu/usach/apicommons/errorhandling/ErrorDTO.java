@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+@SuppressWarnings("unchecked")
 public class ErrorDTO {
 	private Integer errorCode;
 	private String errorCodeName;

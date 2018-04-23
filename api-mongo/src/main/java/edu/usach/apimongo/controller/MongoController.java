@@ -1,14 +1,10 @@
 package edu.usach.apimongo.controller;
 
 import edu.usach.apicommons.controller.AbstractController;
-import edu.usach.apicommons.controller.ExtractorController;
-import edu.usach.apicommons.dto.ConnectionParamsDTO;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorDTO;
-import edu.usach.apicommons.service.IExtractorService;
 import edu.usach.apicommons.util.Constants;
 import edu.usach.apimongo.dto.MongoConnectionParamsDTO;
-import edu.usach.apimongo.extractor.MongoExtractor;
 import edu.usach.apimongo.service.IMongoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +24,7 @@ public class MongoController extends AbstractController {
 			method = {RequestMethod.POST},
 			value = {"/extract"}
 	)
-	public ResponseEntity extract(@RequestBody MongoConnectionParamsDTO connectionParamsDTO) {
+	public ResponseEntity<Object> extract(@RequestBody MongoConnectionParamsDTO connectionParamsDTO) {
 		try {
 			return this.response(service.extract(connectionParamsDTO));
 		} catch (ApiException var3) {

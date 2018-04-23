@@ -5,22 +5,22 @@ import org.springframework.http.ResponseEntity;
 
 public interface IEntityController<T extends IEntity> {
 
-	ResponseEntity getById(Long id);
+	ResponseEntity<Object> getById(Long id);
 
-	ResponseEntity getByIdAndFilterOutput(Long id, String filterString);
+	ResponseEntity<Object> getByIdAndFilterOutput(Long id, String filterString);
 
-	ResponseEntity getAll();
+	ResponseEntity<Object> getAll();
 
-	ResponseEntity getAllPaginated(int page, int size);
+	ResponseEntity<Object> getAllPaginated(int page, int size);
 
-	ResponseEntity getAllPaginated(int size);
+	ResponseEntity<Object> getAllPaginated(int size);
 
-	ResponseEntity create(T entity);
+	ResponseEntity<Object> create(T entity);
 
-	ResponseEntity update(T entity);
+	ResponseEntity<Object> update(T entity);
 
-	ResponseEntity delete(T entity);
+	ResponseEntity<Object> delete(T entity);
 
-	ResponseEntity deleteById(long id);
+	ResponseEntity<Object> deleteById(long id);
 
 }

@@ -7,6 +7,7 @@ import edu.usach.apicommons.extractor.AbstractExtractor;
 import edu.usach.apicommons.extractor.NoSQLExtractor;
 import org.json.simple.JSONObject;
 
+@SuppressWarnings("unchecked")
 public class ArangoExtractor extends AbstractExtractor implements NoSQLExtractor {
 	@Override
 	public String databaseEngine() {

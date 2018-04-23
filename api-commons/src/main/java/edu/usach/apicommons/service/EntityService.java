@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Transactional
+@SuppressWarnings("unchecked")
 public abstract class EntityService<T extends IEntity> implements IEntityService<T> {
 
 	protected final Logger logger = LogManager.getLogger(getClass());

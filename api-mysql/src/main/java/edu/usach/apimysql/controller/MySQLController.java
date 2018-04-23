@@ -28,7 +28,7 @@ public class MySQLController extends ExtractorController<MySQLExtractor> {
 	}
 
 	@RequestMapping(value = "/extract", method = RequestMethod.POST)
-	public ResponseEntity getRelations(@RequestBody ConnectionParamsDTO connectionParamsDTO) {
+	public ResponseEntity<Object> getRelations(@RequestBody ConnectionParamsDTO connectionParamsDTO) {
 		try {
 			return response(mySQLService.extract(connectionParamsDTO));
 		} catch (ApiException e) {

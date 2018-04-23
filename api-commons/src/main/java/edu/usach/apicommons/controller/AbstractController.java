@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+@SuppressWarnings("unchecked")
 public abstract class AbstractController {
 	protected final Logger logger = LogManager.getLogger(getClass());
 
@@ -25,23 +26,23 @@ public abstract class AbstractController {
 		return jsonObject;
 	}
 
-	protected ResponseEntity response(Object data) {
+	protected ResponseEntity<Object> response(Object data) {
 		return new ResponseEntity<>(responseObject(data, null), HttpStatus.OK);
 	}
 
-	protected ResponseEntity responseCreated(Object data) {
+	protected ResponseEntity<Object> responseCreated(Object data) {
 		return new ResponseEntity<>(responseObject(data, null), HttpStatus.CREATED);
 	}
 
-	protected ResponseEntity responseNotFound(Object data, Object error) {
+	protected ResponseEntity<Object> responseNotFound(Object data, Object error) {
 		return new ResponseEntity<>(responseObject(data, error), HttpStatus.NOT_FOUND);
 	}
 
-	protected ResponseEntity responseUnauthorized(Object data, Object error) {
+	protected ResponseEntity<Object> responseUnauthorized(Object data, Object error) {
 		return new ResponseEntity<>(responseObject(data, error), HttpStatus.UNAUTHORIZED);
 	}
 
-	protected ResponseEntity responseInternalServerError(Object data, Object error) {
+	protected ResponseEntity<Object> responseInternalServerError(Object data, Object error) {
 		return new ResponseEntity<>(responseObject(data, error), HttpStatus.NOT_FOUND);
 	}
 

@@ -7,8 +7,6 @@ import edu.usach.apih2.errorhandling.ErrorCode;
 import edu.usach.apih2.extractor.H2Extractor;
 import edu.usach.apih2.service.IH2Service;
 import org.json.simple.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service

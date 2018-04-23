@@ -17,7 +17,7 @@ public abstract class ExtractorController<T extends IExtractor> extends Abstract
 	protected abstract IExtractorService<T> getService();
 
 	@RequestMapping(method = RequestMethod.POST, value = "/extract")
-	public ResponseEntity extract(@RequestBody ConnectionParamsDTO connectionParamsDTO) {
+	public ResponseEntity<Object> extract(@RequestBody ConnectionParamsDTO connectionParamsDTO) {
 		try {
 			return response(getService().extract(connectionParamsDTO));
 		} catch (ApiException e) {

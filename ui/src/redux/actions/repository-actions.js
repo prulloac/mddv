@@ -47,7 +47,7 @@ const getAll = (name = '') => {
   return dispatch => {
     dispatch(request(name))
     RepositoryService.getAll(name).then(
-      response => dispatch(success(response)),
+      response => dispatch(success(response.data.data)),
       error => dispatch(failure(error)),
     )
   }

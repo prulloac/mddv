@@ -1,30 +1,74 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
+import { Header, Button, Segment, Form } from 'semantic-ui-react'
+import navigationActions from '../../redux/actions/navigation-actions'
+import repositoryActions from '../../redux/actions/repository-actions'
 import './Repositories.scss'
 
-class ConnectedRepositories extends Component {
+class Repositories extends Component {
   constructor(props) {
     super(props)
     this.state = {
     }
-    this.logout = this.logout.bind(this)
-    this.toggleSidebarVisibility = this.toggleSidebarVisibility.bind(this)
+    this.handleRedirect = this.handleRedirect.bind(this)
+    this.loadRepositories = this.loadRepositories.bind(this)
+  }
+
+  handleRedirect = (event, { to }) => {
+    const { dispatch, currentPage } = this.props
+    if (currentPage !== to) {
+      dispatch(navigationActions.goTo(to))
+    }
+  }
+
+  loadRepositories = () => {
+    const { dispatch } = this.props
+    dispatch(repositoryActions.getAll())
+  }
+
+  handleChange = (event) => {
+    const { name, value } = event.target
+    this.setState({ [name]: value })
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault()
+    const { name, type, location } = this.state
+    const { dispatch } = this.props
+    if (name && type && location) {
+      dispatch(repositoryActions.create({ location, name, type }))
+    }
   }
 
   render() {
+    const { currentPage, repositories } = this.props
+    const repositoryList = repositories.map((repository) => (<li key={Math.random}>{repository.name}</li>))
+    const repositoryForm = (
+      <Form onSubmit={this.handleFormSubmit}>
+        <Form.Input label="Nombre" name="name" onChange={this.handleChange} />
+        <Form.Input label="Tipo" name="type" onChange={this.handleChange} />
+        <Form.Input label="Ubicación" name="location" onChange={this.handleChange} />
+        <Button content="Registrar Repositorio" onClick={this.handleSubmit} />
+      </Form>
+    )
     return (
       <div>
-        something
+        <Segment piled>
+          <Header as="h1">Repositorios</Header>
+          <Button content="Ver repositorios registrados" size="large" to="/repositorios/list" onClick={this.handleRedirect && this.loadRepositories} />
+          <Button content="Registrar nuevo repositorio" size="large" to="/repositorios/new" onClick={this.handleRedirect} />
+        </Segment>
+        {(currentPage === '/repositorios/list') && (<ul>{repositoryList}</ul>)}
+        {(currentPage === '/repositorios/new') && (<div>{repositoryForm}</div>)}
       </div>
     )
   }
 }
 
 const mapStateToProps = state => {
-  const { repositories, repository } = state.repositoriesReducer
-  return { repositories, repository }
+  const { repositories, repository } = state.repositoryReducer
+  const { navigationHistory, currentPage } = state.navigationReducer
+  return { repositories, repository, navigationHistory, currentPage }
 }
 
-const Repositories = connect(mapStateToProps)(ConnectedRepositories)
-export default Repositories
+export default connect(mapStateToProps)(Repositories)
