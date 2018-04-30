@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Header, Button, Segment, Form } from 'semantic-ui-react'
+import { Header, Button, Segment, Form, Card } from 'semantic-ui-react'
 import navigationActions from '../../redux/actions/navigation-actions'
 import repositoryActions from '../../redux/actions/repository-actions'
 import './Repositories.scss'
@@ -12,12 +12,17 @@ class Repositories extends Component {
     }
     this.handleRedirect = this.handleRedirect.bind(this)
     this.loadRepositories = this.loadRepositories.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleRedirect = (event, { to }) => {
     const { dispatch, currentPage } = this.props
     if (currentPage !== to) {
       dispatch(navigationActions.goTo(to))
+    }
+    if (to === '/repositorios/list') {
+      this.loadRepositories()
     }
   }
 
@@ -42,7 +47,17 @@ class Repositories extends Component {
 
   render() {
     const { currentPage, repositories } = this.props
-    const repositoryList = repositories.map((repository) => (<li key={Math.random}>{repository.name}</li>))
+    const repositoryList = repositories.map((repository) =>
+      ({
+        header: repository.name,
+        meta: repository.type,
+        description: (
+          <div>
+            <Button basic color="green" to={`/repositorios/edit/${repository.id}`} onClick={this.handleRedirect}>Ver</Button>
+            <Button basic color="red" to={`/repositorios/delete/${repository.id}`} onClick={this.handleRedirect}>Eliminar</Button>
+          </div>
+        ),
+      }))
     const repositoryForm = (
       <Form onSubmit={this.handleFormSubmit}>
         <Form.Input label="Nombre" name="name" onChange={this.handleChange} />
@@ -55,10 +70,10 @@ class Repositories extends Component {
       <div>
         <Segment piled>
           <Header as="h1">Repositorios</Header>
-          <Button content="Ver repositorios registrados" size="large" to="/repositorios/list" onClick={this.handleRedirect && this.loadRepositories} />
+          <Button content="Ver repositorios registrados" size="large" to="/repositorios/list" onClick={this.handleRedirect} />
           <Button content="Registrar nuevo repositorio" size="large" to="/repositorios/new" onClick={this.handleRedirect} />
         </Segment>
-        {(currentPage === '/repositorios/list') && (<ul>{repositoryList}</ul>)}
+        {(currentPage === '/repositorios/list') && (<Card.Group items={repositoryList} />)}
         {(currentPage === '/repositorios/new') && (<div>{repositoryForm}</div>)}
       </div>
     )
