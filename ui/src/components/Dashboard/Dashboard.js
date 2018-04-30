@@ -76,7 +76,7 @@ class Dashboard extends Component {
           </Sidebar>
         </Segment>
         <Segment basic>
-          <Container text style={{ marginTop: '7em' }}>
+          <Container text style={{ marginTop: '4em' }}>
             {currentComponent}
           </Container>
         </Segment>

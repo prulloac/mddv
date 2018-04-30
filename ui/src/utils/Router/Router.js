@@ -6,14 +6,14 @@ import Welcome from '../../components/Welcome/Welcome'
 
 const router = (currentPage) => {
   switch (currentPage) {
-    case '/repositorios':
-    case '/repositorios/list':
-    case '/repositorios/new':
+    case (currentPage.match(/repositorios(|\/delete\/\d|edit\/\d|list|new)/) || {}).input:
       return <Repositories />
-    case '/objetosNegocio':
+    case (currentPage.match(/objetosNegocio(|\/delete\/\d|edit\/\d|list|new)/) || {}).input:
       return <BusinessObjects />
-    case '/modelos':
+    case (currentPage.match(/modelos(|\/delete\/\d|edit\/\d|list|new)/) || {}).input:
       return <Models />
+    case (currentPage.match(/usuarios(|\/delete\/\d|edit\/\d|list|new)/) || {}).input:
+      return <Welcome />
     default:
       return <Welcome />
   }
