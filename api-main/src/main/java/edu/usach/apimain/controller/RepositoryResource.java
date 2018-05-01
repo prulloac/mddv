@@ -45,4 +45,40 @@ public class RepositoryResource extends EntityController<Repository> {
     }
   }
 
+  @Override
+  @RequestMapping(method = RequestMethod.PUT)
+  public ResponseEntity<Object> update(@RequestBody Repository entity) {
+    try {
+      getService().update(entity);
+      JSONObject data = new JSONObject();
+      data.put("success", true);
+      data.put("message", "Repository successfully updated");
+      return response(data);
+    } catch (ApiException e) {
+      logger.error(e.getMessage(), e);
+      return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
+    } catch (Exception e) {
+      logger.error(e.getMessage(), e);
+      return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
+    }
+  }
+
+  @Override
+  @RequestMapping(method = RequestMethod.DELETE, params = {"id"})
+  public ResponseEntity<Object> deleteById(@RequestParam("id") long id) {
+    try {
+      getService().deleteById(id);
+      JSONObject data = new JSONObject();
+      data.put("success", true);
+      data.put("message", "Repository successfully deleted");
+      return response(data);
+    } catch (ApiException e) {
+      logger.error(e.getMessage(), e);
+      return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
+    } catch (Exception e) {
+      logger.error(e.getMessage(), e);
+      return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
+    }
+  }
+
 }

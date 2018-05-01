@@ -16,6 +16,14 @@ class Repositories extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  componentWillMount() {
+    this.setState({
+      repositoryName: this.props.repository.name,
+      repositoryType: this.props.repository.type,
+      repositoryLocation: this.props.repository.location,
+    })
+  }
+
   handleRedirect = (event, { to }) => {
     const { dispatch, currentPage } = this.props
     if (currentPage !== to) {
@@ -24,11 +32,29 @@ class Repositories extends Component {
     if (to === '/repositorios/list') {
       this.loadRepositories()
     }
+    if (to.match(/\/repositorios\/edit\/\d/)) {
+      this.loadRepository(to)
+    }
+    if (to.match(/\/repositorios\/delete\/\d/)) {
+      this.deleteRepository(to)
+    }
+  }
+
+  deleteRepository = (currentPage = '') => {
+    const { dispatch } = this.props
+    const repositoryId = currentPage.replace('/repositorios/delete/', '')
+    dispatch(repositoryActions.delete(repositoryId))
   }
 
   loadRepositories = () => {
     const { dispatch } = this.props
     dispatch(repositoryActions.getAll())
+  }
+
+  loadRepository = (currentPage = '') => {
+    const { dispatch } = this.props
+    const repositoryId = currentPage.replace('/repositorios/edit/', '')
+    dispatch(repositoryActions.findById(repositoryId))
   }
 
   handleChange = (event) => {
@@ -45,20 +71,44 @@ class Repositories extends Component {
     }
   }
 
+  handleUpdate = (event) => {
+    event.preventDefault()
+    const { repositoryName, repositoryType, repositoryLocation } = this.state
+    const { id } = this.props.repository
+    const { dispatch } = this.props
+    if (repositoryName && repositoryType && repositoryLocation) {
+      dispatch(repositoryActions.update({
+        id,
+        name: repositoryName,
+        location: repositoryLocation,
+        type: repositoryType,
+      }))
+    }
+  }
+
   render() {
     const { currentPage, repositories } = this.props
-    const repositoryList = repositories.map((repository) =>
+    const { repositoryName, repositoryType, repositoryLocation } = this.state
+    const repositoryForm = (
+      <Form onSubmit={this.handleFormSubmit}>
+        <Form.Input label="Nombre" name="repositoryName" value={repositoryName} onChange={this.handleChange} />
+        <Form.Input label="Tipo" name="repositoryType" value={repositoryType} onChange={this.handleChange} />
+        <Form.Input label="Ubicación" name="repositoryLocation" value={repositoryLocation} onChange={this.handleChange} />
+        <Button content="Actualizar Repositorio" onClick={this.handleUpdate} />
+      </Form>
+    )
+    const repositoryList = repositories.map((repository_) =>
       ({
-        header: repository.name,
-        meta: repository.type,
+        header: repository_.name,
+        meta: repository_.type,
         description: (
           <div>
-            <Button basic color="green" to={`/repositorios/edit/${repository.id}`} onClick={this.handleRedirect}>Ver</Button>
-            <Button basic color="red" to={`/repositorios/delete/${repository.id}`} onClick={this.handleRedirect}>Eliminar</Button>
+            <Button basic color="green" to={`/repositorios/edit/${repository_.id}`} onClick={this.handleRedirect}>Ver</Button>
+            <Button basic color="red" to={`/repositorios/delete/${repository_.id}`} onClick={this.handleRedirect}>Eliminar</Button>
           </div>
         ),
       }))
-    const repositoryForm = (
+    const newRepositoryForm = (
       <Form onSubmit={this.handleFormSubmit}>
         <Form.Input label="Nombre" name="name" onChange={this.handleChange} />
         <Form.Input label="Tipo" name="type" onChange={this.handleChange} />
@@ -74,7 +124,8 @@ class Repositories extends Component {
           <Button content="Registrar nuevo repositorio" size="large" to="/repositorios/new" onClick={this.handleRedirect} />
         </Segment>
         {(currentPage === '/repositorios/list') && (<Card.Group items={repositoryList} />)}
-        {(currentPage === '/repositorios/new') && (<div>{repositoryForm}</div>)}
+        {(currentPage === '/repositorios/new') && (<div>{newRepositoryForm}</div>)}
+        {(currentPage.match(/\/repositorios\/edit\/\d/)) && (<div>{repositoryForm}</div>)}
       </div>
     )
   }
