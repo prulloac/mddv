@@ -9,14 +9,12 @@ import edu.usach.apimysql.extractor.MySQLExtractor;
 import edu.usach.apimysql.service.IMySQLService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static edu.usach.apicommons.util.Constants.ARRAY;
 
 @RestController
+@CrossOrigin(value = "*", maxAge = 7200)
 public class MySQLController extends ExtractorController<MySQLExtractor> {
 
 	@Autowired
@@ -27,8 +25,9 @@ public class MySQLController extends ExtractorController<MySQLExtractor> {
 		return mySQLService;
 	}
 
+	@Override
 	@RequestMapping(value = "/extract", method = RequestMethod.POST)
-	public ResponseEntity<Object> getRelations(@RequestBody ConnectionParamsDTO connectionParamsDTO) {
+	public ResponseEntity<Object> extract(@RequestBody ConnectionParamsDTO connectionParamsDTO) {
 		try {
 			return response(mySQLService.extract(connectionParamsDTO));
 		} catch (ApiException e) {

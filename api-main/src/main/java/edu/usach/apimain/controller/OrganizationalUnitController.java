@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/organizational-units")
-public class OrganizationalUnitResource extends EntityController<OrganizationalUnit> {
+public class OrganizationalUnitController extends EntityController<OrganizationalUnit> {
 
 	@Autowired
 	private IOrganizationalUnitService service;

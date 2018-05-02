@@ -2,8 +2,8 @@ package edu.usach.apimain.controller;
 
 import edu.usach.apicommons.controller.EntityController;
 import edu.usach.apicommons.service.IEntityService;
-import edu.usach.apimain.model.Role;
-import edu.usach.apimain.service.IRoleService;
+import edu.usach.apimain.model.ConnectionParameter;
+import edu.usach.apimain.service.IConnectionParameterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(maxAge = 7200)
 @RestController
-@RequestMapping("/roles")
-public class RoleResource extends EntityController<Role> {
+@RequestMapping("/connection-parameters")
+public class ConnectionParameterController extends EntityController<ConnectionParameter> {
 
 	@Autowired
-	private IRoleService service;
+	private IConnectionParameterService service;
 
 	@Override
-	protected IEntityService<Role> getService() {
+	protected IEntityService<ConnectionParameter> getService() {
 		return service;
 	}
 }

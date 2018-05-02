@@ -3,6 +3,7 @@ package edu.usach.apicommons.model.impl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.usach.apicommons.model.DeletableEntityInterface;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 

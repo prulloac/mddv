@@ -8,7 +8,8 @@ public enum ErrorCode implements IErrorCode {
 	NO_USERS_FOUND("No users found in database"),
 	ERROR_FINDING_USER("Error finding a user with the given criteria"),
 	ERROR_CREATING_USER("Error creating user"),
-	INVALID_CREDENTIALS("Invalid credentials");
+	INVALID_CREDENTIALS("Invalid credentials"),
+	ERROR_CONNECTING_EXTRACTOR("Error connecting with extractor");
 
 	String message;
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/techincal-objects")
-public class TechnicalObjectResource extends EntityController<TechnicalObject> {
+public class TechnicalObjectController extends EntityController<TechnicalObject> {
 
 	@Autowired
 	private ITechnicalObjectService service;

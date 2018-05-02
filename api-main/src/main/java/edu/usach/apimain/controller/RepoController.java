@@ -17,7 +17,7 @@ import static edu.usach.apicommons.util.Constants.OBJECT;
 @RestController
 @RequestMapping("/repositories")
 @SuppressWarnings("unchecked")
-public class RepositoryResource extends EntityController<Repository> {
+public class RepoController extends EntityController<Repository> {
 
 	@Autowired
 	private IRepositoryService service;

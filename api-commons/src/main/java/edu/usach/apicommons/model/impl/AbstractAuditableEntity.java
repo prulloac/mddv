@@ -12,8 +12,9 @@ public abstract class AbstractAuditableEntity extends AbstractIdentityEntity imp
   private static final long serialVersionUID = 1L;
 
 	@JsonIgnore
+	@Column(columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private LocalDateTime modificationTimestamp;
-	@Column(updatable = false)
+	@Column(columnDefinition = "timestamp default current_timestamp", updatable = false)
 	@JsonIgnore
 	private LocalDateTime creationTimestamp;
 

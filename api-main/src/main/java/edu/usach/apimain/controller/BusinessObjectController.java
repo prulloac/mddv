@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/business-objects")
-public class BusinessObjectResource extends EntityController<BusinessObject> {
+public class BusinessObjectController extends EntityController<BusinessObject> {
 
 	@Autowired
 	private IBusinessObjectService service;

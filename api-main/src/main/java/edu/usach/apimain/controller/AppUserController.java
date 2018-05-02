@@ -22,7 +22,7 @@ import static edu.usach.apicommons.util.SecurityUtils.TOKEN_PREFIX;
 @CrossOrigin(maxAge = 7200, exposedHeaders = {"Authorization"})
 @RestController
 @RequestMapping("/users")
-public class AppUserResource extends EntityController<AppUser> {
+public class AppUserController extends EntityController<AppUser> {
 
 	@Autowired
 	private IAppUserService service;
