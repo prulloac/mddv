@@ -13,4 +13,5 @@ public interface IExtractorService {
 
 	JSONObject callExtractor(String engine, String version, JSONObject connectionParams) throws ApiException;
 
+	JSONObject getExtractorParams(String engine, String version) throws ApiException;
 }

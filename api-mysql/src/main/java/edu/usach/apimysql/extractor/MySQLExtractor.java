@@ -1,6 +1,5 @@
 package edu.usach.apimysql.extractor;
 
-import edu.usach.apicommons.dto.ConnectionParamsDTO;
 import edu.usach.apicommons.extractor.AbstractSQLExtractor;
 import edu.usach.apicommons.extractor.SQLExtractor;
 import org.json.simple.JSONObject;
@@ -11,13 +10,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings({"unchecked", "unused"})
 public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor {
 
 	@Override
-	protected String jdbcUrl(ConnectionParamsDTO connectionParams) {
-		return "jdbc:mysql://" + connectionParams.getHost() + ":" + connectionParams.getPort() + "/" + connectionParams.getDatabase();
+	protected String jdbcUrl(Map<String, Object> connectionParams) {
+		return "jdbc:mysql://" + connectionParams.get("host") + ":" + connectionParams.get("port") + "/" + connectionParams.get("database");
 	}
 
 	@Override
@@ -36,21 +36,37 @@ public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor
 	}
 
 	@Override
-	public JSONObject extract(ConnectionParamsDTO connectionParams) {
+	public JSONObject connectionParameters() {
+		JSONObject parameters = new JSONObject();
+		parameters.put("database","string");
+		parameters.put("username","string");
+		parameters.put("password","string");
+		parameters.put("host","string");
+		parameters.put("port","int");
+		parameters.put("isAuthRequired","boolean");
+		return parameters;
+	}
+
+	@Override
+	public JSONObject extract(Map<String, Object> connectionParams) {
 		try {
+			String database = (String) connectionParams.get("database");
+			String username = (String) connectionParams.get("username");
+			String password = (String) connectionParams.get("password");
+			boolean isAuthRequired = (boolean) connectionParams.get("isAuthRequired");
 			String[] types = {"TABLE"};
 			Connection connection = null;
 			String jdbcUrl = jdbcUrl(connectionParams);
 			logger.info("Attempting to connect to " + jdbcUrl);
-			if (connectionParams.isAuthRequired())
-				connection = DriverManager.getConnection(jdbcUrl, connectionParams.getUsername(), connectionParams.getPassword());
+			if (isAuthRequired)
+				connection = DriverManager.getConnection(jdbcUrl, username, password);
 			else
 				connection = DriverManager.getConnection(jdbcUrl);
 			logger.info("Connected to " + jdbcUrl);
 			List<MySQLTable> tables = new ArrayList<>();
 			List<MySQLRelation> relations = new ArrayList<>();
 			ResultSet resultSet = null;
-			resultSet = connection.getMetaData().getTables(connectionParams.getDatabase(), null, "%", types);
+			resultSet = connection.getMetaData().getTables(database, null, "%", types);
 			logger.info("Extracting tables");
 			while (resultSet.next()) {
 				MySQLTable table = new MySQLTable();
@@ -60,7 +76,7 @@ public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor
 			resultSet.close();
 			for (MySQLTable table : tables) {
 				logger.info("Extracting columns from " + table.getTableName());
-				resultSet = connection.getMetaData().getColumns(connectionParams.getDatabase(), null, table.getTableName(), "%");
+				resultSet = connection.getMetaData().getColumns(database, null, table.getTableName(), "%");
 				while (resultSet.next()) {
 					MySQLColumn column = new MySQLColumn();
 					column.setColumnName(resultSet.getString("COLUMN_NAME"));
@@ -74,7 +90,7 @@ public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor
 				}
 				resultSet.close();
 				logger.info("Extracting foreign keys from " + table.getTableName());
-				resultSet = connection.getMetaData().getImportedKeys(connectionParams.getDatabase(), null, table.tableName);
+				resultSet = connection.getMetaData().getImportedKeys(database, null, table.tableName);
 				while (resultSet.next()) {
 					MySQLRelation relation = new MySQLRelation();
 					relation.setSourceTable(resultSet.getString("FKTABLE_NAME"));
@@ -95,6 +111,7 @@ public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor
 		}
 		return null;
 	}
+
 
 	private static class MySQLTable {
 		private String tableName;

@@ -4,14 +4,13 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
-import edu.usach.apicommons.dto.ConnectionParamsDTO;
 import edu.usach.apicommons.extractor.AbstractExtractor;
 import edu.usach.apicommons.extractor.NoSQLExtractor;
-import edu.usach.apimongo.dto.MongoConnectionParamsDTO;
 import org.bson.Document;
 import org.json.simple.JSONObject;
 
 import java.util.Arrays;
+import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class MongoExtractor extends AbstractExtractor implements NoSQLExtractor {
@@ -31,17 +30,29 @@ public class MongoExtractor extends AbstractExtractor implements NoSQLExtractor 
 	}
 
 	@Override
-	@Deprecated
-	public JSONObject extract(ConnectionParamsDTO connectionParamsDTO){
-		return null;
+	public JSONObject connectionParameters() {
+		JSONObject parameters = new JSONObject();
+		parameters.put("database","string");
+		parameters.put("username","string");
+		parameters.put("password","string");
+		parameters.put("authDatabase","string");
+		parameters.put("host","string");
+		parameters.put("port","int");
+		return parameters;
 	}
 
-	public JSONObject extract(MongoConnectionParamsDTO connectionParams) {
+	public JSONObject extract(Map<String, Object> connectionParams) {
+		String host = (String) connectionParams.get("host");
+		int port = (int) connectionParams.get("port");
+		String username = (String) connectionParams.get("username");
+		String authDatabase = (String) connectionParams.get("authDatabase");
+		String password = (String) connectionParams.get("password");
+		String database = (String) connectionParams.get("database");
 		JSONObject object = new JSONObject();
-		MongoCredential credential = MongoCredential.createCredential(connectionParams.getUsername(), connectionParams.getAuthDatabase(), connectionParams.getPassword().toCharArray());
-		MongoClient mongoClient = new MongoClient(new ServerAddress(connectionParams.getHost(), connectionParams.getPort()), Arrays.asList(credential));
-		MongoDatabase database = mongoClient.getDatabase(connectionParams.getDatabase());
-		Document collections = database.runCommand(new Document("listCollections", 1));
+		MongoCredential credential = MongoCredential.createCredential(username, authDatabase, password.toCharArray());
+		MongoClient mongoClient = new MongoClient(new ServerAddress(host, port), Arrays.asList(credential));
+		MongoDatabase mongoDatabase = mongoClient.getDatabase(database);
+		Document collections = mongoDatabase.runCommand(new Document("listCollections", 1));
     object.put("collections", collections);
     mongoClient.close();
 		return object;

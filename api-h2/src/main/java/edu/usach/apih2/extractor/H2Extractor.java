@@ -1,8 +1,8 @@
 package edu.usach.apih2.extractor;
 
-import edu.usach.apicommons.dto.ConnectionParamsDTO;
 import edu.usach.apicommons.extractor.AbstractSQLExtractor;
 import edu.usach.apicommons.extractor.IExtractor;
+import edu.usach.apicommons.extractor.SQLExtractor;
 import org.json.simple.JSONObject;
 
 import java.sql.Connection;
@@ -11,9 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings({"unchecked", "unused"})
-public class H2Extractor extends AbstractSQLExtractor implements IExtractor {
+public class H2Extractor extends AbstractSQLExtractor implements SQLExtractor {
 
 	@Override
 	public String databaseEngine() {
@@ -31,26 +32,35 @@ public class H2Extractor extends AbstractSQLExtractor implements IExtractor {
 	}
 
 	@Override
-	protected String jdbcUrl(ConnectionParamsDTO connectionParams) {
-		return "jdbc:h2:tcp://" + connectionParams.getHost() + ":" + connectionParams.getPort() + "/" + connectionParams.getDatabase();
+	protected String jdbcUrl(Map<String, Object> connectionParams) {
+		return "jdbc:h2:tcp://" + connectionParams.get("host") + ":" + connectionParams.get("port") + "/" + connectionParams.get("database");
 	}
 
 	@Override
-	public JSONObject extract(ConnectionParamsDTO connectionParams) {
+	public JSONObject connectionParameters() {
+		return null;
+	}
+
+	@Override
+	public JSONObject extract(Map<String, Object> connectionParams) {
 		try {
+			String database = (String) connectionParams.get("database");
+			String username = (String) connectionParams.get("username");
+			String password = (String) connectionParams.get("password");
+			boolean isAuthRequired = (boolean) connectionParams.get("isAuthRequired");
 			String[] types = {"TABLE"};
 			Connection connection = null;
 			String jdbcUrl = jdbcUrl(connectionParams);
 			logger.info("Attempting to connect to " + jdbcUrl);
-			if (connectionParams.isAuthRequired())
-				connection = DriverManager.getConnection(jdbcUrl, connectionParams.getUsername(), connectionParams.getPassword());
+			if (isAuthRequired)
+				connection = DriverManager.getConnection(jdbcUrl, username, password);
 			else
 				connection = DriverManager.getConnection(jdbcUrl);
 			logger.info("Connected to " + jdbcUrl);
 			List<H2Table> tables = new ArrayList<>();
 			List<H2Relation> relations = new ArrayList<>();
 			ResultSet resultSet = null;
-			resultSet = connection.getMetaData().getTables(connectionParams.getDatabase(), null, "%", types);
+			resultSet = connection.getMetaData().getTables(database, null, "%", types);
 			logger.info("Extracting tables");
 			while (resultSet.next()) {
 				H2Table table = new H2Table();
@@ -60,7 +70,7 @@ public class H2Extractor extends AbstractSQLExtractor implements IExtractor {
 			resultSet.close();
 			for (H2Table table : tables) {
 				logger.info("Extracting columns from " + table.getTableName());
-				resultSet = connection.getMetaData().getColumns(connectionParams.getDatabase(), null, table.getTableName(), "%");
+				resultSet = connection.getMetaData().getColumns(database, null, table.getTableName(), "%");
 				while (resultSet.next()) {
 					H2Column column = new H2Column();
 					column.setColumnName(resultSet.getString("COLUMN_NAME"));
@@ -74,7 +84,7 @@ public class H2Extractor extends AbstractSQLExtractor implements IExtractor {
 				}
 				resultSet.close();
 				logger.info("Extracting foreign keys from " + table.getTableName());
-				resultSet = connection.getMetaData().getImportedKeys(connectionParams.getDatabase(), null, table.tableName);
+				resultSet = connection.getMetaData().getImportedKeys(database, null, table.tableName);
 				while (resultSet.next()) {
 					H2Relation relation = new H2Relation();
 					relation.setSourceTable(resultSet.getString("FKTABLE_NAME"));
@@ -96,7 +106,7 @@ public class H2Extractor extends AbstractSQLExtractor implements IExtractor {
 		return null;
 
 	}
-	
+
 	private static class H2Table {
 		private String tableName;
 		private List<H2Column> columns;

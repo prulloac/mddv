@@ -5,6 +5,7 @@ import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apimain.service.IExtractorService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,20 @@ public class ExtractorController extends AbstractController {
 			@RequestBody JSONObject connectionParams
 	) {
 		try {
-			return response(service.callExtractor(engine, version, connectionParams));
+			return new ResponseEntity<>(service.callExtractor(engine, version, connectionParams), HttpStatus.OK);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
+		}
+	}
+
+	@RequestMapping(value = "/extract", method = RequestMethod.GET)
+	public ResponseEntity<Object> callExtractor(
+			@RequestParam("engine") String engine,
+			@RequestParam("version") String version
+	) {
+		try {
+			return new ResponseEntity<>(service.getExtractorParams(engine, version), HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));

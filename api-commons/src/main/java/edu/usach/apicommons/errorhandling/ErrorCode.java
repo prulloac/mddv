@@ -8,7 +8,9 @@ public enum ErrorCode implements IErrorCode {
 	CREATION_ERROR("Couldn't create '{0}' object"),
 	UPDATE_ERROR("Error updating '{0}' object"),
 	DELETE_ERROR("Couldn't delete '{0}' object"),
-	UNAUTHORIZED("Unauthorized access");
+	UNAUTHORIZED("Unauthorized access"),
+	CONNECTION_ERROR("Unable to connect to repository"),
+	NOT_CONNECTED("Not connected to repository, must connect first");
 
 	private String message;
 

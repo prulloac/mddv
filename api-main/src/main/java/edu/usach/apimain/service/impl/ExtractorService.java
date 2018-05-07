@@ -77,4 +77,28 @@ public class ExtractorService implements IExtractorService {
 			throw new ApiException(ErrorCode.ERROR_CONNECTING_EXTRACTOR);
 		}
 	}
+
+	@Override
+	public JSONObject getExtractorParams(String engine, String version) throws ApiException {
+		String path = getExtractorEntrypoint(engine, version);
+		logger.info("calling extractor at: {}", path);
+		try {
+			URL connectionUrl = new URL(path);
+			HttpURLConnection con = (HttpURLConnection) connectionUrl.openConnection();
+			con.setRequestMethod("GET");
+			con.setDoInput(true);
+			con.connect();
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			JSONObject object = null;
+			JSONParser parser = new JSONParser();
+			while ((inputLine = in.readLine()) != null) {
+				object = (JSONObject) parser.parse(inputLine);
+			}
+			return object;
+		} catch (IOException | ParseException e) {
+			logger.error(e.getMessage(), e);
+			throw new ApiException(ErrorCode.ERROR_CONNECTING_EXTRACTOR);
+		}
+	}
 }
