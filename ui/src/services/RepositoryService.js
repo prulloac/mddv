@@ -54,6 +54,8 @@ const getConnectionParams = (engine = '', version = '') => httpClient.get({ endp
 
 const getExtractorCompatibles = () => httpClient.get({ endpoint: '/extractors' })
 
+const extractFromRepository = (id = 0) => httpClient.post({ endpoint: `/repositories?id=${id}&extract=true` })
+
 const RepositoryService = {
   create,
   findById,
@@ -63,6 +65,7 @@ const RepositoryService = {
   delete: del,
   getConnectionParams,
   getExtractorCompatibles,
+  extractFromRepository,
 }
 
 export default RepositoryService
