@@ -9,6 +9,7 @@ import edu.usach.apimain.service.IRepositoryService;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import static edu.usach.apicommons.util.Constants.OBJECT;
@@ -80,5 +81,31 @@ public class RepoController extends EntityController<Repository> {
       return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
     }
   }
+
+  @RequestMapping(method = RequestMethod.POST, params = { "extract", "id" })
+	public ResponseEntity<Object> extract(@RequestParam("id") long id, @RequestParam("extract") boolean extract) {
+		try {
+			if (extract) {
+				return new ResponseEntity<Object>(service.extractFromRepository(id), HttpStatus.OK);
+			}
+			return responseUnauthorized(OBJECT, new ErrorDTO(httpServletRequest));
+		} catch (ApiException e) {
+			logger.error(e.getMessage(), e);
+			return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/extractables")
+	public ResponseEntity<Object> extractables() {
+		try {
+			return response(service.extractables());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
+		}
+	}
 
 }

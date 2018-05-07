@@ -1,6 +1,5 @@
 package edu.usach.apimain.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apimain.dao.ExtractorDAO;
 import edu.usach.apimain.errorhandling.ErrorCode;
@@ -8,6 +7,7 @@ import edu.usach.apimain.model.Extractor;
 import edu.usach.apimain.service.IExtractorService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -32,17 +32,24 @@ public class ExtractorService implements IExtractorService {
 	private ExtractorDAO dao;
 
 	@Override
-	public Map<String, Object> getSupportedEngines() {
+	public JSONArray getSupportedEngines() throws ApiException {
 		List<Extractor> extractorList = dao.findAll();
-		Map<String, Object> enginesWithVersions = new HashMap<>();
-		extractorList.forEach(x -> enginesWithVersions.put(x.getSupportedEngine(), x.getSupportedVersions().split(",")));
-		return enginesWithVersions;
+		JSONArray engines = new JSONArray();
+		for (Extractor extractor: extractorList) {
+			Map<String, Object> data = new HashMap<>();
+			String[] versions = extractor.getSupportedVersions().split(",");
+			data.put("versions", versions);
+			data.put("connectionParams", getExtractorParams(extractor.getSupportedEngine(), versions[0]));
+			data.put("engine", extractor.getSupportedEngine());
+			engines.add(data);
+		}
+		return engines;
 	}
 
 	@Override
 	public String getExtractorEntrypoint(String engine, String version) {
 		Extractor extractor = dao.findBySupportedEngineAndSupportedVersionsContains(engine, version);
-		return extractor.getApiUrl().concat(extractor.getExtractorEntrypoint());
+		return extractor.getApiUrl();
 	}
 
 	@Override

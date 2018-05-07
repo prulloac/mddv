@@ -25,6 +25,7 @@ public class Repository extends AbstractAuditableNamedEntity implements IEntity 
 	@OneToMany(mappedBy = "repository")
 	@JsonIgnore
 	private List<TechnicalObject> technicalObjectList;
+	private String version;
 
 	public String getLocation() {
 		return location;
@@ -72,5 +73,13 @@ public class Repository extends AbstractAuditableNamedEntity implements IEntity 
 
 	public void setTechnicalObjectList(List<TechnicalObject> technicalObjectList) {
 		this.technicalObjectList = technicalObjectList;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 }

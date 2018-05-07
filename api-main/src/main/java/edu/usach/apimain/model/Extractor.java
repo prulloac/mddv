@@ -14,8 +14,6 @@ public class Extractor extends AbstractDeletableNamedEntity implements IEntity {
 	private String supportedEngine;
 	private String supportedVersions;
 	private String apiUrl;
-	private String extractorEntrypoint;
-	private String parametersEntrypoint;
 
 	public String getSupportedEngine() {
 		return supportedEngine;
@@ -41,19 +39,4 @@ public class Extractor extends AbstractDeletableNamedEntity implements IEntity {
 		this.apiUrl = apiUrl;
 	}
 
-	public String getExtractorEntrypoint() {
-		return extractorEntrypoint;
-	}
-
-	public void setExtractorEntrypoint(String extractorEntrypoint) {
-		this.extractorEntrypoint = extractorEntrypoint;
-	}
-
-	public String getParametersEntrypoint() {
-		return parametersEntrypoint;
-	}
-
-	public void setParametersEntrypoint(String parametersEntrypoint) {
-		this.parametersEntrypoint = parametersEntrypoint;
-	}
 }

@@ -20,7 +20,7 @@ public class ExtractorController extends AbstractController {
 	@Autowired
 	private IExtractorService service;
 
-	@RequestMapping(value = "/extractors", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Object> getExtractors(){
 		try {
 			return response(service.getSupportedEngines());

@@ -50,6 +50,10 @@ const findByName = (name = 0) => httpClient.get({ endpoint: `/repositories?name=
 
 const getAll = () => httpClient.get({ endpoint: '/repositories' })
 
+const getConnectionParams = (engine = '', version = '') => httpClient.get({ endpoint: `/extractors/extract?engine=${engine}&version=${version}` })
+
+const getExtractorCompatibles = () => httpClient.get({ endpoint: '/extractors' })
+
 const RepositoryService = {
   create,
   findById,
@@ -57,6 +61,8 @@ const RepositoryService = {
   getAll,
   update,
   delete: del,
+  getConnectionParams,
+  getExtractorCompatibles,
 }
 
 export default RepositoryService
