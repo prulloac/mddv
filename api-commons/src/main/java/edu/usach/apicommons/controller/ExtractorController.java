@@ -43,4 +43,14 @@ public abstract class ExtractorController<T extends IExtractor> extends Abstract
 		}
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/info")
+	public ResponseEntity<Object> getExtractorInfo() {
+		try {
+			return response(getService().getExtractorInfo());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
+		}
+	}
+
 }

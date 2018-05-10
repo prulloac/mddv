@@ -10,4 +10,6 @@ public interface IExtractorController {
 
 	ResponseEntity<Object> getParameters();
 
+	ResponseEntity<Object> getExtractorInfo();
+
 }

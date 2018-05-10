@@ -11,4 +11,6 @@ public interface IExtractorService<T extends IExtractor> {
 	JSONObject extract(Map<String, Object> connectionParams) throws ApiException;
 
 	JSONObject getParameters() throws ApiException;
+
+	JSONObject getExtractorInfo() throws ApiException;
 }

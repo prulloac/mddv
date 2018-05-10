@@ -35,4 +35,21 @@ public abstract class ExtractorService<T extends IExtractor> implements IExtract
 			throw new ApiException(ErrorCode.UNEXPECTED_ERROR);
 		}
 	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public JSONObject getExtractorInfo() throws ApiException {
+		try {
+			T t = buildExtractor();
+			JSONObject extractorInfo = new JSONObject();
+			extractorInfo.put("engine",t.databaseEngine());
+			extractorInfo.put("versions", t.supportedVersions());
+			extractorInfo.put("relational", t.isRelational());
+			extractorInfo.put("type", t.databaseType());
+			return extractorInfo;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new ApiException(ErrorCode.UNEXPECTED_ERROR);
+		}
+	}
 }

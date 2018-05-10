@@ -32,7 +32,7 @@ public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor
 
 	@Override
 	public String[] supportedVersions() {
-		return new String[]{"5.7"};
+		return new String[]{"5.7", "5.6", "5.5"};
 	}
 
 	@Override

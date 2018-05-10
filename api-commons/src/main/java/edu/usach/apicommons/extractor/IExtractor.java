@@ -10,4 +10,5 @@ public interface IExtractor {
 	String[] supportedVersions();
 	JSONObject extract(Map<String, Object> connectionParams);
 	JSONObject connectionParameters();
+	boolean isRelational();
 }
