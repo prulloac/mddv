@@ -58,3 +58,17 @@ INSERT INTO ORGANIZATIONAL_UNIT_ROLES
 INSERT INTO ORGANIZATIONAL_UNIT_ROLES
 	select 3 role_id, 2 organizational_unit_id from dual
 	where not exists (select ROLE_ID, organizational_unit_id from ORGANIZATIONAL_UNIT_ROLES where ROLE_ID = 3 and ORGANIZATIONAL_UNIT_ID = 2);
+
+-- extractors
+INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
+	select 'mysql-extractor' name, 'http://188.166.34.128:8081/mddv-mysql-extractor/api/v1/extractor' api_url, 'MySQL' supported_engine, '5.5,5.6,5.7' supported_versions
+	where not exists (select name, supported_engine, supported_versions from extractors where name = 'mysql-extractor' and supported_engine = 'MySQL' and supported_versions = '5.5,5.6,5.7');
+INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
+	select 'arangodb-extractor' name, 'http://188.166.34.128:8082/mddv-arangodb-extractor/api/v1/extractor' api_url, 'ArangoDB' supported_engine, '3.1' supported_versions
+	where not exists (select name, supported_engine, supported_versions from extractors where name = 'arangodb-extractor' and supported_engine = 'ArangoDB' and supported_versions = '3.1');
+INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
+	select 'h2-extractor' name, 'http://188.166.34.128:8083/mddv-h2-extractor/api/v1/extractor' api_url, 'H2' supported_engine, '1.4.196' supported_versions
+	where not exists (select name, supported_engine, supported_versions from extractors where name = 'h2-extractor' and supported_engine = 'H2' and supported_versions = '1.4.196');
+INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
+	select 'mongodb-extractor' name, 'http://188.166.34.128:8084/mddv-mongodb-extractor/api/v1/extractor' api_url, 'MongoDB' supported_engine, '3.4' supported_versions
+	where not exists (select name, supported_engine, supported_versions from extractors where name = 'mongodb-extractor' and supported_engine = 'MongoDB' and supported_versions = '3.4');

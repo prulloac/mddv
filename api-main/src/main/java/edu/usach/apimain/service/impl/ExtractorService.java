@@ -39,7 +39,7 @@ public class ExtractorService implements IExtractorService {
 			Map<String, Object> data = new HashMap<>();
 			String[] versions = extractor.getSupportedVersions().split(",");
 			data.put("versions", versions);
-			data.put("connectionParams", getExtractorParams(extractor.getSupportedEngine(), versions[0]));
+			data.put("connectionParams", getExtractorParams(extractor.getSupportedEngine(), versions[0]).get("data"));
 			data.put("engine", extractor.getSupportedEngine());
 			engines.add(data);
 		}
