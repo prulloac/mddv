@@ -5,14 +5,14 @@ API=api-mongodb
 PORT=8084
 
 echo "building image"
-docker build -t mddv-mysql .
+docker build -t $TAG .
 
-if docker container ls | grep $API > 1; then
+if docker container ls | grep $API > /dev/null; then
   echo "stopping old container"
   docker container stop $API
 fi
 
-if docker container ls -a | grep $API > 1; then
+if docker container ls -a | grep $API > /dev/null; then
   echo "removing old container"
   docker container rm $API
 fi
