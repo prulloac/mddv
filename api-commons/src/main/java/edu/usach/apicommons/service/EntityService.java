@@ -54,8 +54,8 @@ public abstract class EntityService<T extends IEntity> implements IEntityService
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<T> findPaginated(int page, int size) throws ApiException {
-		Page<T> list = getDao().findAll(PageRequest.of(page, size));
+	public Page<T> findPaginated(Integer page, Integer size) throws ApiException {
+		Page<T> list = getDao().findAll(PageRequest.of(null == page ? 0 : page, null == size ? 10 : size));
 		if (list.getTotalElements()<1)
 			throw new ApiException(ErrorCode.NO_OBJECTS_FOUND, serviceOf());
 		return list;

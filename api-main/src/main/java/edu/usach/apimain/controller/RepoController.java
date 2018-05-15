@@ -64,24 +64,6 @@ public class RepoController extends EntityController<Repository> {
     }
   }
 
-  @Override
-  @RequestMapping(method = RequestMethod.DELETE, params = {"id"})
-  public ResponseEntity<Object> deleteById(@RequestParam("id") long id) {
-    try {
-      getService().deleteById(id);
-      JSONObject data = new JSONObject();
-      data.put("success", true);
-      data.put("message", "Repository successfully deleted");
-      return response(data);
-    } catch (ApiException e) {
-      logger.error(e.getMessage(), e);
-      return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
-    } catch (Exception e) {
-      logger.error(e.getMessage(), e);
-      return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
-    }
-  }
-
   @RequestMapping(method = RequestMethod.POST, params = { "extract", "id" })
 	public ResponseEntity<Object> extract(@RequestParam("id") long id, @RequestParam("extract") boolean extract) {
 		try {
@@ -102,6 +84,16 @@ public class RepoController extends EntityController<Repository> {
 	public ResponseEntity<Object> extractables() {
 		try {
 			return response(service.extractables());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/extractableTypes")
+	public ResponseEntity<Object> extractableTypes() {
+		try {
+			return response(service.extractableTypes());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));

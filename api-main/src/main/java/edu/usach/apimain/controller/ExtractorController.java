@@ -21,9 +21,11 @@ public class ExtractorController extends AbstractController {
 	private IExtractorService service;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Object> getExtractors(){
+	public ResponseEntity<Object> getExtractors(
+			@RequestParam(value = "engine", required = false) String engine,
+			@RequestParam(value = "version", required = false) String version){
 		try {
-			return response(service.getSupportedEngines());
+			return response(service.getExtractors(engine, version));
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return responseInternalServerError(ARRAY, new ErrorDTO(httpServletRequest));
@@ -44,8 +46,8 @@ public class ExtractorController extends AbstractController {
 		}
 	}
 
-	@RequestMapping(value = "/extract", method = RequestMethod.GET)
-	public ResponseEntity<Object> callExtractor(
+	@RequestMapping(value = "/params", method = RequestMethod.GET)
+	public ResponseEntity<Object> getExtractorParams(
 			@RequestParam("engine") String engine,
 			@RequestParam("version") String version
 	) {

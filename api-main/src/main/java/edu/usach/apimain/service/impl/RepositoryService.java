@@ -14,10 +14,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -52,5 +50,16 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 				removeIf(x -> extractors.stream().
 						noneMatch(y -> (y.getSupportedEngine().equalsIgnoreCase(x.getType()) && y.getSupportedVersions().contains(x.getVersion()))));
 		return repositories;
+	}
+
+	@Override
+	public List extractableTypes() {
+		List<Extractor>	extractors = extractorDAO.findAll();
+		return extractors.stream().map(x -> {
+			JSONObject object = new JSONObject();
+			object.put("type",x.getSupportedEngine());
+			object.put("versions",x.getSupportedVersions().split(","));
+			return object;
+		}).collect(Collectors.toList());
 	}
 }

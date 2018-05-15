@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -32,8 +33,14 @@ public class ExtractorService implements IExtractorService {
 	private ExtractorDAO dao;
 
 	@Override
-	public JSONArray getSupportedEngines() throws ApiException {
+	public JSONArray getExtractors(String engine, String version) throws ApiException {
 		List<Extractor> extractorList = dao.findAll();
+		if (null!=engine) {
+			extractorList = extractorList.stream().filter(x -> x.getSupportedEngine().equalsIgnoreCase(engine)).collect(Collectors.toList());
+		}
+		if (null!=version) {
+			extractorList = extractorList.stream().filter(x -> x.getSupportedVersions().contains(version)).collect(Collectors.toList());
+		}
 		JSONArray engines = new JSONArray();
 		for (Extractor extractor: extractorList) {
 			Map<String, Object> data = new HashMap<>();
@@ -41,13 +48,13 @@ public class ExtractorService implements IExtractorService {
 			data.put("versions", versions);
 			data.put("connectionParams", getExtractorParams(extractor.getSupportedEngine(), versions[0]).get("data"));
 			data.put("engine", extractor.getSupportedEngine());
+			data.put("name", extractor.getName());
 			engines.add(data);
 		}
 		return engines;
 	}
 
-	@Override
-	public String getExtractorEntrypoint(String engine, String version) {
+	private String getExtractorEntrypoint(String engine, String version) {
 		Extractor extractor = dao.findBySupportedEngineAndSupportedVersionsContains(engine, version);
 		return extractor.getApiUrl();
 	}

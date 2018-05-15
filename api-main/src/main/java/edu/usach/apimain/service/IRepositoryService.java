@@ -11,4 +11,6 @@ public interface IRepositoryService extends IEntityService<Repository>{
 
 	List<Repository> extractables();
 
+	List extractableTypes();
+
 }

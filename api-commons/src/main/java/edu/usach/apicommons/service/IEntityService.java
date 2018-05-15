@@ -14,7 +14,7 @@ public interface IEntityService<T extends IEntity> {
 
 	List<T> findAll() throws ApiException;
 
-	Page<T> findPaginated(int page, int size) throws ApiException;
+	Page<T> findPaginated(final Integer page, final Integer size) throws ApiException;
 
 	T create(final T entity) throws ApiException;
 

@@ -1,5 +1,6 @@
 package edu.usach.apicommons.controller;
 
+import edu.usach.apicommons.errorhandling.ErrorDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
@@ -44,6 +45,10 @@ public abstract class AbstractController {
 
 	protected ResponseEntity<Object> responseInternalServerError(Object data, Object error) {
 		return new ResponseEntity<>(responseObject(data, error), HttpStatus.NOT_FOUND);
+	}
+
+	protected ResponseEntity<Object> responseBadRequest(Object data, ErrorDTO error) {
+		return new ResponseEntity<>(responseObject(data, error), HttpStatus.BAD_REQUEST);
 	}
 
 }

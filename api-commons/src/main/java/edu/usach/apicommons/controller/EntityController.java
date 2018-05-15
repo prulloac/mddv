@@ -38,22 +38,10 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public ResponseEntity<Object> getById(@PathVariable Long id) {
+	public ResponseEntity<Object> getById(@PathVariable Long id, @RequestParam(value = "show", required = false) String filterString) {
 		try {
-			return response(getService().findOne(id));
-		} catch (ApiException e) {
-			logger.error(e.getMessage(), e);
-			return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
-		}
-	}
-
-	@Override
-	@RequestMapping(method = RequestMethod.GET, value = "/{id}", params = { "show" })
-	public ResponseEntity<Object> getByIdAndFilterOutput(@PathVariable Long id, @RequestParam("show") String filterString){
-		try {
+			if (null == filterString)
+				return response(getService().findOne(id));
 			return response(getService().findAndFilter(id, filterString));
 		} catch (ApiException e) {
 			logger.error(e.getMessage(), e);
@@ -66,22 +54,13 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Object> getAll() {
+	public ResponseEntity<Object> getAll(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestParam(value = "showAll", required = false) String showAll) {
 		try {
-			return response(getService().findAll());
-		} catch (ApiException e) {
-			logger.error(e.getMessage(), e);
-			return responseNotFound(ARRAY, new ErrorDTO(e, httpServletRequest));
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return responseInternalServerError(ARRAY, new ErrorDTO(httpServletRequest));
-		}
-	}
-
-	@Override
-	@RequestMapping(method = RequestMethod.GET, params = { "page", "size" })
-	public ResponseEntity<Object> getAllPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
-		try {
+			if (null!=showAll && showAll.matches("(?i)^(yes|true|ok|1|show|showall)$"))
+				return response(getService().findAll());
 			return response(getService().findPaginated(page, size));
 		} catch (ApiException e) {
 			logger.error(e.getMessage(), e);
@@ -93,26 +72,9 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 	}
 
 	@Override
-	@RequestMapping(method = RequestMethod.GET, params = { "page" })
-	public ResponseEntity<Object> getAllPaginated(@RequestParam("page") int page) {
-		try {
-			return response(getService().findPaginated(page, 10));
-		} catch (ApiException e) {
-			logger.error(e.getMessage(), e);
-			return responseNotFound(ARRAY, new ErrorDTO(e, httpServletRequest));
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return responseInternalServerError(ARRAY, new ErrorDTO(httpServletRequest));
-		}
-	}
-
-
-	@Override
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Object> create(@RequestBody T entity) {
 		try {
-			if (!isAuthorized("sadmin", "admin"))
-				return responseUnauthorized(OBJECT, new ErrorDTO(new ApiException(ErrorCode.UNAUTHORIZED), httpServletRequest));
 			getService().create(entity);
 			JSONObject data = new JSONObject();
 			data.put("success", true);
@@ -131,8 +93,6 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<Object> update(@RequestBody T entity) {
 		try {
-			if (!isAuthorized("sadmin", "admin"))
-				return responseUnauthorized(OBJECT, new ErrorDTO(new ApiException(ErrorCode.UNAUTHORIZED), httpServletRequest));
 			getService().update(entity);
 			JSONObject data = new JSONObject();
 			data.put("success", true);
@@ -149,31 +109,15 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 
 	@Override
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity<Object> delete(@RequestBody T entity) {
+	public ResponseEntity<Object> delete(@RequestBody(required = false) T entity, @RequestParam(value = "id", required = false) Long id) {
 		try {
-			if (!isAuthorized("sadmin", "admin"))
-				return responseUnauthorized(OBJECT, new ErrorDTO(new ApiException(ErrorCode.UNAUTHORIZED), httpServletRequest));
-			getService().delete(entity);
-			JSONObject data = new JSONObject();
-			data.put("success", true);
-			data.put("message", tClass.getName() + " successfully deleted");
-			return response(data);
-		} catch (ApiException e) {
-			logger.error(e.getMessage(), e);
-			return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
-		}
-	}
-
-	@Override
-	@RequestMapping(method = RequestMethod.DELETE, params = { "id"} )
-	public ResponseEntity<Object> deleteById(@RequestParam("id") long id) {
-		try {
-			if (!isAuthorized("sadmin", "admin"))
-				return responseUnauthorized(OBJECT, new ErrorDTO(new ApiException(ErrorCode.UNAUTHORIZED), httpServletRequest));
-			getService().deleteById(id);
+			if (null!=id && null==entity) {
+				getService().deleteById(id);
+			}else if (null!=entity && null==id) {
+				getService().delete(entity);
+			} else {
+				return responseBadRequest(OBJECT, new ErrorDTO(httpServletRequest));
+			}
 			JSONObject data = new JSONObject();
 			data.put("success", true);
 			data.put("message", tClass.getName() + " successfully deleted");
