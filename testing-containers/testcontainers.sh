@@ -2,7 +2,7 @@
 
 CONTAINERS=$@
 
-for f in CONTAINERS
+for f in $CONTAINERS
 do
   if docker container ls | grep $f > /dev/null; then
     echo "stopping old $f container"

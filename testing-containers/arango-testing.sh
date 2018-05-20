@@ -4,6 +4,6 @@ USERNAME=root
 PASSWORD=mddv
 DATABASE=test
 PORT=8529
-VOLUME=./arangodb-data
+VOLUME=$PWD/data/arangodb
 
 docker run --name $1 -e ARANGO_ROOT_PASSWORD=$PASSWORD -v $VOLUME:/var/lib/arangodb3 -p $PORT:8529 -d arangodb/arangodb:3.1
