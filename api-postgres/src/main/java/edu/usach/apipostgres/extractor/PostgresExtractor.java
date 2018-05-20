@@ -1,4 +1,4 @@
-package edu.usach.apimysql.extractor;
+package edu.usach.apipostgres.extractor;
 
 import edu.usach.apicommons.dto.SQLExtractionDTO;
 import edu.usach.apicommons.extractor.AbstractSQLExtractor;
@@ -14,16 +14,16 @@ import java.util.Map;
 
 @SuppressWarnings({"unchecked", "unused"})
 @Slf4j
-public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor {
+public class PostgresExtractor extends AbstractSQLExtractor implements SQLExtractor {
 
 	@Override
 	protected String jdbcUrl(Map<String, Object> connectionParams) {
-		return "jdbc:mysql://" + connectionParams.get("host") + ":" + connectionParams.get("port") + "/" + connectionParams.get("database");
+		return "jdbc:postgresql://" + connectionParams.get("host") + ":" + connectionParams.get("port") + "/" + connectionParams.get("database");
 	}
 
 	@Override
 	public String databaseEngine() {
-		return "MySQL";
+		return "Postgres";
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor
 
 	@Override
 	public String[] supportedVersions() {
-		return new String[]{"5.7", "5.6", "5.5"};
+		return new String[]{"10.4", "9.6", "9.5", "9.4", "8.2"};
 	}
 
 	@Override

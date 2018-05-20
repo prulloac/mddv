@@ -60,7 +60,7 @@ public class H2Extractor extends AbstractSQLExtractor implements SQLExtractor {
 			DatabaseMetaData metaData = connection.getMetaData();
 			SQLExtractionDTO extractionDTO = extract(database, metaData);
 			extractionDTO.setRepositoryEngine(databaseEngine());
-			extractionDTO.setRepositoryEngineVersion(metaData.getDatabaseProductVersion());
+			extractionDTO.setRepositoryEngineVersion(metaData.getDatabaseMajorVersion()+"."+metaData.getDatabaseMinorVersion());
 			return extractionDTO;
 		} catch (SQLException e) {
 			log.error(e.getMessage(), e);

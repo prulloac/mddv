@@ -4,12 +4,16 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
+import edu.usach.apicommons.dto.NoSQLCollectionDTO;
+import edu.usach.apicommons.dto.NoSQLDocumentExtractionDTO;
 import edu.usach.apicommons.extractor.AbstractExtractor;
 import edu.usach.apicommons.extractor.NoSQLExtractor;
 import org.bson.Document;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
@@ -41,7 +45,8 @@ public class MongoExtractor extends AbstractExtractor implements NoSQLExtractor 
 		return parameters;
 	}
 
-	public JSONObject extract(Map<String, Object> connectionParams) {
+	@Override
+	public NoSQLDocumentExtractionDTO extract(Map<String, Object> connectionParams) {
 		String host = (String) connectionParams.get("host");
 		int port = (int) connectionParams.get("port");
 		String username = (String) connectionParams.get("username");
@@ -52,9 +57,15 @@ public class MongoExtractor extends AbstractExtractor implements NoSQLExtractor 
 		MongoCredential credential = MongoCredential.createCredential(username, authDatabase, password.toCharArray());
 		MongoClient mongoClient = new MongoClient(new ServerAddress(host, port), Arrays.asList(credential));
 		MongoDatabase mongoDatabase = mongoClient.getDatabase(database);
-		Document collections = mongoDatabase.runCommand(new Document("listCollections", 1));
+		List<NoSQLCollectionDTO> collections = new ArrayList<>();
+		for(String s : mongoDatabase.listCollectionNames())
+			collections.add(NoSQLCollectionDTO.of(s));
+		NoSQLDocumentExtractionDTO extractionDTO = NoSQLDocumentExtractionDTO.of(collections, databaseType());
     object.put("collections", collections);
-    mongoClient.close();
-		return object;
+		extractionDTO.setRepositoryType(databaseType());
+		extractionDTO.setRepositoryEngine(databaseEngine());
+		extractionDTO.setRepositoryEngineVersion(mongoDatabase.runCommand(Document.parse("{buildInfo: 1}")).getString("version"));
+		mongoClient.close();
+		return extractionDTO;
 	}
 }
