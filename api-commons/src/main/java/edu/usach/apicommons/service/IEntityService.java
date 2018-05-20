@@ -4,6 +4,7 @@ import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.model.IEntity;
 import org.json.simple.JSONObject;
 import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface IEntityService<T extends IEntity> {

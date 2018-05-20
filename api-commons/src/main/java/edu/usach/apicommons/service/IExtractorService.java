@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface IExtractorService<T extends IExtractor> {
 
-	JSONObject extract(Map<String, Object> connectionParams) throws ApiException;
+	Object extract(Map<String, Object> connectionParams) throws ApiException;
 
 	JSONObject getParameters() throws ApiException;
 

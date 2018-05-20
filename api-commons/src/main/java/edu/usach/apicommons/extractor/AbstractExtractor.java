@@ -1,9 +1,8 @@
 package edu.usach.apicommons.extractor;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class AbstractExtractor implements IExtractor{
-	protected final Logger logger = LogManager.getLogger(getClass());
 
 }

@@ -9,6 +9,8 @@ import edu.usach.apimain.dto.UserCredentialsDTO;
 import edu.usach.apimain.dto.UserTokenDataDTO;
 import edu.usach.apimain.model.AppUser;
 import edu.usach.apimain.service.IAppUserService;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ import static edu.usach.apicommons.util.SecurityUtils.TOKEN_PREFIX;
 @CrossOrigin(maxAge = 7200, exposedHeaders = {"Authorization"})
 @RestController
 @RequestMapping("/users")
+@Slf4j
 public class AppUserController extends EntityController<AppUser> {
 
 	@Autowired
@@ -42,7 +45,7 @@ public class AppUserController extends EntityController<AppUser> {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<Object> login(@RequestBody UserCredentialsDTO credentials) {
-		logger.info("username", credentials.getUsernameOrEmail());
+		log.info("username: {}", credentials.getUsernameOrEmail());
 		try {
 			return validateCredentials(credentials);
 		} catch (ApiException e) {

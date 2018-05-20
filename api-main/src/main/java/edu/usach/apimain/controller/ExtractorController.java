@@ -3,6 +3,7 @@ package edu.usach.apimain.controller;
 import edu.usach.apicommons.controller.AbstractController;
 import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apimain.service.IExtractorService;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import static edu.usach.apicommons.util.Constants.OBJECT;
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/extractors")
+@Slf4j
 public class ExtractorController extends AbstractController {
 
 	@Autowired
@@ -27,7 +29,7 @@ public class ExtractorController extends AbstractController {
 		try {
 			return response(service.getExtractors(engine, version));
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(ARRAY, new ErrorDTO(httpServletRequest));
 		}
 	}
@@ -41,7 +43,7 @@ public class ExtractorController extends AbstractController {
 		try {
 			return new ResponseEntity<>(service.callExtractor(engine, version, connectionParams), HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
@@ -54,7 +56,7 @@ public class ExtractorController extends AbstractController {
 		try {
 			return new ResponseEntity<>(service.getExtractorParams(engine, version), HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}

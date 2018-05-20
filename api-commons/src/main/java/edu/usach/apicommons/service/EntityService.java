@@ -4,10 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorCode;
-import edu.usach.apicommons.model.DeletableEntityInterface;
 import edu.usach.apicommons.model.IEntity;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import edu.usach.apicommons.model.impl.AbstractDeletableEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -18,13 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.ParameterizedType;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @SuppressWarnings("unchecked")
-public abstract class EntityService<T extends IEntity> implements IEntityService<T> {
-
-	protected final Logger logger = LogManager.getLogger(getClass());
+@Slf4j
+public abstract class EntityService<T extends IEntity> extends AbstractService implements IEntityService<T> {
 
 	private Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 
@@ -85,10 +85,10 @@ public abstract class EntityService<T extends IEntity> implements IEntityService
 	@Transactional
 	public void delete(final T entity) throws ApiException {
 		try {
-			if (entity instanceof DeletableEntityInterface) {
-				if (((DeletableEntityInterface) entity).isDeleted()) return;
-				((DeletableEntityInterface) entity).setDeleted(true);
-				((DeletableEntityInterface) entity).setDeletedTimestamp(LocalDateTime.now());
+			if (entity instanceof AbstractDeletableEntity) {
+				if (((AbstractDeletableEntity) entity).isDeleted()) return;
+				((AbstractDeletableEntity) entity).setDeleted(true);
+				((AbstractDeletableEntity) entity).setDeletedTimestamp(LocalDateTime.now());
 				getDao().save(entity);
 			} else {
 				getDao().delete(entity);

@@ -8,7 +8,7 @@ public interface IExtractor {
 	String databaseEngine();
 	String databaseType();
 	String[] supportedVersions();
-	JSONObject extract(Map<String, Object> connectionParams);
 	JSONObject connectionParameters();
+	Object extract(Map<String, Object> connectionParams);
 	boolean isRelational();
 }

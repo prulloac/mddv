@@ -7,6 +7,7 @@ import edu.usach.apicommons.service.IEntityService;
 import edu.usach.apimain.model.Repository;
 import edu.usach.apimain.service.IRepositoryService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import static edu.usach.apicommons.util.Constants.OBJECT;
 @RestController
 @RequestMapping("/repositories")
 @SuppressWarnings("unchecked")
+@Slf4j
 public class RepoController extends EntityController<Repository> {
 
 	@Autowired
@@ -38,10 +40,10 @@ public class RepoController extends EntityController<Repository> {
       data.put("message", "Repository successfully created");
       return responseCreated(data);
     } catch (ApiException e) {
-      logger.error(e.getMessage(), e);
+      log.error(e.getMessage(), e);
       return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
     } catch (Exception e) {
-      logger.error(e.getMessage(), e);
+      log.error(e.getMessage(), e);
       return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
     }
   }
@@ -56,10 +58,10 @@ public class RepoController extends EntityController<Repository> {
       data.put("message", "Repository successfully updated");
       return response(data);
     } catch (ApiException e) {
-      logger.error(e.getMessage(), e);
+      log.error(e.getMessage(), e);
       return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
     } catch (Exception e) {
-      logger.error(e.getMessage(), e);
+      log.error(e.getMessage(), e);
       return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
     }
   }
@@ -72,10 +74,10 @@ public class RepoController extends EntityController<Repository> {
 			}
 			return responseUnauthorized(OBJECT, new ErrorDTO(httpServletRequest));
 		} catch (ApiException e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
@@ -85,7 +87,7 @@ public class RepoController extends EntityController<Repository> {
 		try {
 			return response(service.extractables());
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
@@ -95,7 +97,7 @@ public class RepoController extends EntityController<Repository> {
 		try {
 			return response(service.extractableTypes());
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}

@@ -1,8 +1,7 @@
 package edu.usach.apicommons.controller;
 
 import edu.usach.apicommons.errorhandling.ErrorDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,8 +12,8 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @SuppressWarnings("unchecked")
+@Slf4j
 public abstract class AbstractController {
-	protected final Logger logger = LogManager.getLogger(getClass());
 
 	@Autowired
 	protected HttpServletRequest httpServletRequest;

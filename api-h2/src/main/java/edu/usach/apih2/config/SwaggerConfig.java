@@ -28,7 +28,7 @@ public class SwaggerConfig {
 
 	private ApiInfo apiInfo() {
 		return new ApiInfo(
-				"MDDV MySQL Extractor API",
+				"MDDV H2 Extractor API",
 				"Some custom description of API.",
 				"v1",
 				"Terms of service",

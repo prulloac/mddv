@@ -4,6 +4,7 @@ import org.atteo.evo.inflector.English;
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
+
 import static com.google.common.base.CaseFormat.*;
 
 public class SnakeCaseNamingStrategy extends PhysicalNamingStrategyStandardImpl {

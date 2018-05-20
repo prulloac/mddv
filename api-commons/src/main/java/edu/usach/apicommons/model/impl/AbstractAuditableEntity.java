@@ -1,14 +1,18 @@
 package edu.usach.apicommons.model.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import edu.usach.apicommons.model.AuditableEntityInterface;
+import edu.usach.apicommons.model.IEntity;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-public abstract class AbstractAuditableEntity extends AbstractIdentityEntity implements AuditableEntityInterface {
+@Getter
+@Setter
+public abstract class AbstractAuditableEntity extends AbstractIdentityEntity implements IEntity {
   private static final long serialVersionUID = 1L;
 
 	@JsonIgnore
@@ -21,26 +25,6 @@ public abstract class AbstractAuditableEntity extends AbstractIdentityEntity imp
 	public AbstractAuditableEntity() {
 		this.creationTimestamp = LocalDateTime.now();
 		this.modificationTimestamp = LocalDateTime.now();
-	}
-
-	@Override
-	public LocalDateTime getModificationTimestamp() {
-		return modificationTimestamp;
-	}
-
-	@Override
-	public void setModificationTimestamp(LocalDateTime modicationTimestamp) {
-		this.modificationTimestamp = modicationTimestamp;
-	}
-
-	@Override
-	public LocalDateTime getCreationTimestamp() {
-		return creationTimestamp;
-	}
-
-	@Override
-	public void setCreationTimestamp(LocalDateTime creationTimestamp) {
-		this.creationTimestamp = creationTimestamp;
 	}
 
 }

@@ -1,12 +1,12 @@
 package edu.usach.apicommons.controller;
 
 import edu.usach.apicommons.errorhandling.ApiException;
-import edu.usach.apicommons.errorhandling.ErrorCode;
 import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apicommons.model.IEntity;
 import edu.usach.apicommons.model.ISecureEntity;
 import edu.usach.apicommons.service.IEntityService;
 import edu.usach.apicommons.util.SecurityUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +18,7 @@ import static edu.usach.apicommons.util.Constants.OBJECT;
 import static edu.usach.apicommons.util.SecurityUtils.HEADER_STRING;
 
 @SuppressWarnings("unchecked")
+@Slf4j
 public abstract class EntityController<T extends IEntity> extends AbstractController implements IEntityController<T> {
 
 	private Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -44,10 +45,10 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 				return response(getService().findOne(id));
 			return response(getService().findAndFilter(id, filterString));
 		} catch (ApiException e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
@@ -63,10 +64,10 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 				return response(getService().findAll());
 			return response(getService().findPaginated(page, size));
 		} catch (ApiException e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseNotFound(ARRAY, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(ARRAY, new ErrorDTO(httpServletRequest));
 		}
 	}
@@ -81,10 +82,10 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 			data.put("message", tClass.getName() + " successfully created");
 			return responseCreated(data);
 		} catch (ApiException e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
@@ -99,10 +100,10 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 			data.put("message", tClass.getName() + " successfully updated");
 			return response(data);
 		} catch (ApiException e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}
@@ -123,10 +124,10 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 			data.put("message", tClass.getName() + " successfully deleted");
 			return response(data);
 		} catch (ApiException e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
 		}
 	}

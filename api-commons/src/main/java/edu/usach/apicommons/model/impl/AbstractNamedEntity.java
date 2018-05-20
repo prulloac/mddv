@@ -1,25 +1,19 @@
 package edu.usach.apicommons.model.impl;
 
-import edu.usach.apicommons.model.NamedEntityInterface;
+import edu.usach.apicommons.model.IEntity;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbstractNamedEntity extends AbstractIdentityEntity implements NamedEntityInterface {
+@Getter
+@Setter
+public abstract class AbstractNamedEntity extends AbstractIdentityEntity implements IEntity {
   private static final long serialVersionUID = 1L;
 
 	@Column(nullable = false, unique = true)
 	private String name;
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
 
 }
