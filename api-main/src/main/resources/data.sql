@@ -72,3 +72,6 @@ INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
 INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
 	select 'mongodb-extractor' name, 'http://188.166.34.128:8084/mddv-mongodb-extractor/api/v1/extractor' api_url, 'MongoDB' supported_engine, '3.4' supported_versions
 	where not exists (select name, supported_engine, supported_versions from extractors where name = 'mongodb-extractor' and supported_engine = 'MongoDB' and supported_versions = '3.4');
+INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
+	select 'postgres-extractor' name, 'http://188.166.34.128:8085/mddv-postgres-extractor/api/v1/extractor' api_url, 'Postgres' supported_engine, '10.4,9.6,9.5,9.4,8.2' supported_versions
+	where not exists (select name, supported_engine, supported_versions from extractors where name = 'postgres-extractor' and supported_engine = 'Postgres' and supported_versions = '10.4,9.6,9.5,9.4,8.2');
