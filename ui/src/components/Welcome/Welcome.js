@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Header, Image } from 'semantic-ui-react'
+import { withRouter } from 'react-router-dom'
 import img from 'utils/Img'
 
 import './Welcome.scss'
@@ -15,9 +15,9 @@ class Welcome extends Component {
   render() {
     return (
       <div>
-        <Header as="h1">Bienvenido!</Header>
-        <Image src={img.mediaParagraph} style={{ marginTop: '2em' }} />
-        <Image src={img.paragraph} style={{ marginTop: '2em' }} />
+        <h1>Bienvenido!</h1>
+        <img alt="paragraph" src={img.mediaParagraph} style={{ marginTop: '2em' }} />
+        <img alt="paragraph" src={img.paragraph} style={{ marginTop: '2em' }} />
       </div>
     )
   }
@@ -28,4 +28,4 @@ const mapStateToProps = state => {
   return { repositories, repository }
 }
 
-export default connect(mapStateToProps)(Welcome)
+export default withRouter(connect(mapStateToProps)(Welcome))

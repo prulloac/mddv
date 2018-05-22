@@ -1,17 +1,21 @@
-import React from 'react'
-import { HashRouter } from 'react-router-dom'
-import LoginPage from 'components/LoginPage'
-import Dashboard from 'components/Dashboard'
+import React, { Component } from 'react'
+// import LoginPage from 'components/LoginPage'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import Dashboard from '../Dashboard'
 
 import './App.scss'
 
-const App = (props) => {
-  const { isAuthenticated } = props
-  if (!isAuthenticated) {
-    return (<LoginPage />)
+class App extends Component {
+  render() {
+    const { isAuthenticated } = this.props
+    if (isAuthenticated) {
+      return (null)
+    }
+    return (
+      <Dashboard />
+    )
   }
-  return (<HashRouter><Dashboard /></HashRouter>)
 }
 
 const mapStateToProps = state => {
@@ -19,4 +23,4 @@ const mapStateToProps = state => {
   return { isAuthenticated }
 }
 
-export default connect(mapStateToProps)(App)
+export default withRouter(connect(mapStateToProps)(App))
