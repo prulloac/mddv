@@ -15,12 +15,8 @@ public abstract class AbstractDeletableEntity extends AbstractAuditableEntity im
   private static final long serialVersionUID = 1L;
 
 	@JsonIgnore
-	private boolean deleted;
+	private Boolean deleted = false;
 	@JsonIgnore
 	private LocalDateTime deletedTimestamp;
-
-	public AbstractDeletableEntity() {
-		this.deleted = false;
-	}
 
 }

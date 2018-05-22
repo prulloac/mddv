@@ -86,7 +86,7 @@ public abstract class EntityService<T extends IEntity> extends AbstractService i
 	public void delete(final T entity) throws ApiException {
 		try {
 			if (entity instanceof AbstractDeletableEntity) {
-				if (((AbstractDeletableEntity) entity).isDeleted()) return;
+				if (((AbstractDeletableEntity) entity).getDeleted()) return;
 				((AbstractDeletableEntity) entity).setDeleted(true);
 				((AbstractDeletableEntity) entity).setDeletedTimestamp(LocalDateTime.now());
 				getDao().save(entity);
