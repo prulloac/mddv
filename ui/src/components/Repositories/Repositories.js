@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Switch, Route, Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Button } from 'react-materialize'
+import { Button, Typography, withStyles } from '@material-ui/core'
 import repositoryActions from '../../redux/actions/repository-actions'
 import NewRepositoryForm from './NewRepositoryForm'
 import RepositoryList from './RepositoryList'
@@ -22,23 +22,23 @@ class Repositories extends Component {
   }
 
   render() {
-    const { currentPage, extractableEngines } = this.props
-    const { repositoryName, repositoryType, repositoryLocation } = this.state
-    const repositoryForm = (repositoryName && repositoryType && extractableEngines) ?
-      this.editRepositoryForm(repositoryName, extractableEngines, repositoryType, repositoryLocation) : null
+    const { match } = this.props
     return (
       <div>
-        <div>
-          <h1>Repositorios</h1>
-          <Button waves="light" node={Link} to="/repository/list">Ver repositorios registrados</Button>
-          <Button waves="light" node={Link} to="/repository/new">Registrar nuevo repositorio</Button>
+        <Typography variant="headline">Repositorios</Typography>
+        <div className="mddv-buttons">
+          <Button variant="raised" component={Link} to={`${match.path}/list`}>
+            Ver repositorios registrados
+          </Button>
+          <Button variant="raised" component={Link} to="/repository/new">
+            Registrar nuevo repositorio
+          </Button>
         </div>
         <Switch>
           <Route exact path="/repository/new" component={NewRepositoryForm} />
           <Route exact path="/repository/list" component={RepositoryList} />
           <Route path="/repository/edit/:id" component={EditRepository} />
         </Switch>
-        {(currentPage.match(/\/repositorios\/edit\/\d/)) && (<div>{repositoryForm}</div>)}
       </div>
     )
   }
@@ -46,8 +46,7 @@ class Repositories extends Component {
 
 const mapStateToProps = state => {
   const { repositories, repository, extractableTypes } = state.repositoryReducer
-  const { navigationHistory, currentPage } = state.navigationReducer
-  return { repositories, repository, extractableTypes, navigationHistory, currentPage }
+  return { repositories, repository, extractableTypes }
 }
 
-export default withRouter(connect(mapStateToProps)(Repositories))
+export default withStyles(null)(withRouter(connect(mapStateToProps)(Repositories)))

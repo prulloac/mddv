@@ -1,11 +1,11 @@
 import userActions from './user-actions'
 import repositoryActions from './repository-actions'
-import navigationActions from './navigation-actions'
+import notificationActions from './notification-actions'
 
 const actions = {
   userActions,
   repositoryActions,
-  navigationActions,
+  notificationActions,
 }
 
 export default actions

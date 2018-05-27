@@ -4,14 +4,23 @@
 }
 
 .mddv-footer {
-  position: relative;
+  position: absolute;
   width: 100%;
-  bottom: 0px;
+  margin-bottom: 0px;
   padding: 1em 0em;
+  text-align: center;
 }
 
 .main-area {
   overflow: scroll;
   min-height: 600px;
   margin-left: 50px;
+}
+
+.mddv-buttons {
+  padding: 15px;
+}
+
+.mddv-buttons a {
+  margin: 15px;
 }

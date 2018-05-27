@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
 import userReducer from './user-reducer'
 import repositoryReducer from './repository-reducer'
-import navigationReducer from './navigation-reducer'
+import notificationReducer from './notification-reducer'
 
 const rootReducer = combineReducers({
   userReducer,
   repositoryReducer,
-  navigationReducer,
+  notificationReducer,
 })
 
 export default rootReducer

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Header, Image } from 'semantic-ui-react'
+import { withStyles, Typography } from '@material-ui/core'
 import img from 'utils/Img'
 
 import './BusinessObjects.scss'
@@ -15,16 +16,15 @@ class BusinessObjects extends Component {
   render() {
     return (
       <div>
-        <Header as="h1">Objetos de Negocio</Header>
+        <Typography variant="headline">Objetos de Negocio</Typography>
         <p>This is a basic fixed menu template using fixed size containers.</p>
         <p>
           A text container is used for the main container,
           which is useful for single column layouts.
         </p>
-        <Image src={img.mediaParagraph} style={{ marginTop: '2em' }} />
-        <Image src={img.paragraph} style={{ marginTop: '2em' }} />
-        <Image src={img.paragraph} style={{ marginTop: '2em' }} />
-        <Image src={img.paragraph} style={{ marginTop: '2em' }} />
+        <img alt="" src={img.mediaParagraph} style={{ marginTop: '2em' }} />
+        <img alt="" src={img.paragraph} style={{ marginTop: '2em' }} />
+        <img alt="" src={img.paragraph} style={{ marginTop: '2em' }} />
       </div>
     )
   }
@@ -35,4 +35,4 @@ const mapStateToProps = state => {
   return { repositories, repository }
 }
 
-export default connect(mapStateToProps)(BusinessObjects)
+export default withStyles(null)(withRouter(connect(mapStateToProps)(BusinessObjects)))

@@ -8,7 +8,7 @@ const create = ({
   token = '',
 }) =>
   httpClient.post({
-    endpoint: '/repositories',
+    endpoint: 'repositories',
     data: {
       location,
       name,

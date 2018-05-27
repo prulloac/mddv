@@ -1,45 +1,35 @@
 import React from 'react'
+import { List, Icon, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-import { SideNav, Icon, SideNavItem } from 'react-materialize'
-import img from '../../utils/Img/Img'
 import './Sidenav.scss'
 
-const Sidenav = ({ trigger }) => (
-  <SideNav
-    trigger={trigger}
-    options={{ closeOnClick: true }}
-    className="mddv-sidenav"
-  >
-    <SideNavItem
-      userView
-      user={{
-        image: img.maleAvatar,
-        name: 'Admin',
-        email: 'admin@mddv.com',
-        background: img.officeBackground,
-      }}
-    />
-    <li>
-      <Link to="/repository">
-        <Icon small left>storage</Icon>
+const Sidenav = () => (
+  <List>
+    <ListItem button component={Link} to="/repository">
+      <ListItemIcon>
+        <Icon>storage</Icon>
+      </ListItemIcon>
+      <ListItemText>
         Repositorios
-      </Link>
-    </li>
-    <SideNavItem divider />
-    <li>
-      <Link to="/businessObject">
+      </ListItemText>
+    </ListItem>
+    <ListItem button component={Link} to="/business">
+      <ListItemIcon>
         <Icon>card_travel</Icon>
+      </ListItemIcon>
+      <ListItemText>
         Objetos de Negocio
-      </Link>
-    </li>
-    <SideNavItem divider />
-    <li>
-      <Link to="/model">
+      </ListItemText>
+    </ListItem>
+    <ListItem button component={Link} to="/model">
+      <ListItemIcon>
         <Icon>scatter_plot</Icon>
+      </ListItemIcon>
+      <ListItemText>
         Modelos
-      </Link>
-    </li>
-  </SideNav>
+      </ListItemText>
+    </ListItem>
+  </List>
 )
 
 export default Sidenav

@@ -1,6 +1,7 @@
 import RepositoryService from '../../services/RepositoryService'
 import repositoryActionTypes from '../action-types/repository-action-types'
 import extractorActionTypes from '../action-types/extractor-action-types'
+import notificationActions from './notification-actions'
 
 const resetRepository = () => {
   const reset = () => ({ type: repositoryActionTypes.REPO_RESET, payload: null })
@@ -15,7 +16,10 @@ const findById = (id = 0) => {
     dispatch(request(id))
     RepositoryService.findById(id).then(
       response => dispatch(success(response.data.data)),
-      error => dispatch(failure(error)),
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('Ha ocurrido un error cargando el repositorio solicitado'))
+      },
     )
   }
 }
@@ -33,15 +37,18 @@ const findByName = (name = '') => {
   }
 }
 
-const getAll = (name = '') => {
+const getAll = () => {
   const request = (repository) => ({ type: repositoryActionTypes.R_ALL_REPO, payload: repository })
   const success = (repository) => ({ type: repositoryActionTypes.R_ALL_REPO_SUCCESS, payload: repository })
   const failure = (error) => ({ type: repositoryActionTypes.R_ALL_REPO_FAILURE, payload: error })
   return dispatch => {
-    dispatch(request(name))
-    RepositoryService.getAll(name).then(
+    dispatch(request())
+    RepositoryService.getAll().then(
       response => dispatch(success(response.data.data)),
-      error => dispatch(failure(error)),
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('No existen repositorios registrados'))
+      },
     )
   }
 }
@@ -67,8 +74,14 @@ const create = ({ location = '', name = '', outsourced = false, type = '' }) => 
   return dispatch => {
     dispatch(request(name))
     RepositoryService.create({ location, name, outsourced, type }).then(
-      response => dispatch(success(response)),
-      error => dispatch(failure(error)),
+      response => {
+        dispatch(success(response))
+        dispatch(notificationActions.notify('Repositorio exitosamente registrado!'))
+      },
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('Ha ocurrido un error en la creacion del repositorio'))
+      },
     )
     dispatch(getAll())
   }
@@ -81,8 +94,14 @@ const update = ({ id = 0, location = '', name = '', outsourced = false, type = '
   return dispatch => {
     dispatch(request(name))
     RepositoryService.update({ id, location, name, outsourced, type }).then(
-      response => dispatch(success(response)),
-      error => dispatch(failure(error)),
+      response => {
+        dispatch(success(response))
+        dispatch(notificationActions.notify('Repositorio exitosamente actualizado!'))
+      },
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('Ha ocurrido un error en la actualización del repositorio'))
+      },
     )
   }
 }
@@ -94,8 +113,14 @@ const del = (id = 0) => {
   return dispatch => {
     dispatch(request(id))
     RepositoryService.delete(id).then(
-      response => dispatch(success(response)),
-      error => dispatch(failure(error)),
+      response => {
+        dispatch(success(response))
+        dispatch(notificationActions.notify('Repositorio exitosamente eliminado!'))
+      },
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('Ha ocurrido un error al eliminar el repositorio'))
+      },
     )
   }
 }
