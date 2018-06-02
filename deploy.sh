@@ -13,5 +13,5 @@ cd $ROOT_DIR/testing-containers
 for d in mysql arango h2 mongo postgres
 do
   echo "running $d database container"
-  sh testingcontainers.sh $d-testing
+  sh testcontainers.sh $d-testing
 done
