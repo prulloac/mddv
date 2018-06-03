@@ -9,5 +9,7 @@ const rootReducer = combineReducers({
   notificationReducer,
 })
 
-export default rootReducer
 export { rootReducer }
+export { userReducer }
+export { repositoryReducer }
+export { notificationReducer }

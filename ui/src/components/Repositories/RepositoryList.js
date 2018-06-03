@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { Card, Button, CardContent, Typography, CardActions, Icon } from '@material-ui/core'
-import repositoryActions from '../../redux/actions/repository-actions'
+import { repositoryActions } from '../../redux/actions'
 
 class RepositoryList extends Component {
   constructor(props) {

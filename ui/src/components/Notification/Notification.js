@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Snackbar, withStyles } from '@material-ui/core'
-import notificationActions from '../../redux/actions/notification-actions'
+import { notificationActions } from '../../redux/actions'
 
 class Notification extends Component {
   handleClose = () => {

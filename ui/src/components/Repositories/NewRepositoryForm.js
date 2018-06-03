@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles, TextField, FormGroup, Button, InputLabel, NativeSelect, FormControl } from '@material-ui/core'
 import { Save } from '@material-ui/icons'
-import repositoryActions from '../../redux/actions/repository-actions'
+import { repositoryActions } from '../../redux/actions'
 
 class NewRepositoryForm extends Component {
   constructor(props) {

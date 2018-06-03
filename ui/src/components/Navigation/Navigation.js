@@ -5,7 +5,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import Sidenav from '../Sidenav/Sidenav'
-import actions from '../../redux/actions/actions'
+import { userActions } from '../../redux/actions'
 import { Img, Session } from '../../utils'
 import styles from './Navigation-style'
 import './Navigation.scss'
@@ -20,7 +20,7 @@ class Navigation extends Component {
 
   logout = () => {
     const { dispatch } = this.props
-    dispatch(actions.userActions.logout())
+    dispatch(userActions.logout())
   }
 
   handleDrawerOpen = () => {

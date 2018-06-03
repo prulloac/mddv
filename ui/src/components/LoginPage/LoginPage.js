@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Paper, FormGroup, FormControl, TextField, Typography, Button, Icon } from '@material-ui/core'
-import actions from '../../redux/actions/actions'
+import { userActions } from '../../redux/actions'
 import { Img } from '../../utils'
 import './LoginPage.scss'
 
@@ -26,7 +26,7 @@ class LoginPage extends Component {
     const { username, password } = this.state
     const { dispatch } = this.props
     if (username && password) {
-      dispatch(actions.userActions.login(username, password))
+      dispatch(userActions.login(username, password))
     }
   }
 
