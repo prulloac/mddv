@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withStyles, Typography } from '@material-ui/core'
-import Notification from '../Notification/Notification'
 import Navigation from '../Navigation/Navigation'
 import Welcome from '../Welcome/Welcome'
 import Repositories from '../Repositories/Repositories'
@@ -42,7 +41,6 @@ class Dashboard extends Component {
             Copyright &copy; 2018 Pablo Ricardo Ulloa Castro - MIT License
           </Typography>
         </div>
-        <Notification />
       </div>
     )
   }

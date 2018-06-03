@@ -1,5 +1,14 @@
-body > div,
-body > div > div,
-body > div > div > div.login-form {
-  height: 100%;
+.login-card {
+  width: 60%;
+  position: absolute;
+  margin-top: 15%;
+  margin-left: 20%;
+  text-align: center;
+}
+
+.login-form {
+  width: 80%;
+  position: relative;
+  padding: 2em;
+  margin: auto;
 }

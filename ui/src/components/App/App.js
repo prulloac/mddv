@@ -1,19 +1,37 @@
 import React, { Component } from 'react'
-// import LoginPage from 'components/LoginPage'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import Dashboard from '../Dashboard'
+import Dashboard from '../Dashboard/Dashboard'
+import LoginPage from '../LoginPage/LoginPage'
+import Notification from '../Notification/Notification'
+import Session from '../../utils/Session/Session'
+import actions from '../../redux/actions/actions'
 
 import './App.scss'
 
+
 class App extends Component {
+  constructor(props) {
+    super(props)
+    if (Session.checkToken()) {
+      this.props.dispatch(actions.userActions.validateUser())
+    }
+  }
   render() {
     const { isAuthenticated } = this.props
-    if (isAuthenticated) {
-      return (null)
+    if (!isAuthenticated) {
+      return (
+        <div>
+          <LoginPage />
+          <Notification />
+        </div>
+      )
     }
     return (
-      <Dashboard />
+      <div>
+        <Dashboard />
+        <Notification />
+      </div>
     )
   }
 }

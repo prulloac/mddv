@@ -1,69 +1,43 @@
 import UserService from '../../services/UserService'
 import userActionTypes from '../action-types/user-action-types'
+import notificationActions from './notification-actions'
+import Session from '../../utils/Session/Session'
 
 const login = (username = '', password = '') => {
-  const request = (user) => ({ type: userActionTypes.FETCH_TOKEN, payload: user })
-  const success = (token, user) => ({
-    type: userActionTypes.FETCH_TOKEN_SUCCESS,
-    payload: { token, user },
-  })
+  const request = () => ({ type: userActionTypes.FETCH_TOKEN, payload: null })
+  const success = () => ({ type: userActionTypes.FETCH_TOKEN_SUCCESS, payload: null })
   const failure = (error) => ({ type: userActionTypes.FETCH_TOKEN_FAILURE, payload: error })
   return dispatch => {
-    dispatch(request({ username }))
+    dispatch(request())
     UserService.login(username, password).then(
-      response => dispatch(success(response.headers.authorization, response.data)),
-      error => dispatch(failure(error)),
+      response => {
+        Session.setSession(response.headers.authorization)
+        dispatch(success())
+        dispatch(notificationActions.notify('Sesión iniciada'))
+      },
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('Error al iniciar sesión'))
+      },
     )
   }
 }
 
-const logout = () => ({ type: userActionTypes.TOKEN_RESET, payload: '' })
-
-const findById = (id = 0) => {
-  const request = (user) => ({ type: userActionTypes.R_USER, payload: user })
-  const success = (user) => ({ type: userActionTypes.R_USER_SUCCESS, payload: user })
-  const failure = (error) => ({ type: userActionTypes.R_USER_FAILURE, payload: error })
+const logout = () => {
+  const resetToken = () => ({ type: userActionTypes.TOKEN_RESET, payload: null })
   return dispatch => {
-    dispatch(request(id))
-    UserService.findById(id).then(
-      response => dispatch(success(response.data)),
-      error => dispatch(failure(error)),
-    )
+    Session.logOut()
+    dispatch(resetToken())
+    dispatch(notificationActions.notify('Sesión finalizada'))
   }
 }
 
-const findByName = (name = '') => {
-  const request = (user) => ({ type: userActionTypes.R_USER, payload: user })
-  const success = (user) => ({ type: userActionTypes.R_USER_SUCCESS, payload: user })
-  const failure = (error) => ({ type: userActionTypes.R_USER_FAILURE, payload: error })
-  return dispatch => {
-    dispatch(request(name))
-    UserService.findByName(name).then(
-      response => dispatch(success(response.data)),
-      error => dispatch(failure(error)),
-    )
-  }
-}
-
-const findByUsername = (username = '') => {
-  const request = (user) => ({ type: userActionTypes.R_USER, payload: user })
-  const success = (user) => ({ type: userActionTypes.R_USER_SUCCESS, payload: user })
-  const failure = (error) => ({ type: userActionTypes.R_USER_FAILURE, payload: error })
-  return dispatch => {
-    dispatch(request(username))
-    UserService.findByUsername(username).then(
-      response => dispatch(success(response.data)),
-      error => dispatch(failure(error)),
-    )
-  }
-}
+const validateUser = () => ({ type: userActionTypes.FETCH_TOKEN_SUCCESS, payload: null })
 
 const userActions = {
   login,
   logout,
-  findById,
-  findByName,
-  findByUsername,
+  validateUser,
 }
 
 export default userActions

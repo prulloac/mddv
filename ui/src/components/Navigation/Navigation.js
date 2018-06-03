@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import { AppBar, Toolbar, withStyles, IconButton, Drawer, Typography } from '@material-ui/core'
+import { AppBar, Toolbar, withStyles, IconButton, Drawer, Typography, Icon, Button } from '@material-ui/core'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import Sidenav from '../Sidenav/Sidenav'
-import userActions from '../../redux/actions/user-actions'
+import actions from '../../redux/actions/actions'
 import img from '../../utils/Img/Img'
 import styles from './Navigation-style'
+import Session from '../../utils/Session/Session'
+import './Navigation.scss'
 
 class Navigation extends Component {
   constructor(props) {
@@ -19,7 +21,7 @@ class Navigation extends Component {
 
   logout = () => {
     const { dispatch } = this.props
-    dispatch(userActions.logout())
+    dispatch(actions.userActions.logout())
   }
 
   handleDrawerOpen = () => {
@@ -41,16 +43,30 @@ class Navigation extends Component {
         >
           <Toolbar disableGutters={!this.state.open}>
             <IconButton
-              color="inherit"
-              aria-label="open drawer"
+              aria-label="open sidebar"
               onClick={this.handleDrawerOpen}
               className={classNames(classes.menuButton, this.state.open && classes.hide)}
             >
               <img alt="Mddv" src={img.mddvLogo} width={45} />
             </IconButton>
-            <Typography variant="title" color="inherit" noWrap>
+            <Typography variant="title" color="inherit" className={classes.flex}>
               Mddv
             </Typography>
+            <Icon>account_circle</Icon>
+            <Typography variant="body2" autoCapitalize="ok" color="inherit" style={{ marginLeft: '1em' }}>
+              {Session.getUserData().username}
+            </Typography>
+            <Button
+              color="inherit"
+              onClick={this.logout}
+              style={{ width: '15%' }}
+              variant="flat"
+            >
+              <Icon>exit_to_app</Icon>
+              <Typography variant="body2" autoCapitalize="ok" color="inherit" style={{ marginLeft: '1em' }}>
+                Salir
+              </Typography>
+            </Button>
           </Toolbar>
         </AppBar>
         <Drawer
