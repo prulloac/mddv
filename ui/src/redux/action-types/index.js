@@ -13,3 +13,8 @@ const actionTypes = {
 }
 
 export default actionTypes
+export { userActionTypes }
+export { repositoryActionTypes }
+export { objectActionTypes }
+export { notificationActionTypes }
+export { extractorActionTypes }

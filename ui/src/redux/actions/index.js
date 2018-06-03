@@ -7,3 +7,7 @@ export default {
   repositoryActions,
   notificationActions,
 }
+
+export { userActions }
+export { repositoryActions }
+export { notificationActions }
