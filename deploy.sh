@@ -2,10 +2,10 @@
 
 ROOT_DIR=$PWD
 
-for f in commons main mysql arango h2 mongo postgres
+for f in api-commons api-main api-mysql api-arango api-h2 api-mongo api-postgres ui
 do
-  echo "running script mddv/api-$f/docker.sh"
-  cd $ROOT_DIR/api-$f
+  echo "running script mddv/$f/docker.sh"
+  cd $ROOT_DIR/$f
   sh docker.sh
 done
 
