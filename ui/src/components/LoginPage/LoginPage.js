@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Paper, FormGroup, FormControl, TextField, Typography, Button, Icon } from '@material-ui/core'
 import actions from '../../redux/actions/actions'
-import img from '../../utils/Img/Img'
+import { Img } from '../../utils'
 import './LoginPage.scss'
 
 class LoginPage extends Component {
@@ -14,6 +14,7 @@ class LoginPage extends Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    document.title = 'Iniciar Sesión'
   }
 
   handleChange = (name) => (event) => {
@@ -35,7 +36,7 @@ class LoginPage extends Component {
       <div>
         <Paper elevation={4} className="login-card">
           <Typography variant="title" align="center">
-            <img src={img.mddvLogo} alt="mddv-logo" style={{ width: '50px' }} />
+            <img src={Img.mddvLogo} alt="mddv-logo" style={{ width: '50px' }} />
             <br />
             Mddv - Iniciar Sesión
           </Typography>

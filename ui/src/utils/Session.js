@@ -1,5 +1,5 @@
 import jwt from 'jwt-decode'
-import Constants from '../Constants/Constants'
+import Constants from './Constants'
 
 const checkToken = () => {
   const token = localStorage.getItem(Constants.TOKEN_NAME)

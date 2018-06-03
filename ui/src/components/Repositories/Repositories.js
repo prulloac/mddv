@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import { Switch, Route, Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Button, Typography, withStyles } from '@material-ui/core'
+import { Button, Typography, withStyles, Paper } from '@material-ui/core'
 import repositoryActions from '../../redux/actions/repository-actions'
 import NewRepositoryForm from './NewRepositoryForm'
 import RepositoryList from './RepositoryList'
 import EditRepository from './EditRepository'
+import { title } from '../../utils'
 import './Repositories.scss'
 
 class Repositories extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    title('Repositorios')
   }
 
   deleteRepository = (currentPage = '') => {
@@ -25,7 +25,9 @@ class Repositories extends Component {
     const { match } = this.props
     return (
       <div>
-        <Typography variant="headline">Repositorios</Typography>
+        <Paper elevation={4}>
+          <Typography variant="display1" align="center">Repositorios</Typography>
+        </Paper>
         <div className="mddv-buttons">
           <Button variant="raised" component={Link} to={`${match.path}/list`}>
             Ver repositorios registrados

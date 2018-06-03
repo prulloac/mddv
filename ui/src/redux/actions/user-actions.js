@@ -1,7 +1,7 @@
 import UserService from '../../services/UserService'
 import userActionTypes from '../action-types/user-action-types'
 import notificationActions from './notification-actions'
-import Session from '../../utils/Session/Session'
+import { Session } from '../../utils'
 
 const login = (username = '', password = '') => {
   const request = () => ({ type: userActionTypes.FETCH_TOKEN, payload: null })

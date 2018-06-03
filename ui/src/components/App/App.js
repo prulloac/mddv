@@ -4,9 +4,8 @@ import { withRouter } from 'react-router-dom'
 import Dashboard from '../Dashboard/Dashboard'
 import LoginPage from '../LoginPage/LoginPage'
 import Notification from '../Notification/Notification'
-import Session from '../../utils/Session/Session'
 import actions from '../../redux/actions/actions'
-
+import { title, Session } from '../../utils'
 import './App.scss'
 
 
@@ -16,6 +15,7 @@ class App extends Component {
     if (Session.checkToken()) {
       this.props.dispatch(actions.userActions.validateUser())
     }
+    title()
   }
   render() {
     const { isAuthenticated } = this.props

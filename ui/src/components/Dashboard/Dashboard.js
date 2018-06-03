@@ -9,7 +9,7 @@ import NotFound from '../NotFound/NotFound'
 import Models from '../Models/Models'
 import BusinessObjects from '../BusinessObjects/BusinessObjects'
 import repositoryActions from '../../redux/actions/repository-actions'
-import img from '../../utils/Img'
+import { Img } from '../../utils'
 import './Dashboard.scss'
 
 class Dashboard extends Component {
@@ -36,7 +36,7 @@ class Dashboard extends Component {
           </div>
         </Navigation>
         <div className="teal mddv-footer">
-          <img alt="Mddv" src={img.mddvLogo} className="footer-img" />
+          <img alt="Mddv" src={Img.mddvLogo} className="footer-img" />
           <Typography>
             Copyright &copy; 2018 Pablo Ricardo Ulloa Castro - MIT License
           </Typography>

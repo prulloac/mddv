@@ -6,9 +6,8 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import Sidenav from '../Sidenav/Sidenav'
 import actions from '../../redux/actions/actions'
-import img from '../../utils/Img/Img'
+import { Img, Session } from '../../utils'
 import styles from './Navigation-style'
-import Session from '../../utils/Session/Session'
 import './Navigation.scss'
 
 class Navigation extends Component {
@@ -47,23 +46,29 @@ class Navigation extends Component {
               onClick={this.handleDrawerOpen}
               className={classNames(classes.menuButton, this.state.open && classes.hide)}
             >
-              <img alt="Mddv" src={img.mddvLogo} width={45} />
+              <img alt="Mddv" src={Img.mddvLogo} width={45} />
             </IconButton>
-            <Typography variant="title" color="inherit" className={classes.flex}>
+            <Button variant="flat" color="inherit" href="/" size="small">
               Mddv
-            </Typography>
+            </Button>
+            <div className={classes.flex} />
             <Icon>account_circle</Icon>
-            <Typography variant="body2" autoCapitalize="ok" color="inherit" style={{ marginLeft: '1em' }}>
+            <Typography
+              variant="body2"
+              autoCapitalize="ok"
+              color="inherit"
+              style={{ marginLeft: '1em', marginRight: '2em' }}
+            >
               {Session.getUserData().username}
             </Typography>
             <Button
               color="inherit"
               onClick={this.logout}
-              style={{ width: '15%' }}
               variant="flat"
+              size="small"
             >
               <Icon>exit_to_app</Icon>
-              <Typography variant="body2" autoCapitalize="ok" color="inherit" style={{ marginLeft: '1em' }}>
+              <Typography variant="body2" autoCapitalize="ok" color="inherit" style={{ marginLeft: '0.5em' }}>
                 Salir
               </Typography>
             </Button>

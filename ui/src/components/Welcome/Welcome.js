@@ -1,23 +1,25 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import img from 'utils/Img'
+import { Paper, Typography } from '@material-ui/core'
+import { title, Img } from '../../utils'
 
 import './Welcome.scss'
 
 class Welcome extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    title()
   }
 
   render() {
     return (
       <div>
-        <h1>Bienvenido!</h1>
-        <img alt="paragraph" src={img.mediaParagraph} style={{ marginTop: '2em' }} />
-        <img alt="paragraph" src={img.paragraph} style={{ marginTop: '2em' }} />
+        <Paper elevation={4}>
+          <Typography variant="display1" align="center">Bienvenido!</Typography>
+        </Paper>
+        <img alt="paragraph" src={Img.mediaParagraph} style={{ marginTop: '2em' }} />
+        <img alt="paragraph" src={Img.paragraph} style={{ marginTop: '2em' }} />
       </div>
     )
   }
