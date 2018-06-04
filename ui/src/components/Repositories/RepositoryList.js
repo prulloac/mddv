@@ -32,7 +32,7 @@ class RepositoryList extends Component {
         <CardContent>
           <Typography variant="headline">{repository.name}</Typography>
           <Typography>Tipo: {repository.type} ({repository.version || 'Sin Versión'})</Typography>
-          <Typography>Ubicación: {repository.location}</Typography>
+          <Typography>Ubicación: {repository.location} <Icon>{repository.outsourced ? 'cloud' : 'business' }</Icon></Typography>
         </CardContent>
         <CardActions>
           <Button

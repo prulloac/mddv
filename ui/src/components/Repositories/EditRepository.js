@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Input, Button, TextField, FormControl, withStyles, FormGroup, InputLabel, NativeSelect } from '@material-ui/core'
+import { Input, Button, TextField, FormControl, withStyles, FormGroup, InputLabel, NativeSelect, FormControlLabel, Switch } from '@material-ui/core'
 import { Save } from '@material-ui/icons'
 import { repositoryActions } from '../../redux/actions'
 
@@ -28,15 +28,20 @@ class EditRepository extends Component {
     this.setState({ [name]: event.target.value })
   }
 
+  handleCheck = (name) => (event) => {
+    this.setState({ [name]: event.target.checked })
+  }
+
   handleSubmit = (event) => {
     event.preventDefault()
     const name = this.state.name ? this.state.name : this.props.repository.name
     const type = this.state.type ? this.state.type : this.props.repository.type
     const version = this.state.version ? this.state.version : this.props.repository.version
     const location = this.state.location ? this.state.location : this.props.repository.location
+    const outsourced = this.state.outsourced ? this.state.outsourced : this.props.repository.outsourced
     const { dispatch, match } = this.props
-    if (name && type && location && version) {
-      dispatch(repositoryActions.update({ id: match.params.id, name, location, type, version }))
+    if (name && type) {
+      dispatch(repositoryActions.update({ id: match.params.id, name, location, type, version, outsourced }))
     }
   }
 
@@ -67,6 +72,14 @@ class EditRepository extends Component {
               ))}
             </NativeSelect>
           </FormControl>
+        </FormGroup>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch defaultChecked={repository.outsourced} onChange={this.handleCheck('outsourced')} />
+            }
+            label="Externalizado"
+          />
         </FormGroup>
         <FormGroup>
           <FormControl>

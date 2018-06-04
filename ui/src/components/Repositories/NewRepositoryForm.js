@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { withStyles, TextField, FormGroup, Button, InputLabel, NativeSelect, FormControl } from '@material-ui/core'
+import { withStyles, TextField, FormGroup, Button, InputLabel, NativeSelect, FormControl, FormControlLabel, Switch } from '@material-ui/core'
 import { Save } from '@material-ui/icons'
 import { repositoryActions } from '../../redux/actions'
 
@@ -13,6 +13,7 @@ class NewRepositoryForm extends Component {
       type: null,
       location: null,
       version: null,
+      outsourced: false,
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -22,12 +23,16 @@ class NewRepositoryForm extends Component {
     this.setState({ [name]: event.target.value })
   }
 
+  handleCheck = (name) => (event) => {
+    this.setState({ [name]: event.target.checked })
+  }
+
   handleSubmit = (event) => {
     event.preventDefault()
-    const { name, type, location, version } = this.state
+    const { name, type, version, location, outsourced } = this.state
     const { dispatch } = this.props
     if (name && type) {
-      dispatch(repositoryActions.create({ location, name, type, version }))
+      dispatch(repositoryActions.create({ location: outsourced ? location : null, name, type, version, outsourced }))
     }
   }
 
@@ -59,8 +64,16 @@ class NewRepositoryForm extends Component {
           </FormControl>
         </FormGroup>
         <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch onChange={this.handleCheck('outsourced')} />
+            }
+            label="Externalizado"
+          />
+        </FormGroup>
+        <FormGroup>
           <FormControl>
-            <TextField label="Ubicación" onChange={this.handleChange('location')} />
+            <TextField label="Ubicación" disabled={!this.state.outsourced} onChange={this.handleChange('location')} />
           </FormControl>
         </FormGroup>
         <FormGroup>

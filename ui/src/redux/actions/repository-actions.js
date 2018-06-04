@@ -72,7 +72,7 @@ const create = ({ location = '', name = '', outsourced = false, type = '', versi
   const success = (repository) => ({ type: repositoryActionTypes.C_REPO_SUCCESS, payload: repository })
   const failure = (error) => ({ type: repositoryActionTypes.C_REPO_FAILURE, payload: error })
   return dispatch => {
-    dispatch(request(name))
+    dispatch(request({ name, type, version, location, outsourced }))
     RepositoryService.create({ location, name, outsourced, type, version }).then(
       response => {
         dispatch(success(response))
@@ -92,7 +92,7 @@ const update = ({ id = 0, location = '', name = '', version = '', outsourced = f
   const success = (repository) => ({ type: repositoryActionTypes.U_REPO_SUCCESS, payload: repository })
   const failure = (error) => ({ type: repositoryActionTypes.U_REPO_FAILURE, payload: error })
   return dispatch => {
-    dispatch(request(name))
+    dispatch(request({ name, type, version, location, outsourced }))
     RepositoryService.update({ id, location, name, outsourced, version, type }).then(
       response => {
         dispatch(success(response))
