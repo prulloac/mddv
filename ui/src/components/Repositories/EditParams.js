@@ -32,11 +32,10 @@ class EditRepository extends Component {
     event.preventDefault()
     const name = this.state.name ? this.state.name : this.props.repository.name
     const type = this.state.type ? this.state.type : this.props.repository.type
-    const version = this.state.version ? this.state.version : this.props.repository.version
     const location = this.state.location ? this.state.location : this.props.repository.location
     const { dispatch, match } = this.props
-    if (name && type && location && version) {
-      dispatch(repositoryActions.update({ id: match.params.id, name, location, type, version }))
+    if (name && type && location) {
+      dispatch(repositoryActions.update({ id: match.params.id, name, location, type }))
     }
   }
 
@@ -71,11 +70,6 @@ class EditRepository extends Component {
         <FormGroup>
           <FormControl>
             <TextField label="Ubicación" name="location" defaultValue={repository.location} onChange={this.handleChange('location')} />
-          </FormControl>
-        </FormGroup>
-        <FormGroup>
-          <FormControl>
-            <TextField label="Versión" name="location" defaultValue={repository.version} onChange={this.handleChange('version')} />
           </FormControl>
         </FormGroup>
         <FormGroup>

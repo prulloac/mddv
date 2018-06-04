@@ -23,7 +23,7 @@ const Sidenav = () => (
     </ListItem>
     <ListItem button component={Link} to="/model">
       <ListItemIcon>
-        <Icon>scatter_plot</Icon>
+        <Icon>bubble_chart</Icon>
       </ListItemIcon>
       <ListItemText>
         Modelos

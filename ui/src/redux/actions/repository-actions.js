@@ -67,13 +67,13 @@ const getExtractorCompatibles = () => {
   }
 }
 
-const create = ({ location = '', name = '', outsourced = false, type = '' }) => {
+const create = ({ location = '', name = '', outsourced = false, type = '', version = '' }) => {
   const request = (repository) => ({ type: repositoryActionTypes.C_REPO, payload: repository })
   const success = (repository) => ({ type: repositoryActionTypes.C_REPO_SUCCESS, payload: repository })
   const failure = (error) => ({ type: repositoryActionTypes.C_REPO_FAILURE, payload: error })
   return dispatch => {
     dispatch(request(name))
-    RepositoryService.create({ location, name, outsourced, type }).then(
+    RepositoryService.create({ location, name, outsourced, type, version }).then(
       response => {
         dispatch(success(response))
         dispatch(notificationActions.notify('Repositorio exitosamente registrado!'))
@@ -87,13 +87,13 @@ const create = ({ location = '', name = '', outsourced = false, type = '' }) => 
   }
 }
 
-const update = ({ id = 0, location = '', name = '', outsourced = false, type = '' }) => {
+const update = ({ id = 0, location = '', name = '', version = '', outsourced = false, type = '' }) => {
   const request = (repository) => ({ type: repositoryActionTypes.U_REPO, payload: repository })
   const success = (repository) => ({ type: repositoryActionTypes.U_REPO_SUCCESS, payload: repository })
   const failure = (error) => ({ type: repositoryActionTypes.U_REPO_FAILURE, payload: error })
   return dispatch => {
     dispatch(request(name))
-    RepositoryService.update({ id, location, name, outsourced, type }).then(
+    RepositoryService.update({ id, location, name, outsourced, version, type }).then(
       response => {
         dispatch(success(response))
         dispatch(notificationActions.notify('Repositorio exitosamente actualizado!'))

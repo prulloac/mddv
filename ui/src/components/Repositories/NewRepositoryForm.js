@@ -10,8 +10,9 @@ class NewRepositoryForm extends Component {
     super(props)
     this.state = {
       name: null,
-      type: '',
+      type: null,
       location: null,
+      version: null,
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -23,10 +24,10 @@ class NewRepositoryForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    const { name, type, location } = this.state
+    const { name, type, location, version } = this.state
     const { dispatch } = this.props
-    if (name && type && location) {
-      dispatch(repositoryActions.create({ location, name, type }))
+    if (name && type) {
+      dispatch(repositoryActions.create({ location, name, type, version }))
     }
   }
 
@@ -60,6 +61,11 @@ class NewRepositoryForm extends Component {
         <FormGroup>
           <FormControl>
             <TextField label="Ubicación" onChange={this.handleChange('location')} />
+          </FormControl>
+        </FormGroup>
+        <FormGroup>
+          <FormControl>
+            <TextField label="Versión" onChange={this.handleChange('version')} />
           </FormControl>
         </FormGroup>
         <FormGroup>

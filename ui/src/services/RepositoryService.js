@@ -3,9 +3,10 @@ import httpClient from './HttpClient'
 const create = ({
   location = '',
   name = '',
-  outsourced = false,
+  outsourced = true,
   type = '',
   token = '',
+  version = '',
 }) =>
   httpClient.post({
     endpoint: 'repositories',
@@ -14,6 +15,7 @@ const create = ({
       name,
       outsourced,
       type,
+      version,
     },
     config: httpClient.auth(token),
   })
@@ -22,9 +24,10 @@ const update = ({
   id = 0,
   location = '',
   name = '',
-  outsourced = false,
+  outsourced = true,
   type = '',
   token = '',
+  version = '',
 }) =>
   httpClient.put({
     endpoint: '/repositories',
@@ -34,6 +37,7 @@ const update = ({
       name,
       outsourced,
       type,
+      version,
     },
     config: httpClient.auth(token),
   })
