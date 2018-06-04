@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Paper, FormGroup, FormControl, TextField, Typography, Button, Icon } from '@material-ui/core'
+import { Paper, FormGroup, FormControl, TextField, Typography, Button, Icon, InputAdornment } from '@material-ui/core'
 import { userActions } from '../../redux/actions'
-import { Img } from '../../utils'
+import { Img, title } from '../../utils'
 import './LoginPage.scss'
 
 class LoginPage extends Component {
@@ -14,7 +14,7 @@ class LoginPage extends Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    document.title = 'Iniciar Sesión'
+    title('Iniciar Sesión')
   }
 
   handleChange = (name) => (event) => {
@@ -40,16 +40,39 @@ class LoginPage extends Component {
             <br />
             Mddv - Iniciar Sesión
           </Typography>
-          <form autoComplete="no" className="login-form">
+          <form autoComplete="no" className="login-form" onSubmit={this.handleSubmit}>
             <FormGroup>
-              <FormControl>
-                <TextField label="Usuario" value={username} onChange={this.handleChange('username')} />
-              </FormControl>
+              <TextField
+                required
+                label="Usuario"
+                value={username}
+                onChange={this.handleChange('username')}
+                error={this.props.error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Icon>account_circle</Icon>
+                    </InputAdornment>
+                  ),
+                }}
+              />
             </FormGroup>
             <FormGroup>
-              <FormControl>
-                <TextField label="Contraseña" type="password" value={password} onChange={this.handleChange('password')} />
-              </FormControl>
+              <TextField
+                required
+                label="Contraseña"
+                type="password"
+                value={password}
+                onChange={this.handleChange('password')}
+                error={this.props.error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Icon>vpn_key</Icon>
+                    </InputAdornment>
+                  ),
+                }}
+              />
             </FormGroup>
             <FormGroup>
               <FormControl>
@@ -68,8 +91,8 @@ class LoginPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { loading } = state.userReducer
-  return { loading }
+  const { loading, error } = state.userReducer
+  return { loading, error }
 }
 
 export default connect(mapStateToProps)(LoginPage)
