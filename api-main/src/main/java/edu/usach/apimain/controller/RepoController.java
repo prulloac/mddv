@@ -102,4 +102,14 @@ public class RepoController extends EntityController<Repository> {
 		}
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/connectionParams")
+	public ResponseEntity<Object> getConnectionParams(@RequestParam("id") Long id) {
+		try {
+			return response(service.getConnectionParams(id));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
+		}
+	}
+
 }
