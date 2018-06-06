@@ -69,6 +69,6 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 	public JSONObject getConnectionParams(Long id) throws ApiException {
 		Repository repository = dao.findById(id).orElse(null);
 		if (null == repository) throw new ApiException(ErrorCode.OBJECT_NOT_FOUND, "Repository");
-		return extractorService.getExtractorParams(repository.getType(), repository.getVersion());
+		return (JSONObject) extractorService.getExtractorParams(repository.getType(), repository.getVersion()).get("data");
 	}
 }

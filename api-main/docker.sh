@@ -18,4 +18,4 @@ if docker container ls -a | grep $API > /dev/null; then
 fi
 
 echo "launching container"
-docker run -v mvn-repo:/root/.m2 --name $API -d -p $PORT:$PORT $TAG
+docker run -v mvn-repo:/root/.m2 -v h2-main:/root/h2Databases --name $API -d -p $PORT:$PORT $TAG
