@@ -3,6 +3,9 @@
 TAG=mddv-frontend
 API=mddv-ui
 
+echo "building image"
+docker build -t $TAG .
+
 if docker container ls | grep $API > /dev/null; then
   echo "stopping old container"
   docker container stop $API
@@ -13,13 +16,5 @@ if docker container ls -a | grep $API > /dev/null; then
   docker container rm $API
 fi
 
-if docker image ls -a | grep $TAG > /dev/null; then
-  echo "removing old image"
-  docker rmi $TAG
-fi
-
-echo "building image"
-docker build -t $TAG .
-
 echo "launching container"
-docker run --name $API -d -p 80:9999 $TAG
+docker run -v node_modules:/usr/src/app/node_modules --name $API -d -p 80:9999 $TAG
