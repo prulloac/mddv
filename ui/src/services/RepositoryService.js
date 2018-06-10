@@ -5,7 +5,6 @@ const create = ({
   name = '',
   outsourced = true,
   type = '',
-  token = '',
   version = '',
 }) =>
   httpClient.post({
@@ -17,7 +16,6 @@ const create = ({
       type,
       version,
     },
-    config: httpClient.auth(token),
   })
 
 const update = ({
@@ -26,7 +24,6 @@ const update = ({
   name = '',
   outsourced = true,
   type = '',
-  token = '',
   version = '',
 }) =>
   httpClient.put({
@@ -39,13 +36,11 @@ const update = ({
       type,
       version,
     },
-    config: httpClient.auth(token),
   })
 
-const del = (id = 0, token = '') =>
+const del = (id = 0) =>
   httpClient.delete({
     endpoint: `/repositories/?id=${id}`,
-    config: httpClient.auth(token),
   })
 
 const findById = (id = 0) => httpClient.get({ endpoint: `/repositories/${id}` })

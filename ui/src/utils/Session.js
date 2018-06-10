@@ -12,6 +12,8 @@ const checkToken = () => {
   return false
 }
 
+const getToken = () => (checkToken() ? localStorage.getItem(Constants.TOKEN_NAME) : null)
+
 const getUserData = () => {
   if (checkToken()) {
     return jwt(localStorage.getItem(Constants.TOKEN_NAME).replace('Bearer ', ''))
@@ -32,4 +34,5 @@ export default {
   logOut,
   setSession,
   getUserData,
+  getToken,
 }
