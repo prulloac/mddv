@@ -9,5 +9,5 @@ public interface IExtractorService {
 
 	JSONObject callExtractor(String engine, String version, JSONObject connectionParams, String token) ;
 
-	JSONObject getExtractorParams(String engine, String version, String token) ;
+	JSONArray getExtractorParams(String engine, String version, String token) ;
 }

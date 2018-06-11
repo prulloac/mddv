@@ -8,6 +8,7 @@ import edu.usach.apimain.dao.RepositoryDAO;
 import edu.usach.apimain.model.Extractor;
 import edu.usach.apimain.model.Repository;
 import edu.usach.apimain.service.IRepositoryService;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -64,9 +65,9 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 	}
 
 	@Override
-	public JSONObject getConnectionParams(Long id, String token) throws ApiException {
+	public JSONArray getConnectionParams(Long id, String token) throws ApiException {
 		Repository repository = dao.findById(id).orElse(null);
 		if (null == repository) throw new ApiException(ErrorCode.OBJECT_NOT_FOUND, "Repository");
-		return (JSONObject) extractorService.getExtractorParams(repository.getType(), repository.getVersion(), token).get("data");
+		return extractorService.getExtractorParams(repository.getType(), repository.getVersion(), token);
 	}
 }

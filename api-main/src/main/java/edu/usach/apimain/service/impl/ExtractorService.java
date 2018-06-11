@@ -46,7 +46,7 @@ public class ExtractorService implements IExtractorService {
 			Map<String, Object> data = new HashMap<>();
 			String[] versions = extractor.getSupportedVersions().split(",");
 			data.put("versions", versions);
-			data.put("connectionParams", getExtractorParams(extractor.getSupportedEngine(), versions[0], token).get("data"));
+			data.put("connectionParams", getExtractorParams(extractor.getSupportedEngine(), versions[0], token));
 			data.put("engine", extractor.getSupportedEngine());
 			data.put("name", extractor.getName());
 			engines.add(data);
@@ -94,7 +94,7 @@ public class ExtractorService implements IExtractorService {
 	}
 
 	@Override
-	public JSONObject getExtractorParams(String engine, String version, String token) {
+	public JSONArray getExtractorParams(String engine, String version, String token) {
 		String path = getExtractorEntrypoint(engine, version);
 		logger.info("calling extractor at: {}", path);
 		try {
@@ -111,7 +111,7 @@ public class ExtractorService implements IExtractorService {
 			while ((inputLine = in.readLine()) != null) {
 				object = (JSONObject) parser.parse(inputLine);
 			}
-			return object;
+			return (JSONArray) object.get("data");
 		} catch (IOException | ParseException e) {
 			logger.error(e.getMessage(), e);
 			throw new ApiException(ErrorCode.ERROR_CONNECTING_EXTRACTOR);
