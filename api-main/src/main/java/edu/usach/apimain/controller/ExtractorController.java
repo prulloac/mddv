@@ -1,6 +1,7 @@
 package edu.usach.apimain.controller;
 
 import edu.usach.apicommons.controller.AbstractController;
+import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apimain.service.IExtractorService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +26,9 @@ public class ExtractorController extends AbstractController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Object> getExtractors(
 			@RequestParam(value = "engine", required = false) String engine,
-			@RequestParam(value = "version", required = false) String version){
-		try {
-			return response(service.getExtractors(engine, version));
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return responseInternalServerError(ARRAY, new ErrorDTO(httpServletRequest));
-		}
+			@RequestParam(value = "version", required = false) String version
+	) throws ApiException {
+		return response(service.getExtractors(engine, version));
 	}
 
 	@RequestMapping(value = "/extract", method = RequestMethod.POST)
@@ -39,26 +36,16 @@ public class ExtractorController extends AbstractController {
 			@RequestParam("engine") String engine,
 			@RequestParam("version") String version,
 			@RequestBody JSONObject connectionParams
-	) {
-		try {
-			return new ResponseEntity<>(service.callExtractor(engine, version, connectionParams), HttpStatus.OK);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
-		}
+	) throws ApiException {
+		return new ResponseEntity<>(service.callExtractor(engine, version, connectionParams), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/params", method = RequestMethod.GET)
 	public ResponseEntity<Object> getExtractorParams(
 			@RequestParam("engine") String engine,
 			@RequestParam("version") String version
-	) {
-		try {
-			return new ResponseEntity<>(service.getExtractorParams(engine, version), HttpStatus.OK);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
-		}
+	) throws ApiException {
+		return new ResponseEntity<>(service.getExtractorParams(engine, version), HttpStatus.OK);
 	}
 
 }

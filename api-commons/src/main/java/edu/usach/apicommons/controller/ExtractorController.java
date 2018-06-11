@@ -1,58 +1,47 @@
 package edu.usach.apicommons.controller;
 
 import edu.usach.apicommons.errorhandling.ApiException;
-import edu.usach.apicommons.errorhandling.ErrorDTO;
+import edu.usach.apicommons.errorhandling.ErrorCode;
 import edu.usach.apicommons.extractor.IExtractor;
 import edu.usach.apicommons.service.IExtractorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Map;
 
-import static edu.usach.apicommons.util.Constants.OBJECT;
-
+@SuppressWarnings("unchecked")
 @Slf4j
+@Controller
 public abstract class ExtractorController<T extends IExtractor> extends AbstractController implements IExtractorController {
 
 	protected abstract IExtractorService<T> getService();
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Object> extract(@RequestBody Map<String, Object> connectionParamsDTO) {
-		try {
-			return response(getService().extract(connectionParamsDTO));
-		} catch (ApiException e) {
-			log.error(e.getMessage(), e);
-			return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
-		}
+	@Override
+	@RequestMapping(method = RequestMethod.POST, name = "Extract")
+	public ResponseEntity<Object> extract(@RequestBody Map<String, Object> connectionParamsDTO) throws ApiException {
+		if (!isAuthenticated())
+			throw new ApiException(ErrorCode.UNAUTHORIZED);
+		return response(getService().extract(connectionParamsDTO));
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Object> getParameters() {
-		try {
-			return response(getService().getParameters());
-		} catch (ApiException e) {
-			log.error(e.getMessage(), e);
-			return responseNotFound(OBJECT, new ErrorDTO(e, httpServletRequest));
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
-		}
+	@Override
+	@RequestMapping(method = RequestMethod.GET, name = "Get extractor connection parameters")
+	public ResponseEntity<Object> getParameters() throws ApiException {
+		if (!isAuthenticated())
+			throw new ApiException(ErrorCode.UNAUTHORIZED);
+		return response(getService().getParameters());
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/info")
-	public ResponseEntity<Object> getExtractorInfo() {
-		try {
-			return response(getService().getExtractorInfo());
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return responseInternalServerError(OBJECT, new ErrorDTO(httpServletRequest));
-		}
+	@Override
+	@RequestMapping(method = RequestMethod.GET, value = "/info", name = "Get extractor info")
+	public ResponseEntity<Object> getExtractorInfo() throws ApiException {
+		if (!isAuthenticated())
+			throw new ApiException(ErrorCode.UNAUTHORIZED);
+		return response(getService().getExtractorInfo());
 	}
 
 }

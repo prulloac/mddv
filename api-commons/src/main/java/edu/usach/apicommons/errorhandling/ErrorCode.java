@@ -10,8 +10,7 @@ public enum ErrorCode implements IErrorCode {
 	DELETE_ERROR("Couldn't delete '{0}' object"),
 	UNAUTHORIZED("Unauthorized access"),
 	CONNECTION_ERROR("Unable to connect to repository"),
-	NOT_CONNECTED("Not connected to repository, must connect first");
-
+	BAD_REQUEST("Bad request to server");
 	private String message;
 
 	ErrorCode(String message) {
