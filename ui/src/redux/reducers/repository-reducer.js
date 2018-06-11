@@ -15,9 +15,11 @@ const intitialState = {
   loadedExtractables: false,
   loadedRepositories: false,
   loadedRepository: false,
+  loadedConnectionParams: false,
   repositories: [],
   extractableTypes: [],
   extractableEngines: [],
+  connectionParams: {},
 }
 
 const repositoryReducer = (state = intitialState, action) => {
@@ -53,6 +55,12 @@ const repositoryReducer = (state = intitialState, action) => {
       }
     case extractorActionTypes.R_ALL_EXTRACTABLE_TYPES_FAILURE:
       return { ...state, loadedExtractables: false, loading: false, extractableTypes: [], error: action.payload }
+    case repositoryActionTypes.R_ALL_PARAM:
+      return { ...state, loadedConnectionParams: false, loading: true, connectionParams: {}, error: null }
+    case repositoryActionTypes.R_ALL_PARAM_FAILURE:
+      return { ...state, loadedConnectionParams: false, loading: false, connectionParams: {}, error: action.payload }
+    case repositoryActionTypes.R_ALL_PARAM_SUCCESS:
+      return { ...state, loadedConnectionParams: true, loading: false, connectionParams: action.payload, error: null }
     default:
       return state
   }

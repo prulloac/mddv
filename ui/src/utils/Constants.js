@@ -1,4 +1,4 @@
-const API_HOST = 'http://188.166.34.128'
+const API_HOST = 'http://localhost'
 const API_PORT = 8080
 const API_PATH = 'mddv-main/api/v1'
 const BASE_URL = `${API_HOST}:${API_PORT}/${API_PATH}`

@@ -33,7 +33,8 @@ public class RepoController extends EntityController<Repository> {
   
   @RequestMapping(method = RequestMethod.POST, params = { "extract", "id" })
 	public ResponseEntity<Object> extract(@RequestParam("id") long id, @RequestParam("extract") boolean extract) {
-		return response(service.extractFromRepository(id));
+		String token = this.servletRequest.getHeader("Authorization");
+		return response(service.extractFromRepository(id, token));
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/extractables")
@@ -48,7 +49,8 @@ public class RepoController extends EntityController<Repository> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/connectionParams")
 	public ResponseEntity<Object> getConnectionParams(@RequestParam("id") Long id) {
-		return response(service.getConnectionParams(id));
+		String token = this.servletRequest.getHeader("Authorization");
+		return response(service.getConnectionParams(id, token));
 	}
 
 }

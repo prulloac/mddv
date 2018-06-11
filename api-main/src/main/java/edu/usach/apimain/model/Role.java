@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.usach.apicommons.model.IEntity;
 import edu.usach.apicommons.model.impl.AbstractDescriptableEntity;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -14,6 +17,9 @@ import java.util.List;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@Getter
+@Setter
+@ToString
 public class Role extends AbstractDescriptableEntity implements IEntity {
   private static final long serialVersionUID = 1L;
 
@@ -36,28 +42,4 @@ public class Role extends AbstractDescriptableEntity implements IEntity {
 	@ManyToMany(mappedBy = "accessRoles")
 	@JsonIgnore
 	private List<MetadataObject> metadataObjectList;
-
-	public List<AppUser> getAppUserList() {
-		return appUserList;
-	}
-
-	public void setAppUserList(List<AppUser> appUserList) {
-		this.appUserList = appUserList;
-	}
-
-	public List<OrganizationalUnit> getOrganizationalUnitList() {
-		return organizationalUnitList;
-	}
-
-	public void setOrganizationalUnitList(List<OrganizationalUnit> organizationalUnitList) {
-		this.organizationalUnitList = organizationalUnitList;
-	}
-
-	public List<MetadataObject> getMetadataObjectList() {
-		return metadataObjectList;
-	}
-
-	public void setMetadataObjectList(List<MetadataObject> metadataObjectList) {
-		this.metadataObjectList = metadataObjectList;
-	}
 }

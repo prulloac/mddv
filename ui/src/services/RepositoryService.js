@@ -40,20 +40,20 @@ const update = ({
 
 const del = (id = 0) =>
   httpClient.delete({
-    endpoint: `/repositories/?id=${id}`,
+    endpoint: `repositories/?id=${id}`,
   })
 
-const findById = (id = 0) => httpClient.get({ endpoint: `/repositories/${id}` })
+const findById = (id = 0) => httpClient.get({ endpoint: `repositories/${id}` })
 
-const findByName = (name = 0) => httpClient.get({ endpoint: `/repositories?name=${name}` })
+const findByName = (name = 0) => httpClient.get({ endpoint: `repositories?name=${name}` })
 
-const getAll = () => httpClient.get({ endpoint: '/repositories?showAll=true' })
+const getAll = () => httpClient.get({ endpoint: 'repositories?showAll=true' })
 
-const getConnectionParams = (engine = '', version = '') => httpClient.get({ endpoint: `/extractors/extract?engine=${engine}&version=${version}` })
+const getConnectionParams = (id = 0) => httpClient.get({ endpoint: `repositories/connectionParams?id=${id}` })
 
-const getExtractorCompatibles = () => httpClient.get({ endpoint: '/repositories/extractableTypes' })
+const getExtractorCompatibles = () => httpClient.get({ endpoint: 'repositories/extractableTypes' })
 
-const extractFromRepository = (id = 0) => httpClient.post({ endpoint: `/repositories?id=${id}&extract=true` })
+const extractFromRepository = (id = 0) => httpClient.post({ endpoint: `repositories?id=${id}&extract=true` })
 
 const RepositoryService = {
   create,

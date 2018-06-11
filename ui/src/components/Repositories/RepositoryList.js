@@ -9,6 +9,7 @@ class RepositoryList extends Component {
     super(props)
     this.state = {
     }
+    this.props.dispatch(repositoryActions.getExtractorCompatibles())
     this.props.dispatch(repositoryActions.resetRepository())
     this.props.dispatch(repositoryActions.getAll())
   }

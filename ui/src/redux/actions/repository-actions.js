@@ -125,6 +125,22 @@ const del = (id = 0) => {
   }
 }
 
+const getConnectionParams = (id = 0) => {
+  const request = (repository) => ({ type: repositoryActionTypes.R_ALL_PARAM, payload: repository })
+  const success = (params) => ({ type: repositoryActionTypes.R_ALL_PARAM_SUCCESS, payload: params })
+  const failure = (error) => ({ type: repositoryActionTypes.R_ALL_PARAM_FAILURE, payload: error })
+  return dispatch => {
+    dispatch(request(id))
+    RepositoryService.getConnectionParams(id).then(
+      response => dispatch(success(response.data.data)),
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('No hay extractores compatibles para este repositorio'))
+      },
+    )
+  }
+}
+
 const repositoryActions = {
   create,
   findById,
@@ -134,6 +150,7 @@ const repositoryActions = {
   delete: del,
   getExtractorCompatibles,
   resetRepository,
+  getConnectionParams,
 }
 
 export default repositoryActions

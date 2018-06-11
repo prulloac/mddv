@@ -22,6 +22,7 @@ class EditRepository extends Component {
     const { dispatch, match } = this.props
     const repositoryId = match.params.id
     dispatch(repositoryActions.findById(repositoryId))
+    dispatch(repositoryActions.getConnectionParams(repositoryId))
   }
 
   handleChange = (name) => (event) => {

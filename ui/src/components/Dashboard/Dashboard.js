@@ -3,7 +3,6 @@ import { Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withStyles, Typography } from '@material-ui/core'
 import { Navigation, Welcome, Repositories, NotFound, Models, BusinessObjects } from '../index'
-import { repositoryActions } from '../../redux/actions'
 import { Img } from '../../utils'
 import './Dashboard.scss'
 
@@ -12,8 +11,6 @@ class Dashboard extends Component {
     super(props)
     this.state = {
     }
-    this.props.dispatch(repositoryActions.getExtractorCompatibles())
-    this.props.dispatch(repositoryActions.getAll())
   }
 
   render() {

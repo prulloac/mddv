@@ -7,6 +7,9 @@ import edu.usach.apicommons.model.IEntity;
 import edu.usach.apicommons.model.ISecureEntity;
 import edu.usach.apicommons.model.impl.AbstractAuditableDescriptableEntity;
 import edu.usach.apicommons.model.impl.AbstractNamedEntity;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,6 +20,9 @@ import java.util.stream.Collectors;
 @DiscriminatorColumn(name = "objectType")
 @Table(name = "metadataObjects")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@Getter
+@Setter
+@ToString
 public class MetadataObject extends AbstractAuditableDescriptableEntity implements IEntity, ISecureEntity {
   private static final long serialVersionUID = 1L;
 
@@ -45,46 +51,6 @@ public class MetadataObject extends AbstractAuditableDescriptableEntity implemen
 	)
 	@JsonIgnore
 	private List<Role> accessRoles;
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public List<Document> getDocumentList() {
-		return documentList;
-	}
-
-	public void setDocumentList(List<Document> documentList) {
-		this.documentList = documentList;
-	}
-
-	public List<MetadataObject> getLinkedObjects() {
-		return linkedObjects;
-	}
-
-	public void setLinkedObjects(List<MetadataObject> linkedObjects) {
-		this.linkedObjects = linkedObjects;
-	}
-
-	public List<Role> getAccessRoles() {
-		return accessRoles;
-	}
-
-	public void setAccessRoles(List<Role> accessRoles) {
-		this.accessRoles = accessRoles;
-	}
 
 	@Override
 	public List<String> roleNames() {

@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.usach.apicommons.model.IEntity;
 import edu.usach.apicommons.model.ISecureEntity;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -14,6 +17,9 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue(value = "techincalObject")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@Getter
+@Setter
+@ToString
 public class TechnicalObject extends MetadataObject implements IEntity, ISecureEntity {
   private static final long serialVersionUID = 1L;
 
@@ -24,20 +30,4 @@ public class TechnicalObject extends MetadataObject implements IEntity, ISecureE
 	@JoinColumn(name = "repositoryId")
 	@JsonIgnore
 	private Repository repository;
-
-	public TechnicalObject getParentObject() {
-		return parentObject;
-	}
-
-	public void setParentObject(TechnicalObject parentObject) {
-		this.parentObject = parentObject;
-	}
-
-	public Repository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(Repository repository) {
-		this.repository = repository;
-	}
 }

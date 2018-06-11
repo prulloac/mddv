@@ -2,7 +2,6 @@ package edu.usach.apimain.controller;
 
 import edu.usach.apicommons.controller.AbstractController;
 import edu.usach.apicommons.errorhandling.ApiException;
-import edu.usach.apicommons.errorhandling.ErrorDTO;
 import edu.usach.apimain.service.IExtractorService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -10,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import static edu.usach.apicommons.util.Constants.ARRAY;
-import static edu.usach.apicommons.util.Constants.OBJECT;
 
 @CrossOrigin(maxAge = 7200)
 @RestController
@@ -28,7 +24,8 @@ public class ExtractorController extends AbstractController {
 			@RequestParam(value = "engine", required = false) String engine,
 			@RequestParam(value = "version", required = false) String version
 	) throws ApiException {
-		return response(service.getExtractors(engine, version));
+		String token = this.servletRequest.getHeader("Authorization");
+		return response(service.getExtractors(engine, version, token));
 	}
 
 	@RequestMapping(value = "/extract", method = RequestMethod.POST)
@@ -37,7 +34,8 @@ public class ExtractorController extends AbstractController {
 			@RequestParam("version") String version,
 			@RequestBody JSONObject connectionParams
 	) throws ApiException {
-		return new ResponseEntity<>(service.callExtractor(engine, version, connectionParams), HttpStatus.OK);
+		String token = this.servletRequest.getHeader("Authorization");
+		return new ResponseEntity<>(service.callExtractor(engine, version, connectionParams, token), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/params", method = RequestMethod.GET)
@@ -45,7 +43,8 @@ public class ExtractorController extends AbstractController {
 			@RequestParam("engine") String engine,
 			@RequestParam("version") String version
 	) throws ApiException {
-		return new ResponseEntity<>(service.getExtractorParams(engine, version), HttpStatus.OK);
+		String token = this.servletRequest.getHeader("Authorization");
+		return new ResponseEntity<>(service.getExtractorParams(engine, version, token), HttpStatus.OK);
 	}
 
 }

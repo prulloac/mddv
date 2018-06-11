@@ -33,7 +33,7 @@ public class ExtractorService implements IExtractorService {
 	private ExtractorDAO dao;
 
 	@Override
-	public JSONArray getExtractors(String engine, String version) {
+	public JSONArray getExtractors(String engine, String version, String token) {
 		List<Extractor> extractorList = dao.findAll();
 		if (null!=engine) {
 			extractorList = extractorList.stream().filter(x -> x.getSupportedEngine().equalsIgnoreCase(engine)).collect(Collectors.toList());
@@ -46,7 +46,7 @@ public class ExtractorService implements IExtractorService {
 			Map<String, Object> data = new HashMap<>();
 			String[] versions = extractor.getSupportedVersions().split(",");
 			data.put("versions", versions);
-			data.put("connectionParams", getExtractorParams(extractor.getSupportedEngine(), versions[0]).get("data"));
+			data.put("connectionParams", getExtractorParams(extractor.getSupportedEngine(), versions[0], token).get("data"));
 			data.put("engine", extractor.getSupportedEngine());
 			data.put("name", extractor.getName());
 			engines.add(data);
@@ -60,7 +60,7 @@ public class ExtractorService implements IExtractorService {
 	}
 
 	@Override
-	public JSONObject callExtractor(String engine, String version, JSONObject connectionParams) {
+	public JSONObject callExtractor(String engine, String version, JSONObject connectionParams, String token) {
 		String path = getExtractorEntrypoint(engine, version);
 		String data = connectionParams.toJSONString();
 		logger.info("calling extractor at: {}", path);
@@ -69,6 +69,7 @@ public class ExtractorService implements IExtractorService {
 			URL connectionUrl = new URL(path);
 			HttpURLConnection con = (HttpURLConnection) connectionUrl.openConnection();
 			con.setRequestMethod("POST");
+			con.setRequestProperty("Authorization", token);
 			con.setDoInput(true);
 			con.setDoOutput(true);
 			con.setRequestProperty("Content-Type", "application/json");
@@ -93,13 +94,14 @@ public class ExtractorService implements IExtractorService {
 	}
 
 	@Override
-	public JSONObject getExtractorParams(String engine, String version) {
+	public JSONObject getExtractorParams(String engine, String version, String token) {
 		String path = getExtractorEntrypoint(engine, version);
 		logger.info("calling extractor at: {}", path);
 		try {
 			URL connectionUrl = new URL(path);
 			HttpURLConnection con = (HttpURLConnection) connectionUrl.openConnection();
 			con.setRequestMethod("GET");
+			con.setRequestProperty("Authorization", token);
 			con.setDoInput(true);
 			con.connect();
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));

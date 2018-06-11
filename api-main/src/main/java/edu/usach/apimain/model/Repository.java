@@ -3,6 +3,9 @@ package edu.usach.apimain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.usach.apicommons.model.IEntity;
 import edu.usach.apicommons.model.impl.AbstractAuditableNamedEntity;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -10,6 +13,9 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@ToString
 public class Repository extends AbstractAuditableNamedEntity implements IEntity {
   private static final long serialVersionUID = 1L;
 
@@ -26,60 +32,4 @@ public class Repository extends AbstractAuditableNamedEntity implements IEntity 
 	@JsonIgnore
 	private List<TechnicalObject> technicalObjectList;
 	private String version;
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public Boolean getOutsourced() {
-		return outsourced;
-	}
-
-	public void setOutsourced(Boolean outsourced) {
-		this.outsourced = outsourced;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public List<ConnectionParameter> getConnectionParameters() {
-		return connectionParameters;
-	}
-
-	public void setConnectionParameters(List<ConnectionParameter> connectionParameters) {
-		this.connectionParameters = connectionParameters;
-	}
-
-	public List<BusinessObject> getBusinessObjectList() {
-		return businessObjectList;
-	}
-
-	public void setBusinessObjectList(List<BusinessObject> businessObjectList) {
-		this.businessObjectList = businessObjectList;
-	}
-
-	public List<TechnicalObject> getTechnicalObjectList() {
-		return technicalObjectList;
-	}
-
-	public void setTechnicalObjectList(List<TechnicalObject> technicalObjectList) {
-		this.technicalObjectList = technicalObjectList;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
 }
