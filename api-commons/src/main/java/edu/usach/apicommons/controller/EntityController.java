@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.ParameterizedType;
@@ -16,6 +17,7 @@ import static edu.usach.apicommons.util.Constants.OBJECT;
 
 @SuppressWarnings("unchecked")
 @Slf4j
+@Controller
 public abstract class EntityController<T extends IEntity> extends AbstractController implements IEntityController<T> {
 
 	private Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -41,7 +43,7 @@ public abstract class EntityController<T extends IEntity> extends AbstractContro
 	}
 
 	@Override
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET, name = "Get all")
 	public ResponseEntity<Object> getAll(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,

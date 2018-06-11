@@ -44,7 +44,7 @@ public class AppUserController extends EntityController<AppUser> {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<Object> login(@RequestBody UserCredentialsDTO credentials) {
+	public ResponseEntity<Object> login(@RequestBody UserCredentialsDTO credentials) throws ApiException {
 		log.info("username: {}", credentials.getUsernameOrEmail());
 		return validateCredentials(credentials);
 	}

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
@@ -18,6 +19,7 @@ import static edu.usach.apicommons.util.SecurityUtils.HEADER_STRING;
 
 @SuppressWarnings("unchecked")
 @Slf4j
+@Controller
 public abstract class AbstractController {
 
 	@Autowired

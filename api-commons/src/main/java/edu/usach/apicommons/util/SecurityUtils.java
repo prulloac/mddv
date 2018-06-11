@@ -5,11 +5,13 @@ import edu.usach.apicommons.model.ISecureEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
+@Slf4j
 public class SecurityUtils {
 
 	public static final String SECRET = "BQSyS2Wbr7sfJ6SMDDVeUo4j1j8j5lYQwx3CNFfUTfuullMwPjfoC5QeD3r7O8kW";
@@ -31,9 +33,13 @@ public class SecurityUtils {
 	}
 
 	public static Boolean isAuthenticated(String token) {
+		log.info("Token: {}", token);
 		if (token == null)
 			return false;
-		return "authenticated".equals(Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody().getSubject());
+		boolean success = "authenticated".equals(Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody().getSubject());
+		if (success)
+			log.info("Authenticated!");
+		return success;
 	}
 
 	public static Boolean isAuthorized(String token, String... roles) {
