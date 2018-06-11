@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface IRepositoryService extends IEntityService<Repository>{
-	Object extractFromRepository(long id) throws ApiException;
+	Object extractFromRepository(long id);
 
 	List<Repository> extractables();
 
 	List extractableTypes();
 
-	JSONObject getConnectionParams(Long id) throws ApiException;
+	JSONObject getConnectionParams(Long id);
 }

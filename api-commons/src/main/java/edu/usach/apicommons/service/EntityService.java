@@ -29,9 +29,8 @@ public abstract class EntityService<T extends IEntity> extends AbstractService i
 	private Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 
 	protected String serviceOf() {
-		return tClass.getName();
+		return tClass.getSimpleName();
 	}
-
 
 	@Override
 	@Transactional(readOnly = true)

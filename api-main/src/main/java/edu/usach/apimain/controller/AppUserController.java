@@ -30,9 +30,9 @@ public class AppUserController extends EntityController<AppUser> {
 	@Autowired
 	private IAppUserService service;
 
-	private ResponseEntity<Object> validateCredentials(UserCredentialsDTO credentials) throws ApiException {
+	private ResponseEntity<Object> validateCredentials(UserCredentialsDTO credentials) {
 		AppUser user = service.validateCredentials(credentials.getUsernameOrEmail(), credentials.getPassword());
-		String token = SecurityUtils.tokenize(new UserTokenDataDTO(user));
+		String token = SecurityUtils.tokenize(new UserTokenDataDTO(user), "authenticated");
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HEADER_STRING, TOKEN_PREFIX + token);
 		return new ResponseEntity<>(new UserTokenDataDTO(user), headers, HttpStatus.OK);
@@ -46,13 +46,7 @@ public class AppUserController extends EntityController<AppUser> {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<Object> login(@RequestBody UserCredentialsDTO credentials) {
 		log.info("username: {}", credentials.getUsernameOrEmail());
-		try {
-			return validateCredentials(credentials);
-		} catch (ApiException e) {
-			return responseUnauthorized(OBJECT,	new ErrorDTO(e, httpServletRequest));
-		} catch (Exception e) {
-			return responseInternalServerError(OBJECT,new ErrorDTO(httpServletRequest));
-		}
+		return validateCredentials(credentials);
 	}
 
 }

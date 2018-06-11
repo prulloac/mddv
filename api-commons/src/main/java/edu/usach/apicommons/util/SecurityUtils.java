@@ -12,20 +12,19 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class SecurityUtils {
 
-	public static final String SECRET = "SecretKeyToGenJWTs";
+	public static final String SECRET = "BQSyS2Wbr7sfJ6SMDDVeUo4j1j8j5lYQwx3CNFfUTfuullMwPjfoC5QeD3r7O8kW";
 	public static final long EXPIRATION_TIME = 864_000_000; // 10 days
 	public static final String TOKEN_PREFIX = "Bearer ";
 	public static final String HEADER_STRING = "Authorization";
-	public static final String SIGN_UP_URL = "/users/sign-up";
 
 	private SecurityUtils() throws IllegalAccessException {
 		throw new IllegalAccessException("Utility class");
 	}
 
-	public static String tokenize(TokenizableDTO entity) {
+	public static String tokenize(TokenizableDTO entity, String subject) {
 		return Jwts.builder()
 				.setClaims(JSONUtils.toJSONObject(entity))
-				.setSubject(entity.getSubject())
+				.setSubject(subject)
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
 				.compact();

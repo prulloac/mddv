@@ -6,9 +6,9 @@ import org.json.simple.JSONObject;
 
 public interface IExtractorService {
 
-	JSONArray getExtractors(String engine, String version) throws ApiException;
+	JSONArray getExtractors(String engine, String version) ;
 
-	JSONObject callExtractor(String engine, String version, JSONObject connectionParams) throws ApiException;
+	JSONObject callExtractor(String engine, String version, JSONObject connectionParams) ;
 
-	JSONObject getExtractorParams(String engine, String version) throws ApiException;
+	JSONObject getExtractorParams(String engine, String version) ;
 }

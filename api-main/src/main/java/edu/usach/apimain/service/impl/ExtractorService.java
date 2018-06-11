@@ -33,7 +33,7 @@ public class ExtractorService implements IExtractorService {
 	private ExtractorDAO dao;
 
 	@Override
-	public JSONArray getExtractors(String engine, String version) throws ApiException {
+	public JSONArray getExtractors(String engine, String version) {
 		List<Extractor> extractorList = dao.findAll();
 		if (null!=engine) {
 			extractorList = extractorList.stream().filter(x -> x.getSupportedEngine().equalsIgnoreCase(engine)).collect(Collectors.toList());
@@ -60,7 +60,7 @@ public class ExtractorService implements IExtractorService {
 	}
 
 	@Override
-	public JSONObject callExtractor(String engine, String version, JSONObject connectionParams) throws ApiException {
+	public JSONObject callExtractor(String engine, String version, JSONObject connectionParams) {
 		String path = getExtractorEntrypoint(engine, version);
 		String data = connectionParams.toJSONString();
 		logger.info("calling extractor at: {}", path);
@@ -93,7 +93,7 @@ public class ExtractorService implements IExtractorService {
 	}
 
 	@Override
-	public JSONObject getExtractorParams(String engine, String version) throws ApiException {
+	public JSONObject getExtractorParams(String engine, String version) {
 		String path = getExtractorEntrypoint(engine, version);
 		logger.info("calling extractor at: {}", path);
 		try {
