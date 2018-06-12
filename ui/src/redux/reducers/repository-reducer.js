@@ -17,9 +17,8 @@ const intitialState = {
   loadedRepository: false,
   loadedConnectionParams: false,
   repositories: [],
-  extractableTypes: [],
   extractableEngines: [],
-  connectionParams: {},
+  connectionParams: [],
 }
 
 const repositoryReducer = (state = intitialState, action) => {
@@ -50,15 +49,14 @@ const repositoryReducer = (state = intitialState, action) => {
       return {
         ...state,
         loadedExtractables: true,
-        extractableTypes: action.payload,
         extractableEngines: action.payload.map(x => ({ key: x.type, text: x.type, value: x.type })),
       }
     case extractorActionTypes.R_ALL_EXTRACTABLE_TYPES_FAILURE:
       return { ...state, loadedExtractables: false, loading: false, extractableTypes: [], error: action.payload }
     case repositoryActionTypes.R_ALL_PARAM:
-      return { ...state, loadedConnectionParams: false, loading: true, connectionParams: {}, error: null }
+      return { ...state, loadedConnectionParams: false, loading: true, connectionParams: [], error: null }
     case repositoryActionTypes.R_ALL_PARAM_FAILURE:
-      return { ...state, loadedConnectionParams: false, loading: false, connectionParams: {}, error: action.payload }
+      return { ...state, loadedConnectionParams: false, loading: false, connectionParams: [], error: action.payload }
     case repositoryActionTypes.R_ALL_PARAM_SUCCESS:
       return { ...state, loadedConnectionParams: true, loading: false, connectionParams: action.payload, error: null }
     default:

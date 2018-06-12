@@ -141,6 +141,22 @@ const getConnectionParams = (id = 0) => {
   }
 }
 
+const updateConnectionParams = (id = 0, params = {}) => {
+  const request = (repository) => ({ type: repositoryActionTypes.U_PARAM, payload: repository })
+  const success = (repository) => ({ type: repositoryActionTypes.U_PARAM_SUCCESS, payload: repository })
+  const failure = (error) => ({ type: repositoryActionTypes.U_PARAM_FAILURE, payload: error })
+  return dispatch => {
+    dispatch(request({ id, params }))
+    RepositoryService.updateConnectionParams(id, params).then(
+      response => dispatch(success(response.data.data)),
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('No se han podido actualizar los parámetros de conexión para este repositorio'))
+      },
+    )
+  }
+}
+
 const repositoryActions = {
   create,
   findById,
@@ -151,6 +167,7 @@ const repositoryActions = {
   getExtractorCompatibles,
   resetRepository,
   getConnectionParams,
+  updateConnectionParams,
 }
 
 export default repositoryActions
