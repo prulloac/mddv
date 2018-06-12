@@ -44,16 +44,10 @@ class EditRepository extends Component {
     }
     const dynamicForm = connectionParams.map(param => {
       let input = null
-      if (param.type === 'string') {
-        input = (<TextField label={param.name} type={param.name === 'password' ? 'password' : 'text'} onChange={this.handleChange(param.name)} />)
-      }
-      if (param.type === 'int') {
-        input = (<TextField label={param.name} type="number" onChange={this.handleChange(param.name)} />)
-      }
       if (param.type === 'boolean') {
         input = (
           <div>
-            <InputLabel htmlFor={`__${param.name}`}>{param.name}</InputLabel>
+            <InputLabel htmlFor={`__${param.name}`}>{param.label}</InputLabel>
             <NativeSelect
               onChange={this.handleChange(param.name)}
               inputProps={{ id: `__${param.name}` }}
@@ -63,6 +57,8 @@ class EditRepository extends Component {
               <option value="false">No</option>
             </NativeSelect>
           </div>)
+      } else {
+        input = (<TextField label={param.label} type={param.type} onChange={this.handleChange(param.name)} />)
       }
       return (
         <FormGroup key={param.name}>
