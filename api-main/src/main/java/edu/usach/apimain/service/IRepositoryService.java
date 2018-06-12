@@ -5,6 +5,7 @@ import edu.usach.apimain.model.Repository;
 import org.json.simple.JSONArray;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IRepositoryService extends IEntityService<Repository>{
 	Object extractFromRepository(long id, String token);
@@ -14,4 +15,6 @@ public interface IRepositoryService extends IEntityService<Repository>{
 	List extractableTypes();
 
 	JSONArray getConnectionParams(Long id, String token);
+
+	Object putConnectionParams(Long id, Map<String, Object> params);
 }

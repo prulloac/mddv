@@ -3,8 +3,10 @@ package edu.usach.apimain.service.impl;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorCode;
 import edu.usach.apicommons.service.EntityService;
+import edu.usach.apimain.dao.ConnectionParamDAO;
 import edu.usach.apimain.dao.ExtractorDAO;
 import edu.usach.apimain.dao.RepositoryDAO;
+import edu.usach.apimain.model.ConnectionParameter;
 import edu.usach.apimain.model.Extractor;
 import edu.usach.apimain.model.Repository;
 import edu.usach.apimain.service.IRepositoryService;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +30,8 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 	private ExtractorDAO extractorDAO;
 	@Autowired
 	private ExtractorService extractorService;
+	@Autowired
+	private ConnectionParamDAO connectionParamDAO;
 
 	@Override
 	protected JpaRepository<Repository, Long> getDao() {
@@ -69,5 +74,19 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 		Repository repository = dao.findById(id).orElse(null);
 		if (null == repository) throw new ApiException(ErrorCode.OBJECT_NOT_FOUND, "Repository");
 		return extractorService.getExtractorParams(repository.getType(), repository.getVersion(), token);
+	}
+
+	@Override
+	public Object putConnectionParams(Long id, Map<String, Object> params) {
+		Repository repository = dao.findById(id).orElse(null);
+		if (null == repository) throw new ApiException(ErrorCode.OBJECT_NOT_FOUND, "Repository");
+		params.keySet().forEach(x -> {
+			ConnectionParameter parameter = new ConnectionParameter();
+			parameter.setName(x);
+			parameter.setValue(params.get(x).toString());
+			parameter.setRepository(repository);
+			connectionParamDAO.saveAndFlush(parameter);
+		});
+		return true;
 	}
 }

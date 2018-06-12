@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
 import static edu.usach.apicommons.util.Constants.OBJECT;
 
 @CrossOrigin(maxAge = 7200)
@@ -51,6 +54,14 @@ public class RepoController extends EntityController<Repository> {
 	public ResponseEntity<Object> getConnectionParams(@RequestParam("id") Long id) {
 		String token = this.servletRequest.getHeader("Authorization");
 		return response(service.getConnectionParams(id, token));
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/connectionParams")
+	public ResponseEntity<Object> putConnectionParams(@RequestParam("id") Long id, @RequestBody Map<String, Object> params) {
+		if (!this.isAuthenticated()) {
+			return this.responseApiException(new ApiException(ErrorCode.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+		}
+		return response(service.putConnectionParams(id, params));
 	}
 
 }
