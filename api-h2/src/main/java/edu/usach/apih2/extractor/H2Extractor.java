@@ -4,12 +4,12 @@ import edu.usach.apicommons.dto.SQLExtractionDTO;
 import edu.usach.apicommons.extractor.AbstractSQLExtractor;
 import edu.usach.apicommons.extractor.SQLExtractor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"unchecked", "unused"})
@@ -37,7 +37,7 @@ public class H2Extractor extends AbstractSQLExtractor implements SQLExtractor {
 	}
 
 	@Override
-	public JSONObject connectionParameters() {
+	public List<Map<String, Object>> connectionParameters() {
 		return null;
 	}
 

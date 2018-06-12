@@ -4,12 +4,13 @@ import edu.usach.apicommons.dto.SQLExtractionDTO;
 import edu.usach.apicommons.extractor.AbstractSQLExtractor;
 import edu.usach.apicommons.extractor.SQLExtractor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"unchecked", "unused"})
@@ -37,14 +38,13 @@ public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor
 	}
 
 	@Override
-	public JSONObject connectionParameters() {
-		JSONObject parameters = new JSONObject();
-		parameters.put("database","string");
-		parameters.put("username","string");
-		parameters.put("password","string");
-		parameters.put("host","string");
-		parameters.put("port","int");
-		parameters.put("isAuthRequired","boolean");
+	public List<Map<String, Object>> connectionParameters() {
+		List<Map<String, Object>> parameters = new ArrayList<>();
+		parameters.add(newConnectionParameter("text","host","Host"));
+		parameters.add(newConnectionParameter("number","port","Puerto"));
+		parameters.add(newConnectionParameter("text","database","Base de datos"));
+		parameters.add(newConnectionParameter("text","username","Usuario"));
+		parameters.add(newConnectionParameter("password","password","Contraseña"));
 		return parameters;
 	}
 
@@ -54,14 +54,10 @@ public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor
 			String database = (String) connectionParams.get("database");
 			String username = (String) connectionParams.get("username");
 			String password = (String) connectionParams.get("password");
-			boolean isAuthRequired = (boolean) connectionParams.get("isAuthRequired");
 			Connection connection = null;
 			String jdbcUrl = jdbcUrl(connectionParams);
 			log.info("Attempting to connect to {}", jdbcUrl);
-			if (isAuthRequired)
-				connection = DriverManager.getConnection(jdbcUrl, username, password);
-			else
-				connection = DriverManager.getConnection(jdbcUrl);
+			connection = DriverManager.getConnection(jdbcUrl, username, password);
 			log.info("Connected to {}", jdbcUrl);
 			DatabaseMetaData metaData = connection.getMetaData();
 			SQLExtractionDTO extractionDTO = extract(database, metaData);

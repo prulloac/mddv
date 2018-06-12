@@ -30,13 +30,13 @@ public class ArangoExtractor extends AbstractExtractor implements NoSQLExtractor
 	}
 
 	@Override
-	public JSONObject connectionParameters() {
-		JSONObject parameters = new JSONObject();
-		parameters.put("database","string");
-		parameters.put("username","string");
-		parameters.put("password","string");
-		parameters.put("host","string");
-		parameters.put("port","int");
+	public List<Map<String, Object>> connectionParameters() {
+		List<Map<String, Object>> parameters = new ArrayList<>();
+		parameters.add(newConnectionParameter("text","host","Host"));
+		parameters.add(newConnectionParameter("number","port","Puerto"));
+		parameters.add(newConnectionParameter("text","database","Base de datos"));
+		parameters.add(newConnectionParameter("text","username","Usuario"));
+		parameters.add(newConnectionParameter("password","password","Contraseña"));
 		return parameters;
 	}
 

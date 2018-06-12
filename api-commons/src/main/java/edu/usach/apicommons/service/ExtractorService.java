@@ -9,7 +9,6 @@ import org.json.simple.JSONObject;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Transactional
 @Slf4j
@@ -28,19 +27,9 @@ public abstract class ExtractorService<T extends IExtractor> extends AbstractSer
 	}
 
 	@Override
-	public List<JSONObject> getParameters() throws ApiException {
+	public List<Map<String,Object>> getParameters() throws ApiException {
 		try {
-			Map<String, Object> parameters = buildExtractor().connectionParameters();
-			return parameters
-					.keySet()
-					.stream()
-					.map(x -> {
-						JSONObject param = new JSONObject();
-						param.put("name", x.toString());
-						param.put("type", parameters.get(x).toString());
-						return param;
-					})
-					.collect(Collectors.toList());
+			return buildExtractor().connectionParameters();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new ApiException(ErrorCode.UNEXPECTED_ERROR);
