@@ -97,12 +97,13 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 
 	@Override
 	public Repository create(Repository entity) {
+		dao.saveAndFlush(entity);
 		TechnicalObject repositoryObject = new TechnicalObject();
 		repositoryObject.setRepository(entity);
 		repositoryObject.setType(TechnicalTypes.REPOSITORY.toString());
-		repositoryObject.setVersion("1.0.0");
+		repositoryObject.setVersion(entity.getVersion());
 		repositoryObject.setName(entity.getName());
 		technicalObjectDAO.saveAndFlush(repositoryObject);
-		return super.create(entity);
+		return entity;
 	}
 }
