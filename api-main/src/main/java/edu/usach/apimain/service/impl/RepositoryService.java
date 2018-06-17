@@ -20,6 +20,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -85,13 +86,18 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 	public Object putConnectionParams(Long id, Map<String, Object> params) {
 		Repository repository = dao.findById(id).orElse(null);
 		if (null == repository) throw new ApiException(ErrorCode.OBJECT_NOT_FOUND, "Repository");
+		List<ConnectionParameter> connectionParameters = new ArrayList<>();
+		repository.getConnectionParameters().forEach(x -> connectionParamDAO.delete(x));
 		params.keySet().forEach(x -> {
 			ConnectionParameter parameter = new ConnectionParameter();
 			parameter.setName(x);
 			parameter.setValue(params.get(x).toString());
 			parameter.setRepository(repository);
 			connectionParamDAO.saveAndFlush(parameter);
+			connectionParameters.add(parameter);
 		});
+		repository.setConnectionParameters(connectionParameters);
+		dao.saveAndFlush(repository);
 		return true;
 	}
 
