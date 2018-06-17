@@ -6,10 +6,13 @@ import edu.usach.apicommons.service.EntityService;
 import edu.usach.apimain.dao.ConnectionParamDAO;
 import edu.usach.apimain.dao.ExtractorDAO;
 import edu.usach.apimain.dao.RepositoryDAO;
+import edu.usach.apimain.dao.TechnicalObjectDAO;
 import edu.usach.apimain.model.ConnectionParameter;
 import edu.usach.apimain.model.Extractor;
 import edu.usach.apimain.model.Repository;
+import edu.usach.apimain.model.TechnicalObject;
 import edu.usach.apimain.service.IRepositoryService;
+import edu.usach.apimain.util.TechnicalTypes;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,8 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 	private ExtractorService extractorService;
 	@Autowired
 	private ConnectionParamDAO connectionParamDAO;
+	@Autowired
+	private TechnicalObjectDAO technicalObjectDAO;
 
 	@Override
 	protected JpaRepository<Repository, Long> getDao() {
@@ -88,5 +93,16 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 			connectionParamDAO.saveAndFlush(parameter);
 		});
 		return true;
+	}
+
+	@Override
+	public Repository create(Repository entity) {
+		TechnicalObject repositoryObject = new TechnicalObject();
+		repositoryObject.setRepository(entity);
+		repositoryObject.setType(TechnicalTypes.REPOSITORY.toString());
+		repositoryObject.setVersion("1.0.0");
+		repositoryObject.setName(entity.getName());
+		technicalObjectDAO.saveAndFlush(repositoryObject);
+		return super.create(entity);
 	}
 }
