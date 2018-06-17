@@ -64,4 +64,28 @@ public class RepoController extends EntityController<Repository> {
 		return response(service.putConnectionParams(id, params));
 	}
 
+	@Override
+	@RequestMapping(
+			method = {RequestMethod.GET},
+			name = "Get all"
+	)
+	public ResponseEntity<Object> getAll(@RequestParam(value = "page",required = false) Integer page, @RequestParam(value = "size",required = false) Integer size, @RequestParam(value = "showAll",required = false) String showAll) {
+		if (!this.isAuthenticated()) {
+			return this.responseApiException(new ApiException(ErrorCode.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+		} else {
+			try {
+				return null != showAll && showAll.matches("(?i)^(yes|true|ok|1|show|showall)$") ?
+						this.response(service.findAllDTO()) :
+						this.response(service.findPaginatedDTO(page, size));
+			} catch (ApiException var5) {
+				log.error(var5.getMessage(), var5);
+				return this.responseApiException(var5, HttpStatus.NOT_FOUND);
+			} catch (Exception var6) {
+				log.error(var6.getMessage(), var6);
+				return this.responseException(var6, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+	}
+
+
 }

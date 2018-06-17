@@ -7,6 +7,7 @@ import edu.usach.apimain.dao.ConnectionParamDAO;
 import edu.usach.apimain.dao.ExtractorDAO;
 import edu.usach.apimain.dao.RepositoryDAO;
 import edu.usach.apimain.dao.TechnicalObjectDAO;
+import edu.usach.apimain.dto.RepositoryDTO;
 import edu.usach.apimain.model.ConnectionParameter;
 import edu.usach.apimain.model.Extractor;
 import edu.usach.apimain.model.Repository;
@@ -16,6 +17,7 @@ import edu.usach.apimain.util.TechnicalTypes;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,4 +114,13 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 		technicalObjectDAO.saveAndFlush(repositoryObject);
 		return entity;
 	}
+
+	public List<RepositoryDTO> findAllDTO() throws ApiException {
+		return this.findAll().stream().map(RepositoryDTO::new).collect(Collectors.toList());
+	}
+
+	public Page<RepositoryDTO> findPaginatedDTO(Integer page, Integer size) throws ApiException {
+		return this.findPaginated(page, size).map(RepositoryDTO::new);
+	}
+
 }
