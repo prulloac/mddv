@@ -132,7 +132,10 @@ const getConnectionParams = (id = 0) => {
   return dispatch => {
     dispatch(request(id))
     RepositoryService.getConnectionParams(id).then(
-      response => dispatch(success(response.data.data)),
+      response => {
+        dispatch(success(response))
+        dispatch(notificationActions.notify('Repositorio exitosamente actualizado!'))
+      },
       error => {
         dispatch(failure(error))
         dispatch(notificationActions.notify('No hay extractores compatibles para este repositorio'))

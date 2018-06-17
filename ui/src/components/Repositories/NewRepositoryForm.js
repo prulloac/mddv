@@ -10,7 +10,7 @@ class NewRepositoryForm extends Component {
     super(props)
     this.state = {
       name: null,
-      type: null,
+      type: '',
       location: null,
       version: null,
       outsourced: false,

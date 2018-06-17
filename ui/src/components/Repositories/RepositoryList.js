@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { Card, Button, CardContent, Typography, CardActions, Icon, MuiThemeProvider, colors, createMuiTheme } from '@material-ui/core'
+import { Card, Button, CardContent, Typography, CardActions, Icon, Badge } from '@material-ui/core'
 import { repositoryActions } from '../../redux/actions'
 
 class RepositoryList extends Component {
@@ -49,25 +49,26 @@ class RepositoryList extends Component {
           <Button
             size="small"
             variant="raised"
+            color="primary"
+            component={Link}
+            to={`/repository/params/${repository.id}`}
+            style={{ color: '#fff' }}
+          >
+            Conexión
+            {repository.hasConnectionParams ?
+              (<Icon className="icon-button">security</Icon>) :
+              (<Badge badgeContent="" color="error" className="icon-button"><Icon>security</Icon></Badge>)
+            }
+          </Button>
+          <Button
+            size="small"
+            variant="raised"
             color="secondary"
             onClick={this.handleDelete(repository.id)}
           >
             Eliminar
             <Icon className="icon-button">delete</Icon>
           </Button>
-          <MuiThemeProvider theme={createMuiTheme({ palette: { primary: colors.green } })}>
-            <Button
-              size="small"
-              variant="raised"
-              color="primary"
-              component={Link}
-              to={`/repository/params/${repository.id}`}
-              style={{ color: '#fff' }}
-            >
-              Conexión
-              <Icon className="icon-button">security</Icon>
-            </Button>
-          </MuiThemeProvider>
         </CardActions>
       </Card>
     ))

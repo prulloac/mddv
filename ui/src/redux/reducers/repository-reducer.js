@@ -52,7 +52,7 @@ const repositoryReducer = (state = intitialState, action) => {
         extractableEngines: action.payload.map(x => ({ key: x.type, text: x.type, value: x.type })),
       }
     case extractorActionTypes.R_ALL_EXTRACTABLE_TYPES_FAILURE:
-      return { ...state, loadedExtractables: false, loading: false, extractableTypes: [], error: action.payload }
+      return { ...state, loadedExtractables: false, loading: false, error: action.payload }
     case repositoryActionTypes.R_ALL_PARAM:
       return { ...state, loadedConnectionParams: false, loading: true, connectionParams: [], error: null }
     case repositoryActionTypes.R_ALL_PARAM_FAILURE:
