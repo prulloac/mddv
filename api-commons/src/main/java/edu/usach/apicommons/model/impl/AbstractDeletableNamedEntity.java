@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class AbstractDeletableNamedEntity extends AbstractDeletableEntity implements IEntity {
   private static final long serialVersionUID = 1L;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String name;
 
 }
