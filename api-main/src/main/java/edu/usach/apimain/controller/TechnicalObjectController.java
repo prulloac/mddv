@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(maxAge = 7200)
 @RestController
-@RequestMapping("/techincal-objects")
+@RequestMapping("/technical-objects")
 public class TechnicalObjectController extends EntityController<TechnicalObject> {
 
 	@Autowired
