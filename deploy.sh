@@ -10,7 +10,7 @@ do
 done
 
 cd $ROOT_DIR/testing-containers
-for d in mysql arango h2 mongo postgres
+for d in mysql arango h2 mongo postgresql
 do
   echo "running $d database container"
   sh testcontainers.sh $d-testing
