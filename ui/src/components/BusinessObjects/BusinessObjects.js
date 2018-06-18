@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Switch, Route, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { withStyles, Typography, Paper } from '@material-ui/core'
-import { title, Img } from '../../utils'
+import { withStyles, Typography, Paper, Button } from '@material-ui/core'
+import New from './NewBusinessObject'
+import List from './ListBusinessObject'
+import { title } from '../../utils'
 
 import './BusinessObjects.scss'
 
@@ -13,19 +15,21 @@ class BusinessObjects extends Component {
   }
 
   render() {
+    const { match } = this.props
     return (
       <div>
         <Paper elevation={4}>
           <Typography variant="display1" align="center">Objetos de Negocio</Typography>
         </Paper>
-        <p>This is a basic fixed menu template using fixed size containers.</p>
-        <p>
-          A text container is used for the main container,
-          which is useful for single column layouts.
-        </p>
-        <img alt="" src={Img.mediaParagraph} style={{ marginTop: '2em' }} />
-        <img alt="" src={Img.paragraph} style={{ marginTop: '2em' }} />
-        <img alt="" src={Img.paragraph} style={{ marginTop: '2em' }} />
+        <div className="mddv-buttons" align="right">
+          <Button variant="raised" component={Link} to={`${match.path}/new`}>
+            Nuevo Objeto
+          </Button>
+        </div>
+        <Switch>
+          <Route path={`${match.path}/new`} component={New} />
+          <Route component={List} />
+        </Switch>
       </div>
     )
   }

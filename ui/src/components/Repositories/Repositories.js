@@ -3,9 +3,9 @@ import { Switch, Route, Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Button, Typography, withStyles, Paper } from '@material-ui/core'
 import { repositoryActions } from '../../redux/actions'
-import NewRepositoryForm from './NewRepositoryForm'
-import RepositoryList from './RepositoryList'
-import EditRepository from './EditRepository'
+import New from './NewRepository'
+import List from './ListRepository'
+import Edit from './EditRepository'
 import EditParams from './EditParams'
 import { title } from '../../utils'
 import './Repositories.scss'
@@ -35,10 +35,10 @@ class Repositories extends Component {
           </Button>
         </div>
         <Switch>
-          <Route exact path={`${match.path}/new`} component={NewRepositoryForm} />
-          <Route path={`${match.path}/edit/:id`} component={EditRepository} />
+          <Route exact path="/repository" component={List} />
+          <Route exact path={`${match.path}/new`} component={New} />
+          <Route path={`${match.path}/edit/:id`} component={Edit} />
           <Route path={`${match.path}/params/:id`} component={EditParams} />
-          <Route component={RepositoryList} />
         </Switch>
       </div>
     )
