@@ -39,7 +39,10 @@ class EditRepository extends Component {
 
   render() {
     const { loadedRepository, connectionParams, loadedConnectionParams } = this.props
-    if (!loadedRepository || !loadedConnectionParams) {
+    if (!loadedRepository) {
+      return null
+    }
+    if (!loadedConnectionParams) {
       return null
     }
     const dynamicForm = connectionParams.map(param => {

@@ -36,7 +36,7 @@ class BusinessObjects extends Component {
 }
 
 const mapStateToProps = state => {
-  const { repositories, repository } = state.repositoryReducer
+  const { repositories, repository } = state.businessObjectReducer
   return { repositories, repository }
 }
 
