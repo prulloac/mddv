@@ -45,6 +45,9 @@ const findByName = (name = 0) => httpClient.get({ endpoint: `business-objects?na
 
 const getAll = () => httpClient.get({ endpoint: 'business-objects?showAll=true' })
 
+const getTypes = () => httpClient.get({ endpoint: 'business-objects/types' })
+
+
 const BusinessObjectService = {
   create,
   findById,
@@ -52,6 +55,7 @@ const BusinessObjectService = {
   getAll,
   update,
   delete: del,
+  getTypes,
 }
 
 export default BusinessObjectService
