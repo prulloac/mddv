@@ -133,7 +133,7 @@ const getConnectionParams = (id = 0) => {
     dispatch(request(id))
     RepositoryService.getConnectionParams(id).then(
       response => {
-        dispatch(success(response))
+        dispatch(success(response.data.data))
         dispatch(notificationActions.notify('Repositorio exitosamente actualizado!'))
       },
       error => {
