@@ -6,6 +6,8 @@ const initialState = {
   loading: false,
   businessObjects: [],
   loadedBusinessObjects: false,
+  businessObjectTypes: [],
+  loadedBusinessObjectTypes: false,
 }
 
 const businessObjectReducer = (state = initialState, action = { type: '', payload: {} }) => {

@@ -49,6 +49,22 @@ const getAll = () => {
   }
 }
 
+const getTypes = () => {
+  const request = (repository) => ({ type: objectActionTypes.R_B_OBJECT_TYPES, payload: repository })
+  const success = (repository) => ({ type: objectActionTypes.R_B_OBJECT_TYPES_SUCCESS, payload: repository })
+  const failure = (error) => ({ type: objectActionTypes.R_B_OBJECT_TYPES_FAILURE, payload: error })
+  return dispatch => {
+    dispatch(request())
+    ObjectService.getTypes().then(
+      response => dispatch(success(response.data.data)),
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('No hay tipos de Objetos de Negocio definidos. Contáctese con su administrador'))
+      },
+    )
+  }
+}
+
 const create = ({ name = '', description = '', type = '', version = '' }) => {
   const request = (repository) => ({ type: objectActionTypes.C_B_OBJECT, payload: repository })
   const success = (repository) => ({ type: objectActionTypes.C_B_OBJECT_SUCCESS, payload: repository })
@@ -116,4 +132,5 @@ export default {
   update,
   create,
   getAll,
+  getTypes,
 }
