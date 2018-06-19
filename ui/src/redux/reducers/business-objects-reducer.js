@@ -1,9 +1,10 @@
 import objectActionTypes from '../action-types/object-action-types'
 
 const initialState = {
-  businessObject: {},
   error: '',
   loading: false,
+  businessObject: {},
+  loadedBusinessObject: false,
   businessObjects: [],
   loadedBusinessObjects: false,
   businessObjectTypes: [],
@@ -32,6 +33,12 @@ const businessObjectReducer = (state = initialState, action = { type: '', payloa
       return { ...state, loading: false, error: null, loadedBusinessObjects: true, businessObjects: action.payload }
     case objectActionTypes.R_ALL_B_OBJECT_FAILURE:
       return { ...state, loading: false, error: action.payload, loadedBusinessObjects: false, businessObjects: [] }
+    case objectActionTypes.R_B_OBJECT:
+      return { ...state, loading: true, error: null, loadedBusinessObject: false, businessObject: {} }
+    case objectActionTypes.R_B_OBJECT_SUCCESS:
+      return { ...state, loading: false, error: null, loadedBusinessObject: true, businessObject: action.payload }
+    case objectActionTypes.R_B_OBJECT_FAILURE:
+      return { ...state, loading: false, error: action.payload, loadedBusinessObject: false, businessObject: {} }
     default:
       return { ...state }
   }
