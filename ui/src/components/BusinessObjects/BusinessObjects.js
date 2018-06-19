@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { withStyles, Typography, Paper, Button } from '@material-ui/core'
 import New from './NewBusinessObject'
 import List from './ListBusinessObject'
+import Edit from './EditBusinessObject'
 import { title } from '../../utils'
 
 import './BusinessObjects.scss'
@@ -28,6 +29,7 @@ class BusinessObjects extends Component {
         </div>
         <Switch>
           <Route path={`${match.path}/new`} component={New} />
+          <Route path={`${match.path}/edit/:id`} component={Edit} />
           <Route component={List} />
         </Switch>
       </div>
