@@ -53,7 +53,7 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 		String version = repository.getVersion();
 		JSONObject connectionParams = new JSONObject();
 		repository.getConnectionParameters().forEach(x -> connectionParams.put(x.getName(), x.getValue()));
-		return extractorService.callExtractor(engine, version, connectionParams, token);
+		return extractorService.callExtractor(engine, version, connectionParams, token).get("data");
 	}
 
 	@Override
