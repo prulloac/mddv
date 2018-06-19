@@ -34,8 +34,8 @@ public class RepoController extends EntityController<Repository> {
 		return service;
   }
   
-  @RequestMapping(method = RequestMethod.POST, params = { "extract", "id" })
-	public ResponseEntity<Object> extract(@RequestParam("id") long id, @RequestParam("extract") boolean extract) {
+  @RequestMapping(value = "extract", method = RequestMethod.POST, params = { "id" })
+	public ResponseEntity<Object> extract(@RequestParam("id") long id) {
 		String token = this.servletRequest.getHeader("Authorization");
 		return response(service.extractFromRepository(id, token));
 	}
