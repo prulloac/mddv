@@ -5,4 +5,6 @@ import edu.usach.apimain.model.TechnicalObject;
 
 public interface ITechnicalObjectService extends IEntityService<TechnicalObject> {
 	Object getRepositories();
+
+	Object getChildrenObjects(Long id);
 }

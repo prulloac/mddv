@@ -8,10 +8,7 @@ import edu.usach.apimain.util.BusinessTypes;
 import edu.usach.apimain.util.TechnicalTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -37,5 +34,10 @@ public class TechnicalObjectController extends EntityController<TechnicalObject>
 	@RequestMapping(value = "/repositories", method = RequestMethod.GET)
 	public ResponseEntity<Object> getRepositories() {
 		return response(service.getRepositories());
+	}
+
+	@RequestMapping(value = "/children", method = RequestMethod.GET)
+	public ResponseEntity<Object> getChildrenObjects(@RequestParam("parentId") Long id) {
+		return response(service.getChildrenObjects(id));
 	}
 }

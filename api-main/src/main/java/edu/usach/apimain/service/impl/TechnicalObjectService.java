@@ -27,4 +27,9 @@ public class TechnicalObjectService extends EntityService<TechnicalObject> imple
 	public List<TechnicalObject> getRepositories() {
 		return dao.findRepositories();
 	}
+
+	@Override
+	public Object getChildrenObjects(Long id) {
+		return dao.findChildrenObjects(id);
+	}
 }

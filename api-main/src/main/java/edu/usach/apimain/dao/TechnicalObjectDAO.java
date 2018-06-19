@@ -11,4 +11,7 @@ public interface TechnicalObjectDAO extends BaseMetadataObjectDAO<TechnicalObjec
 
 	@Query("select T from TechnicalObject T where T.parentObject is null")
 	List<TechnicalObject> findRepositories();
+
+	@Query("select T from TechnicalObject T where T.parentObject.id = ?1")
+	List<TechnicalObject> findChildrenObjects(Long id);
 }
