@@ -10,7 +10,10 @@ public enum BusinessTypes {
 	INTERNAL_USE("Internal Use", "Uso Interno"),
 	NATIONAL_LAW("National Law", "Ley Nacional"),
 	INTERNATIONAL_LAW("International Law", "Ley Internacional"),
-	BUSINESS_RULE("Business Rule", "Regla de Negocio");
+	BUSINESS_RULE("Business Rule", "Regla de Negocio"),
+	LOGIC_BOND("Logic Bond", "Vínculo Lógico"),
+	USE_BOND("Use Bond", "Vículo de Uso"),
+	SYNONYM_BOND("Synonym Bond", "Vículo de Sinónimos");
 
 	private String type;
 	private String translation;
