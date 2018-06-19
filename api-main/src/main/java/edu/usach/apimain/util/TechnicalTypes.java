@@ -13,7 +13,13 @@ public enum TechnicalTypes {
 	DOCUMENT("Document", "Documento"),
 	FILE("File", "Archivo"),
 	SHEET("Sheet", "Planilla"),
-	FOLDER("Folder", "Carpeta");
+	FOLDER("Folder", "Carpeta"),
+	RELATION("Relation", "Relación"),
+	RELATION_MANY_ONE("Relation Many to One", "Relación Muchos a Uno"),
+	RELATION_MANY_MANY("Relation Many to Many", "Relación Muchos a Muchos"),
+	RELATION_DEPENDENCY("Dependency Relation", "Relación de Dependencia"),
+	RELATION_USE("Use Relation", "Relación de Uso"),
+	RELATION_GENERALIZATION("Generalization Relation", "Relación de Generalización");
 
 	private String type;
 	private String translation;
