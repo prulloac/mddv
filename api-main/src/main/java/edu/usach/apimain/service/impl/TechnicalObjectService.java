@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class TechnicalObjectService extends EntityService<TechnicalObject> implements ITechnicalObjectService {
@@ -19,5 +21,10 @@ public class TechnicalObjectService extends EntityService<TechnicalObject> imple
 	@Override
 	protected JpaRepository<TechnicalObject, Long> getDao() {
 		return dao;
+	}
+
+	@Override
+	public List<TechnicalObject> getRepositories() {
+		return dao.findRepositories();
 	}
 }

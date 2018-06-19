@@ -33,4 +33,9 @@ public class TechnicalObjectController extends EntityController<TechnicalObject>
 	public ResponseEntity<Object> getTypes() {
 		return response(Arrays.stream(TechnicalTypes.values()).map(TechnicalTypes::getTranslation).collect(Collectors.toList()));
 	}
+
+	@RequestMapping(value = "/repositories", method = RequestMethod.GET)
+	public ResponseEntity<Object> getRepositories() {
+		return response(service.getRepositories());
+	}
 }
