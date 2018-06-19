@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Switch, Route, Link, withRouter } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Button, Typography, withStyles, Paper } from '@material-ui/core'
+import { Typography, withStyles, Paper } from '@material-ui/core'
 import { repositoryActions } from '../../redux/actions'
 import New from './NewRepository'
 import List from './ListRepository'
@@ -29,11 +29,6 @@ class Repositories extends Component {
         <Paper elevation={4}>
           <Typography variant="display1" align="center">Repositorios</Typography>
         </Paper>
-        <div className="mddv-buttons" align="right">
-          <Button variant="raised" component={Link} to={`${match.path}/new`}>
-            Registrar nuevo repositorio
-          </Button>
-        </div>
         <Switch>
           <Route exact path="/repository" component={List} />
           <Route exact path={`${match.path}/new`} component={New} />

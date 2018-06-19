@@ -24,9 +24,16 @@ class RepositoryList extends Component {
   }
 
   render() {
+    const newButton = (
+      <div className="mddv-buttons" align="right">
+        <Button variant="raised" component={Link} to="/repository/new">
+          Registrar nuevo repositorio
+        </Button>
+      </div>
+    )
     const { loadedRepositories, repositories } = this.props
     if (!loadedRepositories) {
-      return null
+      return newButton
     }
     const repositoryCards = repositories.map((repository) => (
       <Card className="mddv-repo-card" key={repository.id}>
@@ -73,7 +80,7 @@ class RepositoryList extends Component {
       </Card>
     ))
     return (
-      <div>{repositoryCards}</div>
+      <div>{newButton}{repositoryCards}</div>
     )
   }
 }

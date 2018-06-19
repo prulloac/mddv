@@ -34,10 +34,10 @@ class EditBusinessObject extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    const name = this.state.name ? this.state.name : this.props.repository.name
-    const type = this.state.type ? this.state.type : this.props.repository.type
-    const version = this.state.version ? this.state.version : this.props.repository.version
-    const description = this.state.description ? this.state.description : this.props.repository.description
+    const name = this.state.name ? this.state.name : this.props.businessObject.name
+    const type = this.state.type ? this.state.type : this.props.businessObject.type
+    const version = this.state.version ? this.state.version : this.props.businessObject.version
+    const description = this.state.description ? this.state.description : this.props.businessObject.description
     const { dispatch, match } = this.props
     if (name && type) {
       dispatch(businessObjectActions.update({ id: match.params.id, name, type, version, description }))

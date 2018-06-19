@@ -11,7 +11,6 @@ class BusinessObjectsList extends Component {
     }
     this.props.dispatch(businessObjectActions.resetObject())
     this.props.dispatch(businessObjectActions.getAll())
-    this.props.dispatch(businessObjectActions.getTypes())
   }
 
   handleDelete = (id = 0) => (event) => {
@@ -24,9 +23,16 @@ class BusinessObjectsList extends Component {
   }
 
   render() {
+    const newButton = (
+      <div className="mddv-buttons" align="right">
+        <Button variant="raised" component={Link} to="/business/new">
+          Nuevo Objeto
+        </Button>
+      </div>
+    )
     const { loadedBusinessObjects, businessObjects } = this.props
     if (!loadedBusinessObjects) {
-      return null
+      return newButton
     }
     const repositoryCards = businessObjects.map((object) => (
       <Card className="mddv-repo-card" key={object.id}>
@@ -70,7 +76,7 @@ class BusinessObjectsList extends Component {
       </Card>
     ))
     return (
-      <div>{repositoryCards}</div>
+      <div>{newButton}{repositoryCards}</div>
     )
   }
 }
