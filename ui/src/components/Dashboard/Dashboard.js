@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withStyles, Typography } from '@material-ui/core'
-import { Navigation, Welcome, Repositories, NotFound, Models, BusinessObjects } from '../index'
+import { Navigation, Welcome, Repositories, NotFound, Models, BusinessObjects, TechnicalObjects } from '../index'
 import { Img } from '../../utils'
 import './Dashboard.scss'
 
@@ -23,6 +23,7 @@ class Dashboard extends Component {
               <Route path="/repository" component={Repositories} />
               <Route path="/model" component={Models} />
               <Route path="/business" component={BusinessObjects} />
+              <Route path="/technical" component={TechnicalObjects} />
               <Route component={NotFound} />
             </Switch>
           </div>

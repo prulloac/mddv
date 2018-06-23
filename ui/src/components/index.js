@@ -9,6 +9,7 @@ import Notification from './Notification/Notification'
 import Repositories from './Repositories/Repositories'
 import Sidenav from './Sidenav/Sidenav'
 import Welcome from './Welcome/Welcome'
+import TechnicalObjects from './TechnicalObjects/TechnicalObjects'
 
 export default {
   App,
@@ -21,6 +22,7 @@ export default {
   Notification,
   Repositories,
   Sidenav,
+  TechnicalObjects,
   Welcome,
 }
 
@@ -34,4 +36,5 @@ export { NotFound }
 export { Notification }
 export { Repositories }
 export { Sidenav }
+export { TechnicalObjects }
 export { Welcome }

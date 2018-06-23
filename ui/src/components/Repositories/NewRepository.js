@@ -10,7 +10,7 @@ class NewRepositoryForm extends Component {
     super(props)
     this.state = {
       name: null,
-      type: '',
+      engine: '',
       location: null,
       version: null,
       outsourced: false,
@@ -29,10 +29,10 @@ class NewRepositoryForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    const { name, type, version, location, outsourced } = this.state
+    const { name, engine, version, location, outsourced } = this.state
     const { dispatch } = this.props
-    if (name && type) {
-      dispatch(repositoryActions.create({ location: outsourced ? location : null, name, type, version, outsourced }))
+    if (name && engine) {
+      dispatch(repositoryActions.create({ location: outsourced ? location : null, name, engine, version, outsourced }))
     }
   }
 
@@ -50,11 +50,11 @@ class NewRepositoryForm extends Component {
         </FormGroup>
         <FormGroup>
           <FormControl>
-            <InputLabel htmlFor="type">Tipo</InputLabel>
+            <InputLabel htmlFor="engine">Tipo (Motor)</InputLabel>
             <NativeSelect
-              value={this.state.type}
-              onChange={this.handleChange('type')}
-              inputProps={{ id: 'type' }}
+              value={this.state.engine}
+              onChange={this.handleChange('engine')}
+              inputProps={{ id: 'engine' }}
             >
               <option value="">Tipo</option>
               {extractableEngines.map(x => (

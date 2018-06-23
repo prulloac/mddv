@@ -1,5 +1,6 @@
 import React from 'react'
 import { List, Icon, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import Database from 'mdi-material-ui/Database'
 import { Link } from 'react-router-dom'
 import './Sidenav.scss'
 
@@ -19,6 +20,14 @@ const Sidenav = () => (
       </ListItemIcon>
       <ListItemText>
         Objetos de Negocio
+      </ListItemText>
+    </ListItem>
+    <ListItem button component={Link} to="/technical">
+      <ListItemIcon>
+        <Database />
+      </ListItemIcon>
+      <ListItemText>
+        Objetos Técnicos
       </ListItemText>
     </ListItem>
     <ListItem button component={Link} to="/model">

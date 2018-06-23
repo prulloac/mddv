@@ -57,7 +57,7 @@ class RepositoryList extends Component {
               <Icon>sync_problem</Icon>
             </Button> : null}
           <Typography variant="headline">{repository.name}</Typography>
-          <Typography>Tipo: {repository.type} ({repository.version || 'Sin Versión'})</Typography>
+          <Typography>Tipo: {repository.engine} ({repository.version || 'Sin Versión'})</Typography>
           <Typography>Ubicación: {repository.location} <Icon>{repository.outsourced ? 'cloud' : 'business' }</Icon></Typography>
         </CardContent>
         <CardActions>

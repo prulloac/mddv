@@ -35,13 +35,13 @@ class EditRepository extends Component {
   handleSubmit = (event) => {
     event.preventDefault()
     const name = this.state.name ? this.state.name : this.props.repository.name
-    const type = this.state.type ? this.state.type : this.props.repository.type
+    const engine = this.state.engine ? this.state.engine : this.props.repository.engine
     const version = this.state.version ? this.state.version : this.props.repository.version
     const location = this.state.location ? this.state.location : this.props.repository.location
     const outsourced = this.state.outsourced ? this.state.outsourced : this.props.repository.outsourced
     const { dispatch, match } = this.props
-    if (name && type) {
-      dispatch(repositoryActions.update({ id: match.params.id, name, location, type, version, outsourced }))
+    if (name && engine) {
+      dispatch(repositoryActions.update({ id: match.params.id, name, location, engine, version, outsourced }))
     }
   }
 
@@ -59,12 +59,12 @@ class EditRepository extends Component {
         </FormGroup>
         <FormGroup>
           <FormControl>
-            <InputLabel htmlFor="type">Tipo</InputLabel>
+            <InputLabel htmlFor="engine">Tipo (Motor)</InputLabel>
             <NativeSelect
-              input={<Input name="type" id="type" />}
+              input={<Input name="engine" id="engine" />}
               label="Tipo"
-              defaultValue={repository.type}
-              onChange={this.handleChange('type')}
+              defaultValue={repository.engine}
+              onChange={this.handleChange('engine')}
             >
               <option value="">Tipo</option>
               {extractableEngines.map(x => (
