@@ -50,7 +50,7 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 	@Override
 	public Object extractFromRepository(long id, String token) throws ApiException {
 		Repository repository = dao.findById(id).get();
-		String engine = repository.getType();
+		String engine = repository.getEngine();
 		String version = repository.getVersion();
 		JSONObject connectionParams = new JSONObject();
 		repository.getConnectionParameters().forEach(x -> connectionParams.put(x.getName(), x.getValue()));
@@ -63,7 +63,7 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 		List<Extractor> extractors = extractorDAO.findAll();
 		repositories.
 				removeIf(x -> extractors.stream().
-						noneMatch(y -> (y.getSupportedEngine().equalsIgnoreCase(x.getType()) && y.getSupportedVersions().contains(x.getVersion()))));
+						noneMatch(y -> (y.getSupportedEngine().equalsIgnoreCase(x.getEngine()) && y.getSupportedVersions().contains(x.getVersion()))));
 		return repositories;
 	}
 
@@ -82,7 +82,7 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 	public JSONArray getConnectionParams(Long id, String token) throws ApiException {
 		Repository repository = dao.findById(id).orElse(null);
 		if (null == repository) throw new ApiException(ErrorCode.OBJECT_NOT_FOUND, "Repository");
-		return extractorService.getExtractorParams(repository.getType(), repository.getVersion(), token);
+		return extractorService.getExtractorParams(repository.getEngine(), repository.getVersion(), token);
 	}
 
 	@Override
@@ -109,10 +109,10 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 		dao.saveAndFlush(entity);
 		TechnicalObject repositoryObject = new TechnicalObject();
 		repositoryObject.setRepository(entity);
-		repositoryObject.setType(TechnicalTypes.REPOSITORY.toString());
+		repositoryObject.setType(TechnicalTypes.REPOSITORY.getTranslation() + " " + entity.getType());
 		repositoryObject.setVersion("1.0");
 		repositoryObject.setName(entity.getName());
-		repositoryObject.setDescription("Type: " + entity.getType() + "(" + entity.getVersion() + ")");
+		repositoryObject.setDescription("Motor: " + entity.getEngine() + "(" + entity.getVersion() + ")");
 		technicalObjectDAO.saveAndFlush(repositoryObject);
 		return entity;
 	}
@@ -132,7 +132,7 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 		connectionParamDAO.findByRepository(repository).forEach(x -> {
 			connectionParams.put(x.getName(), x.getValue());
 		});
-		return extractorService.testConnection(repository.getType(), repository.getVersion(), token, connectionParams);
+		return extractorService.testConnection(repository.getEngine(), repository.getVersion(), token, connectionParams);
 	}
 
 	@Override

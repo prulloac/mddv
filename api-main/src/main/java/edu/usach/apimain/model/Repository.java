@@ -22,6 +22,7 @@ public class Repository extends AbstractAuditableNamedEntity implements IEntity 
 	private String location;
 	private Boolean outsourced;
 	private String type;
+	private String engine;
 	@OneToMany(mappedBy = "repository")
 	@JsonIgnore
 	private List<ConnectionParameter> connectionParameters;

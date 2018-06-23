@@ -19,6 +19,7 @@ public class RepositoryDTO {
 	private Boolean outsourced;
 	private Boolean hasConnectionParams;
 	private String type;
+	private String engine;
 	private long id;
 	private List<Map<String, Object>> connectionParams;
 
@@ -26,6 +27,7 @@ public class RepositoryDTO {
 		this.name = repository.getName();
 		this.location = repository.getLocation();
 		this.type = repository.getType();
+		this.engine = repository.getEngine();
 		this.version = repository.getVersion();
 		this.outsourced = repository.getOutsourced();
 		this.hasConnectionParams = !repository.getConnectionParameters().isEmpty();
