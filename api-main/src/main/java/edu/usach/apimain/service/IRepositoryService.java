@@ -24,5 +24,5 @@ public interface IRepositoryService extends IEntityService<Repository>{
 
 	Page<RepositoryDTO> findPaginatedDTO(Integer page, Integer size);
 
-	Boolean testConnection(Long id, Map<String, Object> connectionParams, String token);
+	Boolean testConnection(Long id, String token);
 }

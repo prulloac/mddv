@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -125,8 +126,12 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 	}
 
 	@Override
-	public Boolean testConnection(Long id, Map<String, Object> connectionParams, String token) {
+	public Boolean testConnection(Long id, String token) {
 		Repository repository = dao.findById(id).get();
+		Map<String, Object> connectionParams = new HashMap<>();
+		connectionParamDAO.findByRepository(repository).forEach(x -> {
+			connectionParams.put(x.getName(), x.getValue());
+		});
 		return extractorService.testConnection(repository.getType(), repository.getVersion(), token, connectionParams);
 	}
 

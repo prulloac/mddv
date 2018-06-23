@@ -88,13 +88,13 @@ public class RepoController extends EntityController<Repository> {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/testConnection")
-	public ResponseEntity<Object> testConnection(@RequestParam("id") Long id, @RequestBody Map<String, Object> connectionParams) {
+	public ResponseEntity<Object> testConnection(@RequestParam("id") Long id) {
 		if (!this.isAuthenticated()) {
 			return this.responseApiException(new ApiException(ErrorCode.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
 		} else {
 			try {
 				String token = this.servletRequest.getHeader("Authorization");
-				return response(service.testConnection(id, connectionParams, token));
+				return response(service.testConnection(id, token));
 			} catch (ApiException e) {
 				log.error(e.getMessage(), e);
 				return this.responseApiException(e, HttpStatus.BAD_REQUEST);
