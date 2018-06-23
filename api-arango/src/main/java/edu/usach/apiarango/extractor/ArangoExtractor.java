@@ -6,7 +6,6 @@ import edu.usach.apicommons.dto.NoSQLCollectionDTO;
 import edu.usach.apicommons.dto.NoSQLDocumentExtractionDTO;
 import edu.usach.apicommons.extractor.AbstractExtractor;
 import edu.usach.apicommons.extractor.NoSQLExtractor;
-import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,5 +55,16 @@ public class ArangoExtractor extends AbstractExtractor implements NoSQLExtractor
 		extractionDTO.setRepositoryEngine(databaseEngine());
 		extractionDTO.setRepositoryEngineVersion(connection.getVersion().getVersion());
 		return extractionDTO;
+	}
+
+	@Override
+	public Boolean testConnection(Map<String, Object> connectionParams) {
+		String host = (String) connectionParams.get("host");
+		int port = (int) connectionParams.get("port");
+		String username = (String) connectionParams.get("username");
+		String password = (String) connectionParams.get("password");
+		String database = (String) connectionParams.get("database");
+		ArangoDB connection = new ArangoDB.Builder().host(host,port).user(username).password(password).build();
+		return connection.db(database).exists();
 	}
 }

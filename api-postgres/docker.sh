@@ -2,7 +2,7 @@
 
 TAG=mddv-postgres
 API=api-postgres
-PORT=8085
+PORT=8083
 
 echo "building image"
 docker build -t $TAG .

@@ -13,4 +13,6 @@ public interface IExtractorService<T extends IExtractor> {
 	List<Map<String,Object>> getParameters() throws ApiException;
 
 	Map<String,Object> getExtractorInfo() throws ApiException;
+
+	Boolean testConnection(Map<String,Object> connectionParamsDTO);
 }

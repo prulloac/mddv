@@ -1,6 +1,8 @@
 package edu.usach.apimysql.extractor;
 
 import edu.usach.apicommons.dto.SQLExtractionDTO;
+import edu.usach.apicommons.errorhandling.ApiException;
+import edu.usach.apicommons.errorhandling.ErrorCode;
 import edu.usach.apicommons.extractor.AbstractSQLExtractor;
 import edu.usach.apicommons.extractor.SQLExtractor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,8 +68,25 @@ public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor
 			return extractionDTO;
 		} catch (SQLException e) {
 			log.error(e.getMessage(), e);
+			throw new ApiException(ErrorCode.INVALID_CONNECTION_PARAMETERS);
 		}
-		return null;
+	}
+
+	@Override
+	public Boolean testConnection(Map<String, Object> connectionParams) {
+		String jdbcUrl = jdbcUrl(connectionParams);
+		String database = (String) connectionParams.get("database");
+		String username = (String) connectionParams.get("username");
+		String password = (String) connectionParams.get("password");
+		Connection connection = null;
+		log.info("Attempting to connect to {}", jdbcUrl);
+		try {
+			connection = DriverManager.getConnection(jdbcUrl, username, password);
+			return connection.isValid(0);
+		} catch (SQLException e) {
+			log.error(e.getSQLState(), e);
+			return false;
+		}
 	}
 
 }

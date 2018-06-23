@@ -8,6 +8,7 @@ import edu.usach.apicommons.dto.NoSQLCollectionDTO;
 import edu.usach.apicommons.dto.NoSQLDocumentExtractionDTO;
 import edu.usach.apicommons.extractor.AbstractExtractor;
 import edu.usach.apicommons.extractor.NoSQLExtractor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.json.simple.JSONObject;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
+@Slf4j
 public class MongoExtractor extends AbstractExtractor implements NoSQLExtractor {
 	@Override
 	public String databaseEngine() {
@@ -67,5 +69,25 @@ public class MongoExtractor extends AbstractExtractor implements NoSQLExtractor 
 		extractionDTO.setRepositoryEngineVersion(mongoDatabase.runCommand(Document.parse("{buildInfo: 1}")).getString("version"));
 		mongoClient.close();
 		return extractionDTO;
+	}
+
+	@Override
+	public Boolean testConnection(Map<String, Object> connectionParams) {
+		String host = (String) connectionParams.get("host");
+		int port = (int) connectionParams.get("port");
+		String username = (String) connectionParams.get("username");
+		String authDatabase = (String) connectionParams.get("authDatabase");
+		String password = (String) connectionParams.get("password");
+		String database = (String) connectionParams.get("database");
+		try {
+			MongoCredential credential = MongoCredential.createCredential(username, authDatabase, password.toCharArray());
+			MongoClient mongoClient = new MongoClient(new ServerAddress(host, port), Arrays.asList(credential));
+			MongoDatabase mongoDatabase = mongoClient.getDatabase(database);
+			mongoDatabase.runCommand(Document.parse("{ping: 1}"));
+			return true;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return false;
+		}
 	}
 }

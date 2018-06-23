@@ -67,11 +67,8 @@ INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
 	select 'arangodb-extractor' name, 'http://188.166.34.128:8082/mddv-arangodb-extractor/api/v1/extractor' api_url, 'ArangoDB' supported_engine, '3.1' supported_versions
 	where not exists (select name, supported_engine, supported_versions from extractors where name = 'arangodb-extractor' and supported_engine = 'ArangoDB' and supported_versions = '3.1');
 INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
-	select 'h2-extractor' name, 'http://188.166.34.128:8083/mddv-h2-extractor/api/v1/extractor' api_url, 'H2' supported_engine, '1.4.196' supported_versions
-	where not exists (select name, supported_engine, supported_versions from extractors where name = 'h2-extractor' and supported_engine = 'H2' and supported_versions = '1.4.196');
+	select 'postgres-extractor' name, 'http://188.166.34.128:8083/mddv-postgres-extractor/api/v1/extractor' api_url, 'Postgres' supported_engine, '10.4,9.6,9.5,9.4,8.2' supported_versions
+	where not exists (select name, supported_engine, supported_versions from extractors where name = 'postgres-extractor' and supported_engine = 'Postgres' and supported_versions = '10.4,9.6,9.5,9.4,8.2');
 INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
 	select 'mongodb-extractor' name, 'http://188.166.34.128:8084/mddv-mongodb-extractor/api/v1/extractor' api_url, 'MongoDB' supported_engine, '3.4' supported_versions
 	where not exists (select name, supported_engine, supported_versions from extractors where name = 'mongodb-extractor' and supported_engine = 'MongoDB' and supported_versions = '3.4');
-INSERT INTO EXTRACTORS (name, api_url, supported_engine, supported_versions)
-	select 'postgres-extractor' name, 'http://188.166.34.128:8085/mddv-postgres-extractor/api/v1/extractor' api_url, 'Postgres' supported_engine, '10.4,9.6,9.5,9.4,8.2' supported_versions
-	where not exists (select name, supported_engine, supported_versions from extractors where name = 'postgres-extractor' and supported_engine = 'Postgres' and supported_versions = '10.4,9.6,9.5,9.4,8.2');

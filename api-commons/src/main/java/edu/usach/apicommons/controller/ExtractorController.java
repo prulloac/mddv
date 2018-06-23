@@ -62,4 +62,16 @@ public abstract class ExtractorController<T extends IExtractor> extends Abstract
 			return responseException(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/test")
+	public ResponseEntity<Object> testConnection(@RequestBody Map<String, Object> connectionParamsDTO) {
+		if (!isAuthenticated())
+			return responseApiException(new ApiException(ErrorCode.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+		try {
+			return response(getService().testConnection(connectionParamsDTO));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return responseException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

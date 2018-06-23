@@ -13,4 +13,6 @@ public interface IExtractorController {
 
 	ResponseEntity<Object> getExtractorInfo() throws ApiException;
 
+	ResponseEntity<Object> testConnection(Map<String, Object> connectionParamsDTO) throws ApiException;
+
 }

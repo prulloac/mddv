@@ -10,4 +10,5 @@ public interface IExtractor {
 	List<Map<String, Object>> connectionParameters();
 	Object extract(Map<String, Object> connectionParams);
 	boolean isRelational();
+	Boolean testConnection(Map<String, Object> connectionParams);
 }

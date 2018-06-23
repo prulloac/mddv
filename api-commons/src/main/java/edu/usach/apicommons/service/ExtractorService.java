@@ -52,4 +52,15 @@ public abstract class ExtractorService<T extends IExtractor> extends AbstractSer
 			throw new ApiException(ErrorCode.UNEXPECTED_ERROR);
 		}
 	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Boolean testConnection(Map<String,Object> connectionParamsDTO) throws ApiException {
+		try {
+			return buildExtractor().testConnection(connectionParamsDTO);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ApiException(ErrorCode.INVALID_CONNECTION_PARAMETERS);
+		}
+	}
 }

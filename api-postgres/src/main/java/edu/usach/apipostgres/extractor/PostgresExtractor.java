@@ -70,4 +70,21 @@ public class PostgresExtractor extends AbstractSQLExtractor implements SQLExtrac
 		return null;
 	}
 
+	@Override
+	public Boolean testConnection(Map<String, Object> connectionParams) {
+		String jdbcUrl = jdbcUrl(connectionParams);
+		String database = (String) connectionParams.get("database");
+		String username = (String) connectionParams.get("username");
+		String password = (String) connectionParams.get("password");
+		Connection connection = null;
+		log.info("Attempting to connect to {}", jdbcUrl);
+		try {
+			connection = DriverManager.getConnection(jdbcUrl, username, password);
+			return connection.isValid(0);
+		} catch (SQLException e) {
+			log.error(e.getSQLState(), e);
+			return false;
+		}
+	}
+
 }
