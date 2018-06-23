@@ -148,7 +148,7 @@ public class ExtractorService implements IExtractorService {
 			return (Boolean) object.get("data");
 		} catch (IOException | ParseException e) {
 			logger.error(e.getMessage(), e);
-			throw new ApiException(ErrorCode.ERROR_CONNECTING_EXTRACTOR);
+			return false;
 		}
 	}
 }
