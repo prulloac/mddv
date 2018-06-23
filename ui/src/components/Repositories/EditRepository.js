@@ -83,12 +83,12 @@ class EditRepository extends Component {
         </FormGroup>
         <FormGroup>
           <FormControl>
-            <TextField label="Ubicación" name="location" defaultValue={repository.location} onChange={this.handleChange('location')} />
+            <TextField label="Versión" name="location" defaultValue={repository.version} onChange={this.handleChange('version')} />
           </FormControl>
         </FormGroup>
         <FormGroup>
           <FormControl>
-            <TextField label="Versión" name="location" defaultValue={repository.version} onChange={this.handleChange('version')} />
+            <TextField label="Ubicación" name="location" defaultValue={repository.location} onChange={this.handleChange('location')} />
           </FormControl>
         </FormGroup>
         <FormGroup>

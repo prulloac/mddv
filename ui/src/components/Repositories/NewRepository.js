@@ -73,12 +73,12 @@ class NewRepositoryForm extends Component {
         </FormGroup>
         <FormGroup>
           <FormControl>
-            <TextField label="Ubicación" disabled={!this.state.outsourced} onChange={this.handleChange('location')} />
+            <TextField label="Versión" onChange={this.handleChange('version')} />
           </FormControl>
         </FormGroup>
         <FormGroup>
           <FormControl>
-            <TextField label="Versión" onChange={this.handleChange('version')} />
+            <TextField label="Ubicación" disabled={!this.state.outsourced} onChange={this.handleChange('location')} />
           </FormControl>
         </FormGroup>
         <FormGroup>
