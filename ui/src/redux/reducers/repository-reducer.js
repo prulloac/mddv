@@ -3,7 +3,7 @@ import extractorActionTypes from '../action-types/extractor-action-types'
 
 const initialRepository = {
   name: null,
-  type: null,
+  engine: null,
   location: null,
   id: 0,
   connectionParams: [

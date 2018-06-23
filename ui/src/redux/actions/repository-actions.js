@@ -67,13 +67,13 @@ const getExtractorCompatibles = () => {
   }
 }
 
-const create = ({ location = '', name = '', outsourced = false, type = '', version = '' }) => {
+const create = ({ location = '', name = '', outsourced = false, engine = '', version = '' }) => {
   const request = (repository) => ({ type: repositoryActionTypes.C_REPO, payload: repository })
   const success = (repository) => ({ type: repositoryActionTypes.C_REPO_SUCCESS, payload: repository })
   const failure = (error) => ({ type: repositoryActionTypes.C_REPO_FAILURE, payload: error })
   return dispatch => {
-    dispatch(request({ name, type, version, location, outsourced }))
-    RepositoryService.create({ location, name, outsourced, type, version }).then(
+    dispatch(request({ name, engine, version, location, outsourced }))
+    RepositoryService.create({ location, name, outsourced, engine, version }).then(
       response => {
         dispatch(success(response))
         dispatch(notificationActions.notify('Repositorio exitosamente registrado!'))
@@ -87,13 +87,13 @@ const create = ({ location = '', name = '', outsourced = false, type = '', versi
   }
 }
 
-const update = ({ id = 0, location = '', name = '', version = '', outsourced = false, type = '' }) => {
+const update = ({ id = 0, location = '', name = '', version = '', outsourced = false, engine = '' }) => {
   const request = (repository) => ({ type: repositoryActionTypes.U_REPO, payload: repository })
   const success = (repository) => ({ type: repositoryActionTypes.U_REPO_SUCCESS, payload: repository })
   const failure = (error) => ({ type: repositoryActionTypes.U_REPO_FAILURE, payload: error })
   return dispatch => {
-    dispatch(request({ name, type, version, location, outsourced }))
-    RepositoryService.update({ id, location, name, outsourced, version, type }).then(
+    dispatch(request({ name, engine, version, location, outsourced }))
+    RepositoryService.update({ id, location, name, outsourced, version, engine }).then(
       response => {
         dispatch(success(response))
         dispatch(notificationActions.notify('Repositorio exitosamente actualizado!'))

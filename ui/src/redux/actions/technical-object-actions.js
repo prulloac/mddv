@@ -44,7 +44,7 @@ const getAll = () => {
       response => dispatch(success(response.data.data)),
       error => {
         dispatch(failure(error))
-        dispatch(notificationActions.notify('No existen objetos de negocio registrados'))
+        dispatch(notificationActions.notify('No existen objetos técnicos registrados'))
       },
     )
   }
@@ -60,7 +60,7 @@ const getTypes = () => {
       response => dispatch(success(response.data.data)),
       error => {
         dispatch(failure(error))
-        dispatch(notificationActions.notify('No hay tipos de Objetos de Negocio definidos. Contáctese con su administrador'))
+        dispatch(notificationActions.notify('No hay tipos de Objetos Técnicos definidos. Contáctese con su administrador'))
       },
     )
   }
@@ -79,7 +79,7 @@ const create = ({ name = '', description = '', type = '', version = '' }) => {
       },
       error => {
         dispatch(failure(error))
-        dispatch(notificationActions.notify('Ha ocurrido un error en la creacion del objeto de negocio'))
+        dispatch(notificationActions.notify('Ha ocurrido un error en la creacion del objeto técnico'))
       },
     )
     dispatch(getAll())
@@ -99,7 +99,7 @@ const update = ({ id = 0, description = '', name = '', version = '', type = '' }
       },
       error => {
         dispatch(failure(error))
-        dispatch(notificationActions.notify('Ha ocurrido un error en la actualización del objeto de negocio'))
+        dispatch(notificationActions.notify('Ha ocurrido un error en la actualización del objeto técnico'))
       },
     )
   }
@@ -118,12 +118,49 @@ const del = (id = 0) => {
       },
       error => {
         dispatch(failure(error))
-        dispatch(notificationActions.notify('Ha ocurrido un error al eliminar el objeto de negocio'))
+        dispatch(notificationActions.notify('Ha ocurrido un error al eliminar el objeto técnico'))
       },
     )
   }
 }
 
+const getRepositories = () => {
+  const request = () => ({ type: objectActionTypes.R_ALL_T_OBJECT_REPO, payload: null })
+  const success = (repositories) => ({ type: objectActionTypes.R_ALL_T_OBJECT_REPO_SUCCESS, payload: repositories })
+  const failure = (error) => ({ type: objectActionTypes.R_ALL_T_OBJECT_REPO_FAILURE, payload: error })
+  return dispatch => {
+    dispatch(request())
+    ObjectService.getRepositories().then(
+      response => {
+        dispatch(success(response.data.data))
+        dispatch(notificationActions.notify('Se han encontrado objetos de tipo repositorio!'))
+      },
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('Ha ocurrido un error al obtener objetos'))
+      },
+    )
+  }
+}
+
+const getChildren = (id = 0) => {
+  const request = (parent) => ({ type: objectActionTypes.R_ALL_T_OBJECT_CHILDREN, payload: parent })
+  const success = (children) => ({ type: objectActionTypes.R_ALL_T_OBJECT_CHILDREN_SUCCESS, payload: children })
+  const failure = (error) => ({ type: objectActionTypes.R_ALL_T_OBJECT_CHILDREN_FAILURE, payload: error })
+  return dispatch => {
+    dispatch(request())
+    ObjectService.getChildren(id).then(
+      response => {
+        dispatch(success(response.data.data))
+        dispatch(notificationActions.notify('Se han encontrado objetos técnicos!'))
+      },
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('Ha ocurrido un error al obtener objetos'))
+      },
+    )
+  }
+}
 
 export default {
   resetObject,
@@ -134,5 +171,6 @@ export default {
   create,
   getAll,
   getTypes,
+  getRepositories,
+  getChildren,
 }
-
