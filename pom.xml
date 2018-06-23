@@ -12,7 +12,6 @@
       <module>api-commons</module>
       <module>api-main</module>
       <module>api-mysql</module>
-      <module>api-h2</module>
       <module>api-arango</module>
       <module>api-mongo</module>
       <module>api-postgres</module>
