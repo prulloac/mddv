@@ -4,6 +4,9 @@ import edu.usach.apimain.model.Repository;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Getter
 @Setter
 public class RepositoryDTO {
@@ -15,6 +18,7 @@ public class RepositoryDTO {
 	private Boolean hasConnectionParams;
 	private String type;
 	private long id;
+	private Map<String, Object> connectionParams;
 
 	public RepositoryDTO(Repository repository) {
 		this.name = repository.getName();
@@ -24,6 +28,9 @@ public class RepositoryDTO {
 		this.outsourced = repository.getOutsourced();
 		this.hasConnectionParams = !repository.getConnectionParameters().isEmpty();
 		this.id = repository.getId();
+		this.connectionParams = new HashMap<>();
+		if(this.hasConnectionParams)
+			repository.getConnectionParameters().forEach(x -> connectionParams.put(x.getName(), x.getValue()));
 	}
 
 }

@@ -135,4 +135,8 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 		return extractorService.testConnection(repository.getType(), repository.getVersion(), token, connectionParams);
 	}
 
+	@Override
+	public RepositoryDTO findOneDTO(Long id) {
+		return new RepositoryDTO(dao.findById(id).orElse(new Repository()));
+	}
 }

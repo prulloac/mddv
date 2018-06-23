@@ -87,6 +87,27 @@ public class RepoController extends EntityController<Repository> {
 		}
 	}
 
+	@Override
+	@RequestMapping(
+			method = {RequestMethod.GET},
+			value = {"/{id}"}
+	)
+	public ResponseEntity<Object> getById(@PathVariable Long id, @RequestParam(value = "show",required = false) String filterString) {
+		if (!this.isAuthenticated()) {
+			return this.responseApiException(new ApiException(ErrorCode.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+		} else {
+			try {
+				return response(service.findOneDTO(id));
+			} catch (ApiException var4) {
+				log.error(var4.getMessage(), var4);
+				return this.responseApiException(var4, HttpStatus.NOT_FOUND);
+			} catch (Exception var5) {
+				log.error(var5.getMessage(), var5);
+				return this.responseException(var5, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+	}
+
 	@RequestMapping(method = RequestMethod.POST, value = "/testConnection")
 	public ResponseEntity<Object> testConnection(@RequestParam("id") Long id) {
 		if (!this.isAuthenticated()) {
