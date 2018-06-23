@@ -23,6 +23,14 @@ class RepositoryList extends Component {
     }
   }
 
+  handleTestConnection = (id = 0) => (event) => {
+    event.preventDefault()
+    const { dispatch } = this.props
+    if (id > 0) {
+      dispatch(repositoryActions.testRepository(id))
+    }
+  }
+
   render() {
     const newButton = (
       <div className="mddv-buttons" align="right">
@@ -38,6 +46,16 @@ class RepositoryList extends Component {
     const repositoryCards = repositories.map((repository) => (
       <Card className="mddv-repo-card" key={repository.id}>
         <CardContent>
+          {repository.hasConnectionParams ?
+            <Button
+              mini
+              variant="fab"
+              color="primary"
+              style={{ color: '#fff', marginTop: '0px', marginRight: '0px', position: 'relative', float: 'right' }}
+              onClick={this.handleTestConnection(repository.id)}
+            >
+              <Icon>sync_problem</Icon>
+            </Button> : null}
           <Typography variant="headline">{repository.name}</Typography>
           <Typography>Tipo: {repository.type} ({repository.version || 'Sin Versión'})</Typography>
           <Typography>Ubicación: {repository.location} <Icon>{repository.outsourced ? 'cloud' : 'business' }</Icon></Typography>
