@@ -109,8 +109,9 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 		TechnicalObject repositoryObject = new TechnicalObject();
 		repositoryObject.setRepository(entity);
 		repositoryObject.setType(TechnicalTypes.REPOSITORY.toString());
-		repositoryObject.setVersion(entity.getVersion());
+		repositoryObject.setVersion("1.0");
 		repositoryObject.setName(entity.getName());
+		repositoryObject.setDescription("Type: " + entity.getType() + "(" + entity.getVersion() + ")");
 		technicalObjectDAO.saveAndFlush(repositoryObject);
 		return entity;
 	}
@@ -121,6 +122,12 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 
 	public Page<RepositoryDTO> findPaginatedDTO(Integer page, Integer size) throws ApiException {
 		return this.findPaginated(page, size).map(RepositoryDTO::new);
+	}
+
+	@Override
+	public Boolean testConnection(Long id, Map<String, Object> connectionParams, String token) {
+		Repository repository = dao.findById(id).get();
+		return extractorService.testConnection(repository.getType(), repository.getVersion(), token, connectionParams);
 	}
 
 }

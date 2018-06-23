@@ -1,5 +1,6 @@
 package edu.usach.apimain.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apimain.dao.ExtractorDAO;
 import edu.usach.apimain.errorhandling.ErrorCode;
@@ -112,6 +113,39 @@ public class ExtractorService implements IExtractorService {
 				object = (JSONObject) parser.parse(inputLine);
 			}
 			return (JSONArray) object.get("data");
+		} catch (IOException | ParseException e) {
+			logger.error(e.getMessage(), e);
+			throw new ApiException(ErrorCode.ERROR_CONNECTING_EXTRACTOR);
+		}
+	}
+
+	@Override
+	public Boolean testConnection(String engine, String version, String token, Map<String, Object> connectionParams) {
+		String path = getExtractorEntrypoint(engine, version) + "/test";
+		logger.info("calling extractor at: {}", path);
+		try {
+			String data = new ObjectMapper().writeValueAsString(connectionParams);
+			URL connectionUrl = new URL(path);
+			HttpURLConnection con = (HttpURLConnection) connectionUrl.openConnection();
+			con.setRequestMethod("POST");
+			con.setRequestProperty("Authorization", token);
+			con.setDoInput(true);
+			con.setDoOutput(true);
+			con.setRequestProperty("Content-Type", "application/json");
+			OutputStream os = con.getOutputStream();
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+			writer.write(data);
+			writer.flush();
+			writer.close();
+			con.connect();
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			JSONObject object = null;
+			JSONParser parser = new JSONParser();
+			while ((inputLine = in.readLine()) != null) {
+				object = (JSONObject) parser.parse(inputLine);
+			}
+			return (Boolean) object.get("data");
 		} catch (IOException | ParseException e) {
 			logger.error(e.getMessage(), e);
 			throw new ApiException(ErrorCode.ERROR_CONNECTING_EXTRACTOR);
