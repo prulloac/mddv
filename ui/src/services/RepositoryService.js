@@ -4,7 +4,7 @@ const create = ({
   location = '',
   name = '',
   outsourced = true,
-  type = '',
+  engine = '',
   version = '',
 }) =>
   httpClient.post({
@@ -13,7 +13,7 @@ const create = ({
       location,
       name,
       outsourced,
-      type,
+      engine,
       version,
     },
   })
@@ -23,7 +23,7 @@ const update = ({
   location = '',
   name = '',
   outsourced = true,
-  type = '',
+  engine = '',
   version = '',
 }) =>
   httpClient.put({
@@ -33,7 +33,7 @@ const update = ({
       location,
       name,
       outsourced,
-      type,
+      engine,
       version,
     },
   })

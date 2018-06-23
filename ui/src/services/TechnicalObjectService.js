@@ -47,6 +47,9 @@ const getAll = () => httpClient.get({ endpoint: 'technical-objects?showAll=true'
 
 const getTypes = () => httpClient.get({ endpoint: 'technical-objects/types' })
 
+const getRepositories = () => httpClient.get({ endpoint: 'technical-objects/repositories' })
+
+const getChildren = (id = 0) => httpClient.get({ endpoint: `technical-objects/children?parentId=${id}` })
 
 const TechnicalObjectService = {
   create,
@@ -56,6 +59,8 @@ const TechnicalObjectService = {
   update,
   delete: del,
   getTypes,
+  getRepositories,
+  getChildren,
 }
 
 export default TechnicalObjectService
