@@ -4,7 +4,7 @@ import edu.usach.apicommons.service.IEntityService;
 import edu.usach.apimain.model.TechnicalObject;
 
 public interface ITechnicalObjectService extends IEntityService<TechnicalObject> {
-	Object getRepositories();
+	Object getRepositories(String token);
 
-	Object getChildrenObjects(Long id);
+	Object getChildrenObjects(Long id, String token);
 }
