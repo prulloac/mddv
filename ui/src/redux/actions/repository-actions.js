@@ -134,7 +134,6 @@ const getConnectionParams = (id = 0) => {
     RepositoryService.getConnectionParams(id).then(
       response => {
         dispatch(success(response.data.data))
-        dispatch(notificationActions.notify('Repositorio exitosamente actualizado!'))
       },
       error => {
         dispatch(failure(error))
@@ -151,7 +150,10 @@ const updateConnectionParams = (id = 0, params = {}) => {
   return dispatch => {
     dispatch(request({ id, params }))
     RepositoryService.updateConnectionParams(id, params).then(
-      response => dispatch(success(response.data.data)),
+      response => {
+        dispatch(success(response.data.data))
+        dispatch(notificationActions.notify('Parámetros de conexión exitosamente actualizados!'))
+      },
       error => {
         dispatch(failure(error))
         dispatch(notificationActions.notify('No se han podido actualizar los parámetros de conexión para este repositorio'))
@@ -159,6 +161,23 @@ const updateConnectionParams = (id = 0, params = {}) => {
     )
   }
 }
+
+const testRepository = (id = 0) => dispatch => {
+  RepositoryService.testRepositoryConnection(id).then(
+    response => {
+      if (response.data.data) {
+        dispatch(notificationActions.notify('Conexión exitosa!'))
+      } else {
+        dispatch(notificationActions.notify('Error de conexión, por favor verificar parámetros de conexión'))
+      }
+    },
+    error => {
+      dispatch(notificationActions.notify('Error de conexión, por favor verificar parámetros de conexión'))
+      return error
+    },
+  )
+}
+
 
 const repositoryActions = {
   create,
@@ -171,6 +190,7 @@ const repositoryActions = {
   resetRepository,
   getConnectionParams,
   updateConnectionParams,
+  testRepository,
 }
 
 export default repositoryActions

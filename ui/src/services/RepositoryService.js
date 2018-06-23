@@ -57,6 +57,8 @@ const extractFromRepository = (id = 0) => httpClient.post({ endpoint: `repositor
 
 const updateConnectionParams = (id = 0, params = {}) => httpClient.post({ endpoint: `repositories/connectionParams?id=${id}`, data: params })
 
+const testRepositoryConnection = (id = 0) => httpClient.post({ endpoint: `repositories/testConnection?id=${id}` })
+
 const RepositoryService = {
   create,
   findById,
@@ -68,6 +70,7 @@ const RepositoryService = {
   getExtractorCompatibles,
   extractFromRepository,
   updateConnectionParams,
+  testRepositoryConnection,
 }
 
 export default RepositoryService
