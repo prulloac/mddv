@@ -27,4 +27,6 @@ public interface IRepositoryService extends IEntityService<Repository>{
 	Boolean testConnection(Long id, String token);
 
 	RepositoryDTO findOneDTO(Long id);
+
+	Repository create(Repository entity, String token);
 }

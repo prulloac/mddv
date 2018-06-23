@@ -120,6 +120,31 @@ public class ExtractorService implements IExtractorService {
 	}
 
 	@Override
+	public JSONObject getExtractorInfo(String engine, String version, String token) {
+		String path = getExtractorEntrypoint(engine, version);
+		logger.info("calling extractor at: {}", path);
+		try {
+			URL connectionUrl = new URL(path + "/info");
+			HttpURLConnection con = (HttpURLConnection) connectionUrl.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("Authorization", token);
+			con.setDoInput(true);
+			con.connect();
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			JSONObject object = null;
+			JSONParser parser = new JSONParser();
+			while ((inputLine = in.readLine()) != null) {
+				object = (JSONObject) parser.parse(inputLine);
+			}
+			return (JSONObject) object.get("data");
+		} catch (IOException | ParseException e) {
+			logger.error(e.getMessage(), e);
+			throw new ApiException(ErrorCode.ERROR_CONNECTING_EXTRACTOR);
+		}
+	}
+
+	@Override
 	public Boolean testConnection(String engine, String version, String token, Map<String, Object> connectionParams) {
 		String path = getExtractorEntrypoint(engine, version) + "/test";
 		logger.info("calling extractor at: {}", path);

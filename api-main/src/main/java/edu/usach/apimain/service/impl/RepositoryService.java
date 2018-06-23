@@ -104,8 +104,9 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 		return true;
 	}
 
-	@Override
-	public Repository create(Repository entity) {
+	public Repository create(Repository entity, String token) {
+		JSONObject extractorInfo = extractorService.getExtractorInfo(entity.getEngine(), entity.getVersion(), token);
+		entity.setType((String)extractorInfo.get("type"));
 		dao.saveAndFlush(entity);
 		TechnicalObject repositoryObject = new TechnicalObject();
 		repositoryObject.setRepository(entity);

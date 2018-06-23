@@ -108,6 +108,31 @@ public class RepoController extends EntityController<Repository> {
 		}
 	}
 
+	@Override
+	@RequestMapping(
+			method = {RequestMethod.POST}
+	)
+	public ResponseEntity<Object> create(@RequestBody Repository entity) {
+		if (!this.isAuthenticated()) {
+			return this.responseApiException(new ApiException(ErrorCode.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+		} else {
+			try {
+				String token = this.servletRequest.getHeader("Authorization");
+				service.create(entity, token);
+				JSONObject data = new JSONObject();
+				data.put("success", true);
+				data.put("message", "Repository successfully created");
+				return this.response(data, HttpStatus.CREATED);
+			} catch (ApiException var3) {
+				log.error(var3.getMessage(), var3);
+				return this.responseApiException(var3, HttpStatus.NOT_FOUND);
+			} catch (Exception var4) {
+				log.error(var4.getMessage(), var4);
+				return this.responseException(var4, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+	}
+
 	@RequestMapping(method = RequestMethod.POST, value = "/testConnection")
 	public ResponseEntity<Object> testConnection(@RequestParam("id") Long id) {
 		if (!this.isAuthenticated()) {

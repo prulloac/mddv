@@ -13,5 +13,7 @@ public interface IExtractorService {
 
 	JSONArray getExtractorParams(String engine, String version, String token) ;
 
+	JSONObject getExtractorInfo(String engine, String version, String token);
+
 	Boolean testConnection(String type, String version, String token, Map<String, Object> connectionParams);
 }
