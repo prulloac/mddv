@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { Button, TextField, FormControl, withStyles, FormGroup, InputLabel, NativeSelect } from '@material-ui/core'
 import { Save } from '@material-ui/icons'
 import { repositoryActions } from '../../redux/actions'
+import { ifNotEmpty } from '../../utils/UtilityFunctions'
 
 class EditRepository extends Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class EditRepository extends Component {
   }
 
   render() {
-    const { loadedRepository, connectionParams, loadedConnectionParams } = this.props
+    const { loadedRepository, connectionParams, loadedConnectionParams, repository } = this.props
     if (!loadedRepository) {
       return null
     }
@@ -48,20 +49,56 @@ class EditRepository extends Component {
     const dynamicForm = connectionParams.map(param => {
       let input = null
       if (param.type === 'boolean') {
+        if (repository.connectionParams.length > 0) {
+          input = (
+            <div>
+              <InputLabel htmlFor={`__${param.name}`}>{param.label}</InputLabel>
+              <NativeSelect
+                onChange={this.handleChange(param.name)}
+                inputProps={{ id: `__${param.name}` }}
+                defaultValue={repository
+                  .connectionParams
+                  .find(x => x.name === param.name)
+                  .value
+                }
+              >
+                <option>Selecciona</option>
+                <option value="true">Si</option>
+                <option value="false">No</option>
+              </NativeSelect>
+            </div>)
+        } else {
+          input = (
+            <div>
+              <InputLabel htmlFor={`__${param.name}`}>{param.label}</InputLabel>
+              <NativeSelect
+                onChange={this.handleChange(param.name)}
+                inputProps={{ id: `__${param.name}` }}
+              >
+                <option>Selecciona</option>
+                <option value="true">Si</option>
+                <option value="false">No</option>
+              </NativeSelect>
+            </div>)
+        }
+      } else if (repository.connectionParams.length > 0) {
         input = (
-          <div>
-            <InputLabel htmlFor={`__${param.name}`}>{param.label}</InputLabel>
-            <NativeSelect
-              onChange={this.handleChange(param.name)}
-              inputProps={{ id: `__${param.name}` }}
-            >
-              <option>Selecciona</option>
-              <option value="true">Si</option>
-              <option value="false">No</option>
-            </NativeSelect>
-          </div>)
+          <TextField
+            label={param.label}
+            type={param.type}
+            onChange={this.handleChange(param.name)}
+            defaultValue={ifNotEmpty(repository.connectionParams, repository
+              .connectionParams
+              .find(x => x.name === param.name)
+              .value)}
+          />)
       } else {
-        input = (<TextField label={param.label} type={param.type} onChange={this.handleChange(param.name)} />)
+        input = (
+          <TextField
+            label={param.label}
+            type={param.type}
+            onChange={this.handleChange(param.name)}
+          />)
       }
       return (
         <FormGroup key={param.name}>

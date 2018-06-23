@@ -6,6 +6,9 @@ const initialRepository = {
   type: null,
   location: null,
   id: 0,
+  connectionParams: [
+    { name: '', value: '' },
+  ],
 }
 
 const intitialState = {
