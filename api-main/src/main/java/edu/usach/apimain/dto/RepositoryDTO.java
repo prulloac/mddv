@@ -4,7 +4,9 @@ import edu.usach.apimain.model.Repository;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -18,7 +20,7 @@ public class RepositoryDTO {
 	private Boolean hasConnectionParams;
 	private String type;
 	private long id;
-	private Map<String, Object> connectionParams;
+	private List<Map<String, Object>> connectionParams;
 
 	public RepositoryDTO(Repository repository) {
 		this.name = repository.getName();
@@ -28,9 +30,14 @@ public class RepositoryDTO {
 		this.outsourced = repository.getOutsourced();
 		this.hasConnectionParams = !repository.getConnectionParameters().isEmpty();
 		this.id = repository.getId();
-		this.connectionParams = new HashMap<>();
+		this.connectionParams = new ArrayList<>();
 		if(this.hasConnectionParams)
-			repository.getConnectionParameters().forEach(x -> connectionParams.put(x.getName(), x.getValue()));
+			repository.getConnectionParameters().forEach(x -> {
+				Map<String, Object> param = new HashMap<>();
+				param.put("name", x.getName());
+				param.put("value", x.getValue());
+				connectionParams.add(param);
+			});
 	}
 
 }
