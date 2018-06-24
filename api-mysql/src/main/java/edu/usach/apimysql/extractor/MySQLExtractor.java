@@ -5,6 +5,7 @@ import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorCode;
 import edu.usach.apicommons.extractor.AbstractSQLExtractor;
 import edu.usach.apicommons.extractor.SQLExtractor;
+import edu.usach.apicommons.util.TechnicalTypes;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -31,7 +32,7 @@ public class MySQLExtractor extends AbstractSQLExtractor implements SQLExtractor
 
 	@Override
 	public String databaseType() {
-		return "SQL";
+		return TechnicalTypes.RDBMS.getTranslation();
 	}
 
 	@Override

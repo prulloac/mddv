@@ -6,6 +6,7 @@ import edu.usach.apicommons.dto.NoSQLCollectionDTO;
 import edu.usach.apicommons.dto.NoSQLDocumentExtractionDTO;
 import edu.usach.apicommons.extractor.AbstractExtractor;
 import edu.usach.apicommons.extractor.NoSQLExtractor;
+import edu.usach.apicommons.util.TechnicalTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class ArangoExtractor extends AbstractExtractor implements NoSQLExtractor
 
 	@Override
 	public String databaseType() {
-		return "Document";
+		return TechnicalTypes.DOCUMENT_DB.getTranslation();
 	}
 
 	@Override
