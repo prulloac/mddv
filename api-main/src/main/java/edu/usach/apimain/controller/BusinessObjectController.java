@@ -2,9 +2,9 @@ package edu.usach.apimain.controller;
 
 import edu.usach.apicommons.controller.EntityController;
 import edu.usach.apicommons.service.IEntityService;
+import edu.usach.apicommons.util.BusinessTypes;
 import edu.usach.apimain.model.BusinessObject;
 import edu.usach.apimain.service.IBusinessObjectService;
-import edu.usach.apimain.util.BusinessTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

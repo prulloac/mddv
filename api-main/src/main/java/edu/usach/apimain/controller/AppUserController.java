@@ -23,30 +23,30 @@ import static edu.usach.apicommons.util.SecurityUtils.TOKEN_PREFIX;
 
 @CrossOrigin(maxAge = 7200, exposedHeaders = {"Authorization"})
 @RestController
-@RequestMapping("/users")
+@RequestMapping(value = "/users")
 @Slf4j
 public class AppUserController extends EntityController<AppUser> {
 
-	@Autowired
-	private IAppUserService service;
+    @Autowired
+    private IAppUserService service;
 
-	private ResponseEntity<Object> validateCredentials(UserCredentialsDTO credentials) {
-		AppUser user = service.validateCredentials(credentials.getUsernameOrEmail(), credentials.getPassword());
-		String token = SecurityUtils.tokenize(new UserTokenDataDTO(user), "authenticated");
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HEADER_STRING, TOKEN_PREFIX + token);
-		return new ResponseEntity<>(new UserTokenDataDTO(user), headers, HttpStatus.OK);
-	}
+    private ResponseEntity<Object> validateCredentials(UserCredentialsDTO credentials) {
+        AppUser user = service.validateCredentials(credentials.getUsernameOrEmail(), credentials.getPassword());
+        String token = SecurityUtils.tokenize(new UserTokenDataDTO(user), "authenticated");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HEADER_STRING, TOKEN_PREFIX + token);
+        return new ResponseEntity<>(new UserTokenDataDTO(user), headers, HttpStatus.OK);
+    }
 
-	@Override
-	protected IEntityService<AppUser> getService() {
-		return service;
-	}
+    @Override
+    protected IEntityService<AppUser> getService() {
+        return service;
+    }
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<Object> login(@RequestBody UserCredentialsDTO credentials) throws ApiException {
-		log.info("username: {}", credentials.getUsernameOrEmail());
-		return validateCredentials(credentials);
-	}
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<Object> login(@RequestBody UserCredentialsDTO credentials) throws ApiException {
+        log.info("username: {}", credentials.getUsernameOrEmail());
+        return validateCredentials(credentials);
+    }
 
 }

@@ -4,6 +4,7 @@ import edu.usach.apimain.model.Extractor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 public interface ExtractorDAO extends JpaRepository<Extractor, Long> {

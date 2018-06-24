@@ -21,13 +21,14 @@ import javax.persistence.ManyToOne;
 @Setter
 @ToString
 public class TechnicalObject extends MetadataObject implements IEntity, ISecureEntity {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @ManyToOne
-	@JoinColumn(name = "parentObjectId")
-	private TechnicalObject parentObject;
-	@ManyToOne
-	@JoinColumn(name = "repositoryId")
-	@JsonIgnore
-	private Repository repository;
+    private Boolean extractable = false;
+    @ManyToOne
+    @JoinColumn(name = "parentObjectId")
+    private TechnicalObject parentObject;
+    @ManyToOne
+    @JoinColumn(name = "repositoryId")
+    @JsonIgnore
+    private Repository repository;
 }

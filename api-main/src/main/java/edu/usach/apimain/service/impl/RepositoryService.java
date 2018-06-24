@@ -3,6 +3,7 @@ package edu.usach.apimain.service.impl;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorCode;
 import edu.usach.apicommons.service.EntityService;
+import edu.usach.apicommons.util.TechnicalTypes;
 import edu.usach.apimain.dao.ConnectionParamDAO;
 import edu.usach.apimain.dao.ExtractorDAO;
 import edu.usach.apimain.dao.RepositoryDAO;
@@ -13,7 +14,6 @@ import edu.usach.apimain.model.Extractor;
 import edu.usach.apimain.model.Repository;
 import edu.usach.apimain.model.TechnicalObject;
 import edu.usach.apimain.service.IRepositoryService;
-import edu.usach.apimain.util.TechnicalTypes;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 @Transactional
@@ -68,14 +67,18 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 	}
 
 	@Override
-	public List extractableTypes() {
-		List<Extractor>	extractors = extractorDAO.findAll();
-		return extractors.stream().map(x -> {
-			JSONObject object = new JSONObject();
-			object.put("type",x.getSupportedEngine());
-			object.put("versions",x.getSupportedVersions().split(","));
-			return object;
-		}).collect(Collectors.toList());
+	public Object extractableTypes() {
+		List<Map<String, Object>> extractors = new ArrayList<>();
+		Map<String, List<Extractor>> groupedByEngine = extractorDAO.findAll().stream().collect(groupingBy(Extractor::getSupportedEngine));
+		groupedByEngine.forEach((k,v) -> {
+			Map<String, Object> engine = new HashMap<>();
+			engine.put("engine", k);
+			Set<String> versions = new HashSet<>();
+			v.forEach(x -> Collections.addAll(versions, x.getSupportedVersions().split(",")));
+			engine.put("versions", versions);
+			extractors.add(engine);
+		});
+		return extractors;
 	}
 
 	@Override
@@ -114,6 +117,7 @@ public class RepositoryService extends EntityService<Repository> implements IRep
 		repositoryObject.setVersion("1.0");
 		repositoryObject.setName(entity.getName());
 		repositoryObject.setDescription("Motor: " + entity.getEngine() + "(" + entity.getVersion() + ")");
+		repositoryObject.setExtractable(testConnection(entity.getId(), token));
 		technicalObjectDAO.saveAndFlush(repositoryObject);
 		return entity;
 	}

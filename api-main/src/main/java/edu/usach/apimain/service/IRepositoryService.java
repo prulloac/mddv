@@ -14,7 +14,7 @@ public interface IRepositoryService extends IEntityService<Repository>{
 
 	List<Repository> extractables();
 
-	List extractableTypes();
+	Object extractableTypes();
 
 	JSONArray getConnectionParams(Long id, String token);
 
