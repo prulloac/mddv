@@ -14,6 +14,7 @@ class Repositories extends Component {
   constructor(props) {
     super(props)
     title('Repositorios')
+    this.props.dispatch(repositoryActions.getExtractorCompatibles())
   }
 
   deleteRepository = (currentPage = '') => {

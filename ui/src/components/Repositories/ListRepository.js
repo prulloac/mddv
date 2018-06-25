@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { Card, Button, CardContent, Typography, CardActions, Icon, Badge } from '@material-ui/core'
+import PlusNetwork from 'mdi-material-ui/PlusNetwork'
 import { repositoryActions } from '../../redux/actions'
 
 class RepositoryList extends Component {
@@ -9,7 +10,6 @@ class RepositoryList extends Component {
     super(props)
     this.state = {
     }
-    this.props.dispatch(repositoryActions.getExtractorCompatibles())
     this.props.dispatch(repositoryActions.resetRepository())
     this.props.dispatch(repositoryActions.getAll())
   }
@@ -28,6 +28,14 @@ class RepositoryList extends Component {
     const { dispatch } = this.props
     if (id > 0) {
       dispatch(repositoryActions.testRepository(id))
+    }
+  }
+
+  handleExtract = (id = 0) => (event) => {
+    event.preventDefault()
+    const { dispatch } = this.props
+    if (id > 0) {
+      dispatch(repositoryActions.extract(id))
     }
   }
 
@@ -55,6 +63,16 @@ class RepositoryList extends Component {
               onClick={this.handleTestConnection(repository.id)}
             >
               <Icon>sync_problem</Icon>
+            </Button> : null}
+          {repository.hasConnectionParams ?
+            <Button
+              mini
+              variant="fab"
+              color="primary"
+              style={{ color: '#fff', marginTop: '0px', marginRight: '0px', position: 'relative', float: 'right' }}
+              onClick={this.handleExtract(repository.id)}
+            >
+              <PlusNetwork />
             </Button> : null}
           <Typography variant="headline">{repository.name}</Typography>
           <Typography>Tipo: {repository.engine} ({repository.version || 'Sin Versión'})</Typography>

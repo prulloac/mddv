@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { Card, Button, CardContent, Typography, CardActions, Icon } from '@material-ui/core'
+import Eye from 'mdi-material-ui/Eye'
 import { technicalObjectActions } from '../../redux/actions'
 
 class TechnicalObjectsList extends Component {
@@ -19,14 +20,22 @@ class TechnicalObjectsList extends Component {
 
   handleDelete = (id = 0) => (event) => {
     event.preventDefault()
-    const { dispatch } = this.props
+    const { dispatch, match } = this.props
     if (id > 0) {
       dispatch(technicalObjectActions.delete(id))
-      if (this.props.match.params.id === undefined) {
-        this.props.dispatch(technicalObjectActions.getRepositories())
+      if (match.params.id === undefined) {
+        dispatch(technicalObjectActions.getRepositories())
       } else {
-        this.props.dispatch(technicalObjectActions.getChildren(this.props.match.params.id))
+        dispatch(technicalObjectActions.getChildren(match.params.id))
       }
+    }
+  }
+
+  handleRefresh = (id = 0) => (event) => {
+    event.preventDefault()
+    const { dispatch } = this.props
+    if (id > 0) {
+      dispatch(technicalObjectActions.getChildren(id))
     }
   }
 
@@ -45,6 +54,15 @@ class TechnicalObjectsList extends Component {
     const cards = technicalObjects.map((object) => (
       <Card className="mddv-repo-card" key={object.id}>
         <CardContent>
+          <Button
+            mini
+            variant="fab"
+            color="primary"
+            style={{ color: '#fff', marginTop: '0px', marginRight: '0px', position: 'relative', float: 'right' }}
+            onClick={this.handleRefresh(object.id)}
+          >
+            <Eye />
+          </Button>
           <Typography variant="headline">{object.name} ({object.version || 'Sin Versión'})</Typography>
           <Typography variant="body2">Tipo:</Typography>
           <Typography variant="body1">{object.type}</Typography>

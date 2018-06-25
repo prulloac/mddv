@@ -50,6 +50,15 @@ class EditRepository extends Component {
     if (!loadedRepository) {
       return null
     }
+    const engine = this.state.engine != null ? this.state.engine : this.props.repository.engine
+    const extractableVersions = engine.length > 0
+      ? extractableEngines
+        .filter(x => x.engine === engine)
+        .map(x => x.versions)[0]
+        .sort((x, y) => parseFloat(x) - parseFloat(y))
+        .map(x => (
+          <option key={x} value={x}>{x}</option>
+        )) : null
     return (
       <form autoComplete="off" className="mddv-form">
         <FormGroup>
@@ -68,8 +77,21 @@ class EditRepository extends Component {
             >
               <option value="">Tipo</option>
               {extractableEngines.map(x => (
-                <option key={x.key} value={x.value}>{x.text}</option>
+                <option key={x.engine} value={x.engine}>{x.engine}</option>
               ))}
+            </NativeSelect>
+          </FormControl>
+        </FormGroup>
+        <FormGroup>
+          <FormControl>
+            <InputLabel htmlFor="version">Versión</InputLabel>
+            <NativeSelect
+              onChange={this.handleChange('version')}
+              inputProps={{ id: 'version' }}
+              defaultValue={repository.version}
+            >
+              <option value="">Versión</option>
+              {extractableVersions}
             </NativeSelect>
           </FormControl>
         </FormGroup>
@@ -80,11 +102,6 @@ class EditRepository extends Component {
             }
             label="Externalizado"
           />
-        </FormGroup>
-        <FormGroup>
-          <FormControl>
-            <TextField label="Versión" name="location" defaultValue={repository.version} onChange={this.handleChange('version')} />
-          </FormControl>
         </FormGroup>
         <FormGroup>
           <FormControl>
