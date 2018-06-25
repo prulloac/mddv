@@ -1,8 +1,8 @@
 package edu.usach.apimain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.usach.apicommons.model.AbstractAuditableNamedEntity;
 import edu.usach.apicommons.model.IEntity;
-import edu.usach.apicommons.model.impl.AbstractAuditableNamedEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -30,118 +30,118 @@ import static java.util.stream.Collectors.groupingBy;
 @Service
 @Transactional
 public class RepositoryService extends EntityService<Repository> implements IRepositoryService {
-	@Autowired
-	private RepositoryDAO dao;
-	@Autowired
-	private ExtractorDAO extractorDAO;
-	@Autowired
-	private ExtractorService extractorService;
-	@Autowired
-	private ConnectionParamDAO connectionParamDAO;
-	@Autowired
-	private TechnicalObjectDAO technicalObjectDAO;
+    @Autowired
+    private RepositoryDAO dao;
+    @Autowired
+    private ExtractorDAO extractorDAO;
+    @Autowired
+    private ExtractorService extractorService;
+    @Autowired
+    private ConnectionParamDAO connectionParamDAO;
+    @Autowired
+    private TechnicalObjectDAO technicalObjectDAO;
 
-	@Override
-	protected JpaRepository<Repository, Long> getDao() {
-		return dao;
-	}
+    @Override
+    protected JpaRepository<Repository, Long> getDao() {
+        return dao;
+    }
 
-	@Override
-	public Object extractFromRepository(long id, String token) throws ApiException {
-		Repository repository = dao.findById(id).get();
-		String engine = repository.getEngine();
-		String version = repository.getVersion();
-		JSONObject connectionParams = new JSONObject();
-		repository.getConnectionParameters().forEach(x -> connectionParams.put(x.getName(), x.getValue()));
-		return extractorService.callExtractor(engine, version, connectionParams, token).get("data");
-	}
+    @Override
+    public Object extractFromRepository(long id, String token) throws ApiException {
+        Repository repository = dao.findById(id).get();
+        String engine = repository.getEngine();
+        String version = repository.getVersion();
+        JSONObject connectionParams = new JSONObject();
+        repository.getConnectionParameters().forEach(x -> connectionParams.put(x.getName(), x.getValue()));
+        return extractorService.callExtractor(engine, version, connectionParams, token).get("data");
+    }
 
-	@Override
-	public List<Repository> extractables() {
-		List<Repository> repositories = dao.findAll();
-		List<Extractor> extractors = extractorDAO.findAll();
-		repositories.
-				removeIf(x -> extractors.stream().
-						noneMatch(y -> (y.getSupportedEngine().equalsIgnoreCase(x.getEngine()) && y.getSupportedVersions().contains(x.getVersion()))));
-		return repositories;
-	}
+    @Override
+    public List<Repository> extractables() {
+        List<Repository> repositories = dao.findAll();
+        List<Extractor> extractors = extractorDAO.findAll();
+        repositories.
+                removeIf(x -> extractors.stream().
+                        noneMatch(y -> (y.getSupportedEngine().equalsIgnoreCase(x.getEngine()) && y.getSupportedVersions().contains(x.getVersion()))));
+        return repositories;
+    }
 
-	@Override
-	public Object extractableTypes() {
-		List<Map<String, Object>> extractors = new ArrayList<>();
-		Map<String, List<Extractor>> groupedByEngine = extractorDAO.findAll().stream().collect(groupingBy(Extractor::getSupportedEngine));
-		groupedByEngine.forEach((k,v) -> {
-			Map<String, Object> engine = new HashMap<>();
-			engine.put("engine", k);
-			Set<String> versions = new HashSet<>();
-			v.forEach(x -> Collections.addAll(versions, x.getSupportedVersions().split(",")));
-			engine.put("versions", versions);
-			extractors.add(engine);
-		});
-		return extractors;
-	}
+    @Override
+    public Object extractableTypes() {
+        List<Map<String, Object>> extractors = new ArrayList<>();
+        Map<String, List<Extractor>> groupedByEngine = extractorDAO.findAll().stream().collect(groupingBy(Extractor::getSupportedEngine));
+        groupedByEngine.forEach((k, v) -> {
+            Map<String, Object> engine = new HashMap<>();
+            engine.put("engine", k);
+            Set<String> versions = new HashSet<>();
+            v.forEach(x -> Collections.addAll(versions, x.getSupportedVersions().split(",")));
+            engine.put("versions", versions);
+            extractors.add(engine);
+        });
+        return extractors;
+    }
 
-	@Override
-	public JSONArray getConnectionParams(Long id, String token) throws ApiException {
-		Repository repository = dao.findById(id).orElse(null);
-		if (null == repository) throw new ApiException(ErrorCode.OBJECT_NOT_FOUND, "Repository");
-		return extractorService.getExtractorParams(repository.getEngine(), repository.getVersion(), token);
-	}
+    @Override
+    public JSONArray getConnectionParams(Long id, String token) throws ApiException {
+        Repository repository = dao.findById(id).orElse(null);
+        if (null == repository) throw new ApiException(ErrorCode.OBJECT_NOT_FOUND, "Repository");
+        return extractorService.getExtractorParams(repository.getEngine(), repository.getVersion(), token);
+    }
 
-	@Override
-	public Object putConnectionParams(Long id, Map<String, Object> params) {
-		Repository repository = dao.findById(id).orElse(null);
-		if (null == repository) throw new ApiException(ErrorCode.OBJECT_NOT_FOUND, "Repository");
-		List<ConnectionParameter> connectionParameters = new ArrayList<>();
-		repository.getConnectionParameters().forEach(x -> connectionParamDAO.delete(x));
-		params.keySet().forEach(x -> {
-			ConnectionParameter parameter = new ConnectionParameter();
-			parameter.setName(x);
-			parameter.setValue(params.get(x).toString());
-			parameter.setRepository(repository);
-			connectionParamDAO.saveAndFlush(parameter);
-			connectionParameters.add(parameter);
-		});
-		repository.setConnectionParameters(connectionParameters);
-		dao.saveAndFlush(repository);
-		return true;
-	}
+    @Override
+    public Object putConnectionParams(Long id, Map<String, Object> params) {
+        Repository repository = dao.findById(id).orElse(null);
+        if (null == repository) throw new ApiException(ErrorCode.OBJECT_NOT_FOUND, "Repository");
+        List<ConnectionParameter> connectionParameters = new ArrayList<>();
+        repository.getConnectionParameters().forEach(x -> connectionParamDAO.delete(x));
+        params.keySet().forEach(x -> {
+            ConnectionParameter parameter = new ConnectionParameter();
+            parameter.setName(x);
+            parameter.setValue(params.get(x).toString());
+            parameter.setRepository(repository);
+            connectionParamDAO.saveAndFlush(parameter);
+            connectionParameters.add(parameter);
+        });
+        repository.setConnectionParameters(connectionParameters);
+        dao.saveAndFlush(repository);
+        return true;
+    }
 
-	public Repository create(Repository entity, String token) {
-		JSONObject extractorInfo = extractorService.getExtractorInfo(entity.getEngine(), entity.getVersion(), token);
-		entity.setType((String)extractorInfo.get("type"));
-		dao.saveAndFlush(entity);
-		TechnicalObject repositoryObject = new TechnicalObject();
-		repositoryObject.setRepository(entity);
-		repositoryObject.setType(TechnicalTypes.REPOSITORY.getTranslation() + " " + entity.getType());
-		repositoryObject.setVersion("1.0");
-		repositoryObject.setName(entity.getName());
-		repositoryObject.setDescription("Motor: " + entity.getEngine() + "(" + entity.getVersion() + ")");
-		repositoryObject.setExtractable(testConnection(entity.getId(), token));
-		technicalObjectDAO.saveAndFlush(repositoryObject);
-		return entity;
-	}
+    public Repository create(Repository entity, String token) {
+        JSONObject extractorInfo = extractorService.getExtractorInfo(entity.getEngine(), entity.getVersion(), token);
+        entity.setType((String) extractorInfo.get("type"));
+        dao.saveAndFlush(entity);
+        TechnicalObject repositoryObject = new TechnicalObject();
+        repositoryObject.setRepository(entity);
+        repositoryObject.setType(TechnicalTypes.REPOSITORY.getTranslation() + " " + entity.getType());
+        repositoryObject.setVersion("1.0");
+        repositoryObject.setName(entity.getName());
+        repositoryObject.setDescription("Motor: " + entity.getEngine() + "(" + entity.getVersion() + ")");
+        repositoryObject.setExtractable(testConnection(entity.getId(), token));
+        technicalObjectDAO.saveAndFlush(repositoryObject);
+        return entity;
+    }
 
-	public List<RepositoryDTO> findAllDTO() throws ApiException {
-		return this.findAll().stream().map(RepositoryDTO::new).collect(Collectors.toList());
-	}
+    public List<RepositoryDTO> findAllDTO() throws ApiException {
+        return this.findAll().stream().map(RepositoryDTO::new).collect(Collectors.toList());
+    }
 
-	public Page<RepositoryDTO> findPaginatedDTO(Integer page, Integer size) throws ApiException {
-		return this.findPaginated(page, size).map(RepositoryDTO::new);
-	}
+    public Page<RepositoryDTO> findPaginatedDTO(Integer page, Integer size) throws ApiException {
+        return this.findPaginated(page, size).map(RepositoryDTO::new);
+    }
 
-	@Override
-	public Boolean testConnection(Long id, String token) {
-		Repository repository = dao.findById(id).get();
-		Map<String, Object> connectionParams = new HashMap<>();
-		connectionParamDAO.findByRepository(repository).forEach(x -> {
-			connectionParams.put(x.getName(), x.getValue());
-		});
-		return extractorService.testConnection(repository.getEngine(), repository.getVersion(), token, connectionParams);
-	}
+    @Override
+    public Boolean testConnection(Long id, String token) {
+        Repository repository = dao.findById(id).get();
+        Map<String, Object> connectionParams = new HashMap<>();
+        connectionParamDAO.findByRepository(repository).forEach(x -> {
+            connectionParams.put(x.getName(), x.getValue());
+        });
+        return extractorService.testConnection(repository.getEngine(), repository.getVersion(), token, connectionParams);
+    }
 
-	@Override
-	public RepositoryDTO findOneDTO(Long id) {
-		return new RepositoryDTO(dao.findById(id).orElse(new Repository()));
-	}
+    @Override
+    public RepositoryDTO findOneDTO(Long id) {
+        return new RepositoryDTO(dao.findById(id).orElse(new Repository()));
+    }
 }

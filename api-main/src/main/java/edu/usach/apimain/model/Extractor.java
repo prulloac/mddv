@@ -2,8 +2,8 @@ package edu.usach.apimain.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import edu.usach.apicommons.model.AbstractDeletableNamedEntity;
 import edu.usach.apicommons.model.IEntity;
-import edu.usach.apicommons.model.impl.AbstractDeletableNamedEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

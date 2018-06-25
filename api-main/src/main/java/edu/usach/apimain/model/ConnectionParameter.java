@@ -1,8 +1,7 @@
 package edu.usach.apimain.model;
 
+import edu.usach.apicommons.model.AbstractIdentityEntity;
 import edu.usach.apicommons.model.IEntity;
-import edu.usach.apicommons.model.impl.AbstractIdentityEntity;
-import edu.usach.apicommons.model.impl.AbstractNamedEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
