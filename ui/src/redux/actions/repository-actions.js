@@ -178,6 +178,22 @@ const testRepository = (id = 0) => dispatch => {
   )
 }
 
+const extract = (id = 0) => dispatch => {
+  RepositoryService.extractFromRepository(id).then(
+    response => {
+      if (response.data.data) {
+        dispatch(notificationActions.notify('Metadatos exitosamente extraidos desde el repositorio!'))
+      } else {
+        dispatch(notificationActions.notify('Error al extraer metadatos, por favor verificar parámetros de conexión'))
+      }
+    },
+    error => {
+      dispatch(notificationActions.notify('Error al extraer metadatos, por favor verificar parámetros de conexión'))
+      return error
+    },
+  )
+}
+
 
 const repositoryActions = {
   create,
@@ -191,6 +207,7 @@ const repositoryActions = {
   getConnectionParams,
   updateConnectionParams,
   testRepository,
+  extract,
 }
 
 export default repositoryActions
