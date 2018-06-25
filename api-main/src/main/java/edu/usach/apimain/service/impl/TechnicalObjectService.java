@@ -16,27 +16,21 @@ import java.util.stream.Collectors;
 @Transactional
 public class TechnicalObjectService extends EntityService<TechnicalObject> implements ITechnicalObjectService {
 
-	@Autowired
-	private TechnicalObjectDAO dao;
-	@Autowired
-	private RepositoryService repositoryService;
+    @Autowired
+    private TechnicalObjectDAO dao;
 
-	@Override
-	protected JpaRepository<TechnicalObject, Long> getDao() {
-		return dao;
-	}
+    @Override
+    protected JpaRepository<TechnicalObject, Long> getDao() {
+        return dao;
+    }
 
-	@Override
-	public List<TechnicalObject> getRepositories(String token) {
-		return dao
-				.findRepositories()
-				.stream()
-				.filter(x -> repositoryService.testConnection(x.getRepository().getId(), token))
-				.collect(Collectors.toList());
-	}
+    @Override
+    public List<TechnicalObject> getRepositories(String token) {
+        return dao.findRepositories();
+    }
 
-	@Override
-	public Object getChildrenObjects(Long id, String token) {
-		return dao.findChildrenObjects(id);
-	}
+    @Override
+    public Object getChildrenObjects(Long id, String token) {
+        return dao.findChildrenObjects(id);
+    }
 }
