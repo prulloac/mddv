@@ -89,6 +89,17 @@ public class RepositoryService extends EntityService<Repository> implements IRep
                     technicalObjectDAO.saveAndFlush(relation);
                 });
             }
+            if (repository.getType().equals(TechnicalTypes.DOCUMENT_DB.getTranslation())) {
+                ((List<Map<String, Object>>) data.get("collections")).forEach(x -> {
+                    TechnicalObject collection = new TechnicalObject();
+                    collection.setRepository(repository);
+                    collection.setName(x.get("collectionName").toString());
+                    collection.setParentObject(parentObject);
+                    collection.setType(TechnicalTypes.COLLECTION.getTranslation());
+                    collection.setVersion("1.0");
+                    technicalObjectDAO.saveAndFlush(collection);
+                });
+            }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return false;
