@@ -117,7 +117,6 @@ public class RepositoryService extends EntityService<Repository> implements IRep
         repositoryObject.setVersion("1.0");
         repositoryObject.setName(entity.getName());
         repositoryObject.setDescription("Motor: " + entity.getEngine() + "(" + entity.getVersion() + ")");
-        repositoryObject.setExtractable(testConnection(entity.getId(), token));
         technicalObjectDAO.saveAndFlush(repositoryObject);
         return entity;
     }
