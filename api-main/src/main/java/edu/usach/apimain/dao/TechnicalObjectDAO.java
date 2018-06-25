@@ -17,4 +17,6 @@ public interface TechnicalObjectDAO extends BaseMetadataObjectDAO<TechnicalObjec
 	List<TechnicalObject> findChildrenObjects(Long id);
 
     TechnicalObject findByNameAndRepository(Object sourceTable, Repository repository);
+
+	List<TechnicalObject> findByRepository(Repository repository);
 }

@@ -58,7 +58,7 @@ public class RepositoryService extends EntityService<Repository> implements IRep
         try {
             TechnicalObject parentObject = technicalObjectDAO.findRepositories().stream().filter(x -> x.getRepository().equals(repository)).findFirst().get();
             Map<String, Object> data = (Map<String, Object>) extractorService.callExtractor(engine, version, connectionParams, token).get("data");
-            technicalObjectDAO.findChildrenObjects(parentObject.getId()).forEach(technicalObjectDAO::delete);
+            technicalObjectDAO.findByRepository(repository).forEach(technicalObjectDAO::delete);
             if (repository.getType().equals(TechnicalTypes.RDBMS.getTranslation())) {
                 ((List<Map<String, Object>>) data.get("tables")).forEach(x -> {
                     TechnicalObject table = new TechnicalObject();
@@ -79,7 +79,7 @@ public class RepositoryService extends EntityService<Repository> implements IRep
                         technicalObjectDAO.saveAndFlush(column);
                     });
                 });
-                ((List<Map<String, Object>>) data.get("tables")).forEach(x -> {
+                ((List<Map<String, Object>>) data.get("relations")).forEach(x -> {
                     TechnicalObject relation = new TechnicalObject();
                     relation.setName(x.get("sourceColumn") + " -> " + x.get("destinyColumn"));
                     relation.setType(TechnicalTypes.RELATION_MANY_ONE.getTranslation());
