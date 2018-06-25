@@ -14,6 +14,7 @@ import edu.usach.apimain.model.Extractor;
 import edu.usach.apimain.model.Repository;
 import edu.usach.apimain.model.TechnicalObject;
 import edu.usach.apimain.service.IRepositoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import static java.util.stream.Collectors.groupingBy;
 
 @Service
 @Transactional
+@Slf4j
 public class RepositoryService extends EntityService<Repository> implements IRepositoryService {
     @Autowired
     private RepositoryDAO dao;
@@ -53,7 +55,45 @@ public class RepositoryService extends EntityService<Repository> implements IRep
         String version = repository.getVersion();
         JSONObject connectionParams = new JSONObject();
         repository.getConnectionParameters().forEach(x -> connectionParams.put(x.getName(), x.getValue()));
-        return extractorService.callExtractor(engine, version, connectionParams, token).get("data");
+        try {
+            TechnicalObject parentObject = technicalObjectDAO.findRepositories().stream().filter(x -> x.getRepository().equals(repository)).findFirst().get();
+            Map<String, Object> data = (Map<String, Object>) extractorService.callExtractor(engine, version, connectionParams, token).get("data");
+            technicalObjectDAO.findChildrenObjects(parentObject.getId()).forEach(technicalObjectDAO::delete);
+            if (repository.getType().equals(TechnicalTypes.RDBMS.getTranslation())) {
+                ((List<Map<String, Object>>) data.get("tables")).forEach(x -> {
+                    TechnicalObject table = new TechnicalObject();
+                    table.setRepository(repository);
+                    table.setName(x.get("tableName").toString());
+                    table.setParentObject(parentObject);
+                    table.setType(TechnicalTypes.TABLE.getTranslation());
+                    table.setVersion("1.0");
+                    technicalObjectDAO.saveAndFlush(table);
+                    ((List<Map<String, Object>>) x.get("columns")).forEach(y -> {
+                        TechnicalObject column = new TechnicalObject();
+                        column.setRepository(repository);
+                        column.setParentObject(table);
+                        column.setName(y.get("columnName").toString());
+                        column.setType(TechnicalTypes.COLUMN.getTranslation());
+                        column.setVersion("1.0");
+                        column.setDescription("column type: " + y.get("columnType") + "\nnullable: " + y.get("nullable") + "\nautoIncrement: " + y.get("autoIncrement"));
+                        technicalObjectDAO.saveAndFlush(column);
+                    });
+                });
+                ((List<Map<String, Object>>) data.get("tables")).forEach(x -> {
+                    TechnicalObject relation = new TechnicalObject();
+                    relation.setName(x.get("sourceColumn") + " -> " + x.get("destinyColumn"));
+                    relation.setType(TechnicalTypes.RELATION_MANY_ONE.getTranslation());
+                    relation.setVersion("1.0");
+                    relation.setRepository(repository);
+                    relation.setParentObject(technicalObjectDAO.findByNameAndRepository(x.get("sourceTable"), repository));
+                    technicalObjectDAO.saveAndFlush(relation);
+                });
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return false;
+        }
+        return true;
     }
 
     @Override
