@@ -5,7 +5,7 @@ import com.arangodb.model.CollectionsReadOptions;
 import edu.usach.apicommons.dto.NoSQLCollectionDTO;
 import edu.usach.apicommons.dto.NoSQLDocumentExtractionDTO;
 import edu.usach.apicommons.extractor.AbstractExtractor;
-import edu.usach.apicommons.extractor.NoSQLExtractor;
+import edu.usach.apicommons.extractor.NoSQLDocumentExtractor;
 import edu.usach.apicommons.util.TechnicalTypes;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
-public class ArangoExtractor extends AbstractExtractor implements NoSQLExtractor {
+public class ArangoExtractor extends AbstractExtractor implements NoSQLDocumentExtractor {
 	@Override
 	public String databaseEngine() {
 		return "ArangoDB";

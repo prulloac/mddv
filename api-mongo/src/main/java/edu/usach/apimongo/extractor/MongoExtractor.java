@@ -7,7 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import edu.usach.apicommons.dto.NoSQLCollectionDTO;
 import edu.usach.apicommons.dto.NoSQLDocumentExtractionDTO;
 import edu.usach.apicommons.extractor.AbstractExtractor;
-import edu.usach.apicommons.extractor.NoSQLExtractor;
+import edu.usach.apicommons.extractor.NoSQLDocumentExtractor;
 import edu.usach.apicommons.util.TechnicalTypes;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 @SuppressWarnings("unchecked")
 @Slf4j
-public class MongoExtractor extends AbstractExtractor implements NoSQLExtractor {
+public class MongoExtractor extends AbstractExtractor implements NoSQLDocumentExtractor {
 	@Override
 	public String databaseEngine() {
 		return "MongoDB";
