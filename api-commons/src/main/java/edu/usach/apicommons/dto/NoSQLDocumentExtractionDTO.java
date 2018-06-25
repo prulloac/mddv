@@ -11,8 +11,10 @@ import java.util.List;
 @RequiredArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class NoSQLDocumentExtractionDTO {
-	@NonNull private List<NoSQLCollectionDTO> collections;
-	@NonNull	private String repositoryType;
-	private String repositoryEngine;
-	private String repositoryEngineVersion;
+    @NonNull
+    private List<NoSQLCollectionDTO> collections;
+    @NonNull
+    private String repositoryType;
+    private String repositoryEngine;
+    private String repositoryEngineVersion;
 }

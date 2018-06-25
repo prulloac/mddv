@@ -14,8 +14,8 @@ import java.util.List;
 @Slf4j
 public class SecurityUtils {
 
-	public static final String SECRET = "BQSyS2Wbr7sfJ6SMDDVeUo4j1j8j5lYQwx3CNFfUTfuullMwPjfoC5QeD3r7O8kW";
-	public static final long EXPIRATION_TIME = 864_000_000; // 10 days
+	private static final String SECRET = "BQSyS2Wbr7sfJ6SMDDVeUo4j1j8j5lYQwx3CNFfUTfuullMwPjfoC5QeD3r7O8kW";
+	private static final long EXPIRATION_TIME = 864_000_000; // 10 days
 	public static final String TOKEN_PREFIX = "Bearer ";
 	public static final String HEADER_STRING = "Authorization";
 

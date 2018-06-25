@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.usach.apicommons.errorhandling.ApiException;
 import edu.usach.apicommons.errorhandling.ErrorCode;
 import edu.usach.apicommons.model.IEntity;
-import edu.usach.apicommons.model.impl.AbstractDeletableEntity;
+import edu.usach.apicommons.model.AbstractDeletableEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
-public class NoSQLCollectionDTO {
-	private String collectionName;
+public class NoSQLCollectionDTO implements DTO {
+    private String collectionName;
 }

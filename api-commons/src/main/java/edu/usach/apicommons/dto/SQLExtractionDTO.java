@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
-public class SQLExtractionDTO {
+public class SQLExtractionDTO implements DTO {
 	@NonNull private List<SQLTableDTO> tables;
 	@NonNull private List<SQLRelationDTO> relations;
 	@NonNull private String repositoryType;
