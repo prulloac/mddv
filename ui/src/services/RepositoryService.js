@@ -53,7 +53,7 @@ const getConnectionParams = (id = 0) => httpClient.get({ endpoint: `repositories
 
 const getExtractorCompatibles = () => httpClient.get({ endpoint: 'repositories/extractableTypes' })
 
-const extractFromRepository = (id = 0) => httpClient.post({ endpoint: `repositories?id=${id}&extract=true` })
+const extractFromRepository = (id = 0) => httpClient.post({ endpoint: `repositories/extract?id=${id}` })
 
 const updateConnectionParams = (id = 0, params = {}) => httpClient.post({ endpoint: `repositories/connectionParams?id=${id}`, data: params })
 
