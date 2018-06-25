@@ -23,7 +23,6 @@ import javax.persistence.ManyToOne;
 public class TechnicalObject extends MetadataObject implements IEntity, ISecureEntity {
     private static final long serialVersionUID = 1L;
 
-    private Boolean extractable = false;
     @ManyToOne
     @JoinColumn(name = "parentObjectId")
     private TechnicalObject parentObject;
