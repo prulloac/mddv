@@ -75,7 +75,6 @@ class NewRepositoryForm extends Component {
           <FormControl>
             <InputLabel htmlFor="version">Versión</InputLabel>
             <NativeSelect
-              value={this.state.engine}
               onChange={this.handleChange('version')}
               inputProps={{ id: 'version' }}
             >

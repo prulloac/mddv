@@ -1,30 +1,52 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Switch, Route, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { withStyles, Typography, Paper } from '@material-ui/core'
-import { title, Img } from '../../utils'
+import { withStyles, Typography, Paper, Button } from '@material-ui/core'
+import { title } from '../../utils'
 import './Models.scss'
+import FreeModel from './FreeModel'
+import RepositoryModel from './RepositoryModel'
 
 class Models extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+    }
     title('Modelos')
   }
 
   render() {
+    const { match } = this.props
     return (
       <div>
         <Paper elevation={4}>
           <Typography variant="display1" align="center">Modelos</Typography>
         </Paper>
-        <p>This is a basic fixed menu template using fixed size containers.</p>
-        <p>
-          A text container is used for the main container,
-          which is useful for single column layouts.
-        </p>
-        <img alt="" src={Img.mediaParagraph} style={{ marginTop: '2em' }} />
-        <img alt="" src={Img.paragraph} style={{ marginTop: '2em' }} />
-        <img alt="" src={Img.paragraph} style={{ marginTop: '2em' }} />
+        <Button
+          mini
+          variant="raised"
+          color="primary"
+          style={{ color: '#fff', marginTop: '0px', marginRight: '0px', position: 'relative', float: 'right' }}
+          component={Link}
+          to={`${match.path}/free`}
+        >
+          Nuevo Modelo Libre
+        </Button>
+        <div />
+        <Button
+          mini
+          variant="raised"
+          color="primary"
+          style={{ color: '#fff', marginTop: '0px', marginRight: '0px', position: 'relative', float: 'right' }}
+          component={Link}
+          to={`${match.path}/repository`}
+        >
+          Nuevo Modelo De Repositorio
+        </Button>
+        <Switch>
+          <Route exact path={`${match.path}/free`} component={FreeModel} />
+          <Route exact path={`${match.path}/repository`} component={RepositoryModel} />
+        </Switch>
       </div>
     )
   }

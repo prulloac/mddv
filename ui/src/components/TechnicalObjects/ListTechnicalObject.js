@@ -11,11 +11,7 @@ class TechnicalObjectsList extends Component {
     this.state = {
     }
     this.props.dispatch(technicalObjectActions.resetObject())
-    if (this.props.match.params.id === undefined) {
-      this.props.dispatch(technicalObjectActions.getRepositories())
-    } else {
-      this.props.dispatch(technicalObjectActions.getChildren(this.props.match.params.id))
-    }
+    this.props.dispatch(technicalObjectActions.getRepositories())
   }
 
   handleDelete = (id = 0) => (event) => {
