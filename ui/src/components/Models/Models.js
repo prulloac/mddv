@@ -30,7 +30,7 @@ class Models extends Component {
           component={Link}
           to={`${match.path}/free`}
         >
-          Nuevo Modelo Libre
+          Modelo Libre
         </Button>
         <div />
         <Button
@@ -41,7 +41,7 @@ class Models extends Component {
           component={Link}
           to={`${match.path}/repository`}
         >
-          Nuevo Modelo De Repositorio
+          Modelo De Repositorio
         </Button>
         <Switch>
           <Route exact path={`${match.path}/free`} component={FreeModel} />
