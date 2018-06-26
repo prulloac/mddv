@@ -64,4 +64,18 @@ public class TechnicalObjectController extends EntityController<TechnicalObject>
 			}
 		}
 	}
+
+	@RequestMapping(value = "/repository", method = RequestMethod.GET)
+	public ResponseEntity<Object> getFromRepository(@RequestParam("id") Long id) {
+		if (!this.isAuthenticated()) {
+			return this.responseApiException(new ApiException(ErrorCode.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+		} else {
+			try {
+				return response(service.getObjectsFromRepository(id));
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				return this.responseException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+	}
 }

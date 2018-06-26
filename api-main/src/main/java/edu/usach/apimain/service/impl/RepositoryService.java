@@ -81,9 +81,10 @@ public class RepositoryService extends EntityService<Repository> implements IRep
                 });
                 ((List<Map<String, Object>>) data.get("relations")).forEach(x -> {
                     TechnicalObject relation = new TechnicalObject();
-                    relation.setName(x.get("sourceColumn") + " -> " + x.get("destinyColumn"));
+                    relation.setName("FK: " + x.get("sourceColumn"));
                     relation.setType(TechnicalTypes.RELATION_MANY_ONE.getTranslation());
                     relation.setVersion("1.0");
+                    relation.setDescription(x.get("sourceTable")+":"+x.get("sourceColumn")+"->"+x.get("destinyTable")+":"+x.get("destinyColumn"));
                     relation.setRepository(repository);
                     relation.setParentObject(technicalObjectDAO.findByNameAndRepository(x.get("sourceTable"), repository));
                     technicalObjectDAO.saveAndFlush(relation);

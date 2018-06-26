@@ -7,4 +7,6 @@ public interface ITechnicalObjectService extends IEntityService<TechnicalObject>
 	Object getRepositories(String token);
 
 	Object getChildrenObjects(Long id, String token);
+
+    Object getObjectsFromRepository(Long id);
 }

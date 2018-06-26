@@ -10,13 +10,15 @@ import java.util.List;
 @Transactional
 public interface TechnicalObjectDAO extends BaseMetadataObjectDAO<TechnicalObject> {
 
-	@Query("select T from TechnicalObject T where T.parentObject is null")
-	List<TechnicalObject> findRepositories();
+    @Query("select T from TechnicalObject T where T.parentObject is null")
+    List<TechnicalObject> findRepositories();
 
-	@Query("select T from TechnicalObject T where T.parentObject.id = ?1")
-	List<TechnicalObject> findChildrenObjects(Long id);
+    @Query("select T from TechnicalObject T where T.parentObject.id = ?1")
+    List<TechnicalObject> findChildrenObjects(Long id);
 
     TechnicalObject findByNameAndRepository(Object sourceTable, Repository repository);
 
-	List<TechnicalObject> findByRepository(Repository repository);
+    List<TechnicalObject> findByRepository(Repository repository);
+
+    TechnicalObject findByRepositoryIdAndParentObjectIsNull(Long id);
 }
