@@ -19,11 +19,16 @@
     "react/jsx-curly-spacing": [2, "never"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/prop-types": [0],
+    "react/no-string-refs": [1],
     "semi": [2, "never"],
     "react/prefer-stateless-function": [0],
     "jsx-a11y/anchor-is-valid": [0],
     "max-len": [2, { "code": 120, "ignoreUrls": true, "ignoreStrings": true, "ignoreTemplateLiterals": true }],
     "max-params": [2, { "max": 4 }],
-    "object-curly-newline": [0]
+    "object-curly-newline": [0],
+    "no-new": [0],
+    "new-cap": [0],
+    "no-unused-vars": [1],
+    "no-bitwise": [1]
   }
 }
