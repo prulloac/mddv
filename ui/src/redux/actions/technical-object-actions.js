@@ -162,6 +162,25 @@ const getChildren = (id = 0) => {
   }
 }
 
+const getGraphDataFromRepository = (id = 0) => {
+  const request = (repository) => ({ type: objectActionTypes.R_T_OBJECT_GRAPH, payload: repository })
+  const success = (graphdata) => ({ type: objectActionTypes.R_T_OBJECT_GRAPH_SUCCESS, payload: graphdata })
+  const failure = (error) => ({ type: objectActionTypes.R_T_OBJECT_GRAPH_FAILURE, payload: error })
+  return dispatch => {
+    dispatch(request(id))
+    ObjectService.getGraphDataFromRepository(id).then(
+      response => {
+        dispatch(success(response.data.data))
+        dispatch(notificationActions.notify('Objetos exitosamente cargados!'))
+      },
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('Error al extraer metadatos, por favor verificar parámetros de conexión'))
+      },
+    )
+  }
+}
+
 export default {
   resetObject,
   findById,
@@ -173,4 +192,5 @@ export default {
   getTypes,
   getRepositories,
   getChildren,
+  getGraphDataFromRepository,
 }
