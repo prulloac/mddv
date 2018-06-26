@@ -8,6 +8,122 @@ const redgrad = $(go.Brush, 'Linear', { 0: 'rgb(206, 106, 100)', 1: 'rgb(180, 56
 const yellowgrad = $(go.Brush, 'Linear', { 0: 'rgb(254, 221, 50)', 1: 'rgb(254, 182, 50)' })
 const lightgrad = $(go.Brush, 'Linear', { 1: '#E6E6FA', 0: '#FFFAF0' })
 
+const manyToOneLink = $(
+  go.Link,
+  {
+    selectionAdorned: true,
+    layerName: 'Foreground',
+    reshapable: true,
+    routing: go.Link.AvoidsNodes,
+    corner: 5,
+    curve: go.Link.JumpOver,
+  },
+  $(
+    go.Shape,
+    { stroke: '#303B45', strokeWidth: 2 },
+  ),
+  $(
+    go.Shape,
+    { fromArrow: 'BackwardFork', strokeWidth: 2 },
+  ),
+  $(
+    go.TextBlock,
+    {
+      textAlign: 'center',
+      font: 'bold 14px sans-serif',
+      stroke: '#1967B3',
+      segmentIndex: 0,
+      segmentOffset: new go.Point(NaN, NaN),
+      segmentOrientation: go.Link.OrientUpright,
+    },
+    new go.Binding('text', 'text'),
+  ),
+  $(
+    go.TextBlock,
+    {
+      textAlign: 'center',
+      font: 'bold 14px sans-serif',
+      stroke: '#1967B3',
+      segmentIndex: -1,
+      segmentOffset: new go.Point(NaN, NaN),
+      segmentOrientation: go.Link.OrientUpright,
+    },
+    new go.Binding('text', 'toText'),
+  ),
+)
+
+const entityColumn = $(
+  go.Panel, 'Horizontal',
+  $(
+    go.Shape,
+    { desiredSize: new go.Size(10, 10) },
+    new go.Binding('figure', 'figure'),
+    new go.Binding('fill', 'color'),
+  ),
+  $(
+    go.TextBlock,
+    { stroke: '#333333',
+      font: 'bold 14px sans-serif' },
+    new go.Binding('text', 'name'),
+  ),
+)
+
+const entityTable = $(
+  go.Node,
+  'Auto',
+  {
+    selectionAdorned: true,
+    resizable: true,
+    layoutConditions: go.Part.LayoutStandard & ~go.Part.LayoutNodeSized,
+    fromSpot: go.Spot.AllSides,
+    toSpot: go.Spot.AllSides,
+    isShadowed: true,
+    shadowColor: '#C5C1AA' },
+  new go.Binding('location', 'location').makeTwoWay(),
+  new go.Binding('desiredSize', 'visible', (v) => new go.Size(NaN, NaN)).ofObject('LIST'),
+  $(
+    go.Shape, 'Rectangle',
+    { fill: lightgrad, stroke: '#756875', strokeWidth: 3 },
+  ),
+  $(
+    go.Panel, 'Table',
+    { margin: 8, stretch: go.GraphObject.Fill },
+    $(go.RowColumnDefinition, { row: 0, sizing: go.RowColumnDefinition.None }),
+    $(
+      go.TextBlock,
+      {
+        row: 0,
+        alignment: go.Spot.Center,
+        margin: new go.Margin(0, 14, 0, 2),
+        font: 'bold 16px sans-serif',
+      },
+      new go.Binding('text', 'key'),
+    ),
+    $(
+      'PanelExpanderButton',
+      'LIST',
+      {
+        row: 0,
+        alignment: go.Spot.TopRight,
+      },
+    ),
+    $(
+      go.Panel, 'Vertical',
+      {
+        name: 'LIST',
+        row: 1,
+        padding: 3,
+        alignment: go.Spot.TopLeft,
+        defaultAlignment: go.Spot.Left,
+        stretch: go.GraphObject.Horizontal,
+        itemTemplate: entityColumn,
+      },
+      new go.Binding('itemArray', 'items'),
+    ),
+  ),
+)
+
+
 const entityDiagram = ({ tables, relations, container }) => {
   const diagram = $(go.Diagram, container, {
     initialContentAlignment: go.Spot.Center,
@@ -15,119 +131,10 @@ const entityDiagram = ({ tables, relations, container }) => {
     allowCopy: false,
     layout: $(go.ForceDirectedLayout),
     'undoManager.isEnabled': true,
+    initialScale: 1.2,
   })
-  const itemTempl =
-    $(
-      go.Panel, 'Horizontal',
-      $(
-        go.Shape,
-        { desiredSize: new go.Size(10, 10) },
-        new go.Binding('figure', 'figure'),
-        new go.Binding('fill', 'color'),
-      ),
-      $(
-        go.TextBlock,
-        { stroke: '#333333',
-          font: 'bold 14px sans-serif' },
-        new go.Binding('text', 'name'),
-      ),
-    )
-
-  diagram.nodeTemplate = $(
-    go.Node,
-    'Auto',
-    {
-      selectionAdorned: true,
-      resizable: true,
-      layoutConditions: go.Part.LayoutStandard & ~go.Part.LayoutNodeSized,
-      fromSpot: go.Spot.AllSides,
-      toSpot: go.Spot.AllSides,
-      isShadowed: true,
-      shadowColor: '#C5C1AA' },
-    new go.Binding('location', 'location').makeTwoWay(),
-    new go.Binding('desiredSize', 'visible', (v) => new go.Size(NaN, NaN)).ofObject('LIST'),
-    $(
-      go.Shape, 'Rectangle',
-      { fill: lightgrad, stroke: '#756875', strokeWidth: 3 },
-    ),
-    $(
-      go.Panel, 'Table',
-      { margin: 8, stretch: go.GraphObject.Fill },
-      $(go.RowColumnDefinition, { row: 0, sizing: go.RowColumnDefinition.None }),
-      $(
-        go.TextBlock,
-        {
-          row: 0,
-          alignment: go.Spot.Center,
-          margin: new go.Margin(0, 14, 0, 2),
-          font: 'bold 16px sans-serif',
-        },
-        new go.Binding('text', 'key'),
-      ),
-      $(
-        'PanelExpanderButton',
-        'LIST',
-        {
-          row: 0,
-          alignment: go.Spot.TopRight,
-        },
-      ),
-      $(
-        go.Panel, 'Vertical',
-        {
-          name: 'LIST',
-          row: 1,
-          padding: 3,
-          alignment: go.Spot.TopLeft,
-          defaultAlignment: go.Spot.Left,
-          stretch: go.GraphObject.Horizontal,
-          itemTemplate: itemTempl,
-        },
-        new go.Binding('itemArray', 'items'),
-      ),
-    ),
-  )
-
-  diagram.linkTemplate =
-  $(
-    go.Link,
-    {
-      selectionAdorned: true,
-      layerName: 'Foreground',
-      reshapable: true,
-      routing: go.Link.AvoidsNodes,
-      corner: 5,
-      curve: go.Link.JumpOver,
-    },
-    $(
-      go.Shape,
-      { stroke: '#303B45', strokeWidth: 2.5 },
-    ),
-    $(
-      go.TextBlock,
-      {
-        textAlign: 'center',
-        font: 'bold 14px sans-serif',
-        stroke: '#1967B3',
-        segmentIndex: 0,
-        segmentOffset: new go.Point(NaN, NaN),
-        segmentOrientation: go.Link.OrientUpright,
-      },
-      new go.Binding('text', 'text'),
-    ),
-    $(
-      go.TextBlock,
-      {
-        textAlign: 'center',
-        font: 'bold 14px sans-serif',
-        stroke: '#1967B3',
-        segmentIndex: -1,
-        segmentOffset: new go.Point(NaN, NaN),
-        segmentOrientation: go.Link.OrientUpright,
-      },
-      new go.Binding('text', 'toText'),
-    ),
-  )
+  diagram.nodeTemplate = entityTable
+  diagram.linkTemplate = manyToOneLink
   diagram.model = new go.GraphLinksModel(tables, relations)
 }
 
@@ -141,7 +148,7 @@ const demoTables = [
     ] },
   { key: 'Suppliers',
     items: [
-      { name: 'SupplierID', iskey: true, figure: 'Decision', color: yellowgrad },
+      { name: 'SupplierID', iskey: false, figure: 'Decision', color: yellowgrad },
       { name: 'CompanyName', iskey: false, figure: 'Cube1', color: bluegrad },
       { name: 'ContactName', iskey: false, figure: 'Cube1', color: bluegrad },
       { name: 'Address', iskey: false, figure: 'Cube1', color: bluegrad },
@@ -156,7 +163,7 @@ const demoTables = [
   { key: 'Order Details',
     items: [
       { name: 'OrderID', iskey: true, figure: 'Decision', color: yellowgrad },
-      { name: 'ProductID', iskey: true, figure: 'Decision', color: yellowgrad },
+      { name: 'ProductID', iskey: true, figure: 'Circle', color: bluegrad },
       { name: 'UnitPrice', iskey: false, figure: 'MagneticData', color: greengrad },
       { name: 'Quantity', iskey: false, figure: 'MagneticData', color: greengrad },
       { name: 'Discount', iskey: false, figure: 'MagneticData', color: greengrad },
@@ -171,3 +178,4 @@ const demoRelations = [
 export { demoRelations }
 export { demoTables }
 export { entityDiagram }
+export { bluegrad }
