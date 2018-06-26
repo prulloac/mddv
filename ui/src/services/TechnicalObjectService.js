@@ -51,6 +51,8 @@ const getRepositories = () => httpClient.get({ endpoint: 'technical-objects/repo
 
 const getChildren = (id = 0) => httpClient.get({ endpoint: `technical-objects/children?parentId=${id}` })
 
+const getGraphDataFromRepository = (id = 0) => httpClient.get({ endpoint: `technical-objects/repository?id=${id}` })
+
 const TechnicalObjectService = {
   create,
   findById,
@@ -61,6 +63,7 @@ const TechnicalObjectService = {
   getTypes,
   getRepositories,
   getChildren,
+  getGraphDataFromRepository,
 }
 
 export default TechnicalObjectService
