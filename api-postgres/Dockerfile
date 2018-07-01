@@ -6,6 +6,6 @@ COPY ./ /usr/src/mddv/postgres
 
 WORKDIR /usr/src/mddv/postgres
 
-EXPOSE 8085
+EXPOSE 8083
 
 CMD [ "mvn", "clean", "install", "spring-boot:run" ]
