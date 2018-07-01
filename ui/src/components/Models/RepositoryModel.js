@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { withStyles, Card, CardContent, Typography, CardActions, Button } from '@material-ui/core'
+import { withStyles, Card, CardContent, Typography, Button } from '@material-ui/core'
 import DatabaseSearch from 'mdi-material-ui/DatabaseSearch'
-import { title } from '../../utils'
-import { entityDiagram, bluegrad } from '../../utils/Graph'
-import { technicalObjectActions, repositoryActions } from '../../redux/actions'
+import { diagram, bluegrad } from '../../utils/Graph'
+import technicalObjectActions from '../../redux/actions/technical-object-actions'
+import repositoryActions from '../../redux/actions/repository-actions'
 import './Models.scss'
 
 class RepositoryModel extends Component {
@@ -13,7 +13,6 @@ class RepositoryModel extends Component {
     super(props)
     this.state = {
     }
-    title('Modelos')
     this.props.dispatch(repositoryActions.getAll())
   }
 
@@ -21,9 +20,12 @@ class RepositoryModel extends Component {
     const { loadedGraphdata } = this.props
     if (loadedGraphdata) {
       const { graphdata } = this.props
-      const tables = graphdata.tables.map(x => ({ key: x.key, items: x.columns.map(y => ({ name: y.name, figure: 'Circle', color: bluegrad })) }))
-      const relations = graphdata.relations.map(x => ({ from: x.from, to: x.to, text: '0..N', toText: '1' }))
-      entityDiagram({ tables, relations, container: 'graphContainer' })
+      const nodes = graphdata.nodes.map(x => ({
+        key: x.name,
+        category: x.category,
+        items: x.items.map(y => ({ name: y.name, type: y.type })) }))
+      const links = graphdata.links.map(x => ({ from: x.from, to: x.to, category: x.category }))
+      diagram({ nodes, links, container: 'graphContainer' })
     }
   }
 

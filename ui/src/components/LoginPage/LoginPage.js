@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Paper, FormGroup, FormControl, TextField, Typography, Button, Icon, InputAdornment } from '@material-ui/core'
-import { userActions } from '../../redux/actions'
-import { Img, title } from '../../utils'
+import userActions from '../../redux/actions/user-actions'
+import Img from '../../utils/Img'
+import { title } from '../../utils/UtilityFunctions'
 import './LoginPage.scss'
 
 class LoginPage extends Component {

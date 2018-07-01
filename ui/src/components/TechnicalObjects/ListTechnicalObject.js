@@ -10,8 +10,22 @@ class TechnicalObjectsList extends Component {
     super(props)
     this.state = {
     }
+    this.loadObjects(this.props.match.params.id)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match !== this.props.match) {
+      this.loadObjects(nextProps.match.params.id)
+    }
+  }
+
+  loadObjects = (id = 0) => {
     this.props.dispatch(technicalObjectActions.resetObject())
-    this.props.dispatch(technicalObjectActions.getRepositories())
+    if (id > 0) {
+      this.props.dispatch(technicalObjectActions.getChildren(id))
+    } else {
+      this.props.dispatch(technicalObjectActions.getRepositories())
+    }
   }
 
   handleDelete = (id = 0) => (event) => {
@@ -24,14 +38,6 @@ class TechnicalObjectsList extends Component {
       } else {
         dispatch(technicalObjectActions.getChildren(match.params.id))
       }
-    }
-  }
-
-  handleRefresh = (id = 0) => (event) => {
-    event.preventDefault()
-    const { dispatch } = this.props
-    if (id > 0) {
-      dispatch(technicalObjectActions.getChildren(id))
     }
   }
 
@@ -55,7 +61,8 @@ class TechnicalObjectsList extends Component {
             variant="fab"
             color="primary"
             style={{ color: '#fff', marginTop: '0px', marginRight: '0px', position: 'relative', float: 'right' }}
-            onClick={this.handleRefresh(object.id)}
+            component={Link}
+            to={`/technical/${object.id}`}
           >
             <Eye />
           </Button>

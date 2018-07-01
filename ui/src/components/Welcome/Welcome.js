@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Paper, Typography } from '@material-ui/core'
-import { title, Img } from '../../utils'
+import { title } from '../../utils/UtilityFunctions'
+import Img from '../../utils/Img'
 
 import './Welcome.scss'
 

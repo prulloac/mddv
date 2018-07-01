@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Dashboard, LoginPage, Notification } from '../index'
-import { userActions } from '../../redux/actions'
-import { title, Session } from '../../utils'
+import Dashboard from '../Dashboard/Dashboard'
+import LoginPage from '../LoginPage/LoginPage'
+import Notification from '../Notification/Notification'
+import userActions from '../../redux/actions/user-actions'
+import { title } from '../../utils/UtilityFunctions'
+import Session from '../../utils/Session'
 import './App.scss'
 
 class App extends Component {

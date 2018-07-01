@@ -5,15 +5,16 @@ import { withStyles, Typography, Paper } from '@material-ui/core'
 import New from './NewBusinessObject'
 import List from './ListBusinessObject'
 import Edit from './EditBusinessObject'
-import { title } from '../../utils'
-import { businessObjectActions } from '../../redux/actions'
+import Relate from './RelateBusinessObject'
+import { title } from '../../utils/UtilityFunctions'
+import businessObjectActions from '../../redux/actions/business-object-actions'
 import './BusinessObjects.scss'
 
 class BusinessObjects extends Component {
   constructor(props) {
     super(props)
     title('Objetos de Negocio')
-    this.props.dispatch(businessObjectActions.getTypes())
+    this.props.dispatch(businessObjectActions.getTypes)
   }
 
   render() {
@@ -26,6 +27,7 @@ class BusinessObjects extends Component {
         <Switch>
           <Route path={`${match.path}/new`} component={New} />
           <Route path={`${match.path}/edit/:id`} component={Edit} />
+          <Route path={`${match.path}/relations/:id`} component={Relate} />
           <Route component={List} />
         </Switch>
       </div>
