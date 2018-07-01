@@ -6,4 +6,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface RepositoryDAO extends JpaRepository<Repository, Long> {
+    Repository findByNameAndEngineAndVersion(String name, String engine, String version);
 }

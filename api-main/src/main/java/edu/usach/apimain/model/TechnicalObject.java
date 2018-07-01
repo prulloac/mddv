@@ -17,7 +17,6 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Getter
 @Setter
-@ToString
 public class TechnicalObject extends MetadataObject implements IEntity, ISecureEntity {
     private static final long serialVersionUID = 1L;
 
@@ -29,5 +28,6 @@ public class TechnicalObject extends MetadataObject implements IEntity, ISecureE
     @JsonIgnore
     private Repository repository;
     @OneToMany(mappedBy = "parentObject")
+    @JsonIgnore
     private List<TechnicalObject> childrenObjects;
 }

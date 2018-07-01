@@ -5,6 +5,7 @@ import edu.usach.apicommons.util.TechnicalTypes;
 import edu.usach.apimain.dao.TechnicalObjectDAO;
 import edu.usach.apimain.model.TechnicalObject;
 import edu.usach.apimain.service.ITechnicalObjectService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class TechnicalObjectService extends EntityService<TechnicalObject> implements ITechnicalObjectService {
 
     @Autowired
@@ -42,37 +44,63 @@ public class TechnicalObjectService extends EntityService<TechnicalObject> imple
     public Object getObjectsFromRepository(Long id) {
         Map<String, Object> object = new HashMap<>();
         TechnicalObject repositoryObject = dao.findByRepositoryIdAndParentObjectIsNull(id);
-        if (repositoryObject.getRepository().getType().equals(TechnicalTypes.RDBMS.getTranslation())) {
-            object.put("tables", repositoryObject.getChildrenObjects().stream().filter(x -> x.getType().equals(TechnicalTypes.TABLE.getTranslation())).map(x -> {
+        List<Map<String, Object>> nodes = new ArrayList<>();
+        List<Map<String, Object>> links = new ArrayList<>();
+        log.info("repository: {}", repositoryObject.getName());
+        if (repositoryObject.getType().equalsIgnoreCase(TechnicalTypes.RDBMS.getTranslation())) {
+            nodes = repositoryObject.getChildrenObjects().stream().filter(x -> x.getType().equals(TechnicalTypes.TABLE.getTranslation())).map(x -> {
+                log.info("table: {}", x.getName());
                 Map<String, Object> table = new HashMap<>();
-                table.put("key", x.getName());
-                table.put("columns", x.getChildrenObjects().stream().filter(y -> y.getType().equals(TechnicalTypes.COLUMN.getTranslation())).map(y -> {
+                table.put("name", x.getName());
+                table.put("category", x.getType());
+                table.put("items", x.getChildrenObjects().stream().filter(y -> y.getType().equals(TechnicalTypes.COLUMN.getTranslation())).map(y -> {
+                    log.info("column: {}", y.getName());
                     Map<String, Object> column = new HashMap<>();
                     column.put("name", y.getName());
+                    column.put("type", y.getDescription().split("\\nnullable")[0].replaceAll("column type: ", ""));
                     return column;
                 }));
                 return table;
-            }).collect(Collectors.toList()));
-            List<Map<String, Object>> relations = new ArrayList<>();
+            }).collect(Collectors.toList());
             repositoryObject.getChildrenObjects().stream().filter(x -> x.getType().equals(TechnicalTypes.TABLE.getTranslation())).forEach(x -> {
                 x.getChildrenObjects().stream().filter(y -> y.getType().equals(TechnicalTypes.RELATION_MANY_ONE.getTranslation())).forEach(z -> {
+                    log.info("relation: {}", z.getName());
                     Map<String, Object> relation = new HashMap<>();
                     relation.put("from", z.getDescription().split(":")[0]);
                     relation.put("to", z.getDescription().split("-\\>")[1].split(":")[0]);
-                    relations.add(relation);
+                    relation.put("category", z.getType());
+                    links.add(relation);
                 });
             });
-            object.put("relations", relations);
-            return object;
         }
-        if (repositoryObject.getRepository().getType().equals(TechnicalTypes.DOCUMENT_DB.getTranslation())) {
-            object.put("collections", repositoryObject.getChildrenObjects().stream().map(x -> {
-                Map<String, Object> collection = new HashMap<>();
-                collection.put("key", x.getName());
-                return collection;
-            }).collect(Collectors.toList()));
-            return object;
+        if (repositoryObject.getType().equalsIgnoreCase(TechnicalTypes.DOCUMENT_DB.getTranslation())) {
+            nodes = repositoryObject.getChildrenObjects().stream().filter(x -> x.getType().equals(TechnicalTypes.COLLECTION.getTranslation())).map(x -> {
+                log.info("collection: {}", x.getName());
+                Map<String, Object> table = new HashMap<>();
+                table.put("name", x.getName());
+                table.put("category", x.getType());
+                table.put("items", x.getChildrenObjects().stream().filter(y -> y.getType().equals(TechnicalTypes.COLLECTION_ATTRIBUTE.getTranslation())).map(y -> {
+                    log.info("attribute: {}", y.getName());
+                    Map<String, Object> column = new HashMap<>();
+                    column.put("name", y.getName());
+                    column.put("type", y.getDescription());
+                    return column;
+                }));
+                return table;
+            }).collect(Collectors.toList());
+            repositoryObject.getChildrenObjects().stream().filter(x -> x.getType().equals(TechnicalTypes.COLLECTION.getTranslation())).forEach(x -> {
+                x.getChildrenObjects().stream().filter(y -> y.getType().equals(TechnicalTypes.RELATION_USE.getTranslation())).forEach(z -> {
+                    log.info("link: {}", z.getName());
+                    Map<String, Object> relation = new HashMap<>();
+                    relation.put("from", z.getDescription().split(":")[0]);
+                    relation.put("to", z.getDescription().split("-\\>")[1].split(":")[0]);
+                    relation.put("category", z.getType());
+                    links.add(relation);
+                });
+            });
         }
-        return null;
+        object.put("nodes", nodes);
+        object.put("links", links);
+        return object;
     }
 }

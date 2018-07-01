@@ -165,7 +165,7 @@ public class RepositoryService extends EntityService<Repository> implements IRep
         dao.saveAndFlush(entity);
         TechnicalObject repositoryObject = new TechnicalObject();
         repositoryObject.setRepository(entity);
-        repositoryObject.setType(TechnicalTypes.REPOSITORY.getTranslation() + " " + entity.getType());
+        repositoryObject.setType(entity.getType());
         repositoryObject.setVersion("1.0");
         repositoryObject.setName(entity.getName());
         repositoryObject.setDescription("Motor: " + entity.getEngine() + "(" + entity.getVersion() + ")");
@@ -194,5 +194,15 @@ public class RepositoryService extends EntityService<Repository> implements IRep
     @Override
     public RepositoryDTO findOneDTO(Long id) {
         return new RepositoryDTO(dao.findById(id).orElse(new Repository()));
+    }
+
+    @Override
+    public Repository update(Repository entity) {
+        Repository old = dao.findByNameAndEngineAndVersion(entity.getName(), entity.getEngine(), entity.getVersion());
+        entity.setType(old.getType());
+        entity.setTechnicalObjectList(old.getTechnicalObjectList());
+        entity.setBusinessObjectList(old.getBusinessObjectList());
+        dao.saveAndFlush(entity);
+        return entity;
     }
 }
