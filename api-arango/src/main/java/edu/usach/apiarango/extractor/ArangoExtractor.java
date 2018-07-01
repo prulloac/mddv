@@ -43,7 +43,7 @@ public class ArangoExtractor extends AbstractExtractor implements NoSQLDocumentE
 	@Override
 	public NoSQLDocumentExtractionDTO extract(Map<String, Object> connectionParams) {
 		String host = (String) connectionParams.get("host");
-		int port = (int) connectionParams.get("port");
+		int port = Integer.valueOf((String) connectionParams.get("port"));
 		String username = (String) connectionParams.get("username");
 		String password = (String) connectionParams.get("password");
 		String database = (String) connectionParams.get("database");
@@ -61,7 +61,7 @@ public class ArangoExtractor extends AbstractExtractor implements NoSQLDocumentE
 	@Override
 	public Boolean testConnection(Map<String, Object> connectionParams) {
 		String host = (String) connectionParams.get("host");
-		int port = (int) connectionParams.get("port");
+		int port = Integer.valueOf((String) connectionParams.get("port"));
 		String username = (String) connectionParams.get("username");
 		String password = (String) connectionParams.get("password");
 		String database = (String) connectionParams.get("database");
