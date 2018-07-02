@@ -22,9 +22,9 @@ class TechnicalObjects extends Component {
           <Typography variant="display1" align="center">Objetos Técnicos</Typography>
         </Paper>
         <Switch>
-          <Route path="/technical/:id?" component={List} />
-          <Route exact path={`${match.path}/new`} component={New} />
+          <Route exact path={`${match.path}/new/:id?`} component={New} />
           <Route path={`${match.path}/edit/:id`} component={Edit} />
+          <Route exact path="/technical/:id?" component={List} />
         </Switch>
       </div>
     )

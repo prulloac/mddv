@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles, TextField, FormGroup, Button, InputLabel, NativeSelect, FormControl } from '@material-ui/core'
-import { Save } from '@material-ui/icons'
-import { technicalObjectActions } from '../../redux/actions'
+import Save from '@material-ui/icons/Save'
+import technicalObjectActions from '../../redux/actions/technical-object-actions'
 
 class NewTechnicalObject extends Component {
   constructor(props) {
@@ -29,15 +29,16 @@ class NewTechnicalObject extends Component {
   handleSubmit = (event) => {
     event.preventDefault()
     const { name, type, version, description } = this.state
-    const { dispatch } = this.props
+    const { dispatch, match } = this.props
     if (name && type) {
-      dispatch(technicalObjectActions.create({ description, name, type, version }))
+      dispatch(technicalObjectActions.create({ description, name, type, version, parentId: match.params.id }))
     }
   }
 
   render() {
-    const { businessObjectTypes, loadedBusinessObjectTypes } = this.props
-    if (!loadedBusinessObjectTypes) {
+    const { technicalObjectTypes, loadedTechnicalObjectTypes } = this.props
+    if (!loadedTechnicalObjectTypes) {
+      this.props.dispatch(technicalObjectActions.getTypes())
       return null
     }
     return (
@@ -61,7 +62,7 @@ class NewTechnicalObject extends Component {
               inputProps={{ id: 'type' }}
             >
               <option value="">Tipo</option>
-              {businessObjectTypes.map(x => (
+              {technicalObjectTypes.map(x => (
                 <option key={x} value={x}>{x}</option>
               ))}
             </NativeSelect>
@@ -76,7 +77,7 @@ class NewTechnicalObject extends Component {
           <FormControl>
             <br />
             <Button size="small" variant="raised" onClick={this.handleSubmit} color="primary">
-              Registrar Objeto de Negocio
+              Registrar Objeto Técnico
               <Save className="icon-button" />
             </Button>
           </FormControl>
@@ -87,8 +88,8 @@ class NewTechnicalObject extends Component {
 }
 
 const mapStateToProps = state => {
-  const { loadedBusinessObjectTypes, businessObjectTypes } = state.businessObjectReducer
-  return { loadedBusinessObjectTypes, businessObjectTypes }
+  const { loadedTechnicalObjectTypes, technicalObjectTypes } = state.technicalObjectReducer
+  return { loadedTechnicalObjectTypes, technicalObjectTypes }
 }
 
 export default withStyles(null)(withRouter(connect(mapStateToProps)(NewTechnicalObject)))

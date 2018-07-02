@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import { AppBar, Toolbar, withStyles, IconButton, Drawer, Typography, Icon, Button } from '@material-ui/core'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import Sidenav from '../Sidenav/Sidenav'
@@ -14,7 +13,7 @@ class Navigation extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: false,
+      open: true,
     }
   }
 
@@ -52,15 +51,6 @@ class Navigation extends Component {
               Mddv
             </Button>
             <div className={classes.flex} />
-            <Icon>account_circle</Icon>
-            <Typography
-              variant="body2"
-              autoCapitalize="ok"
-              color="inherit"
-              style={{ marginLeft: '1em', marginRight: '2em' }}
-            >
-              {Session.getUserData().username}
-            </Typography>
             <Button
               color="inherit"
               onClick={this.logout}
@@ -81,10 +71,39 @@ class Navigation extends Component {
           }}
           open={this.state.open}
         >
-          <div className={classes.toolbar}>
-            <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
+          <div style={{ position: 'relative', marginTop: '0px', width: '100%', backgroundImage: `url(${Img.officeBackground})`, height: '176px' }}>
+            <div className={classes.toolbar} style={{ float: 'right' }}>
+              <IconButton onClick={this.handleDrawerClose}>
+                <img alt="Mddv" src={Img.mddvLogo} width={45} />
+              </IconButton>
+            </div>
+            <div style={{ position: 'relative', padding: '32px 32px 0px' }}>
+              <img alt={Session.getUserData.username} src={Img.maleAvatar} width={64} style={{ marginLeft: '25%' }} />
+              <Typography
+                variant="body2"
+                autoCapitalize="ok"
+                style={{ color: '#FFF' }}
+                align="right"
+              >
+                {Session.getUserData().firstName} {Session.getUserData().lastName}
+              </Typography>
+              <Typography
+                variant="body2"
+                autoCapitalize="ok"
+                style={{ color: '#FFF' }}
+                align="right"
+              >
+                {Session.getUserData().email}
+              </Typography>
+              <Typography
+                variant="body2"
+                autoCapitalize="ok"
+                style={{ color: '#FFF' }}
+                align="right"
+              >
+                {Session.getUserData().username}
+              </Typography>
+            </div>
           </div>
           <Sidenav />
         </Drawer>

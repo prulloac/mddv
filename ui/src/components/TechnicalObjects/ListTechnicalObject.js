@@ -42,9 +42,10 @@ class TechnicalObjectsList extends Component {
   }
 
   render() {
+    const parent = this.props.match.params.id ? this.props.match.params.id : 0
     const newButton = (
       <div className="mddv-buttons" align="right">
-        <Button variant="raised" component={Link} to="/technical/new">
+        <Button variant="raised" component={Link} to={`/technical/new/${parent}`}>
           Nuevo Objeto
         </Button>
       </div>

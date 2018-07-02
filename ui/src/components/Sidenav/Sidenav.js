@@ -1,6 +1,8 @@
 import React from 'react'
 import { List, Icon, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
-import Database from 'mdi-material-ui/Database'
+import Group from 'mdi-material-ui/Group'
+import Server from 'mdi-material-ui/Server'
+import Dumbbell from 'mdi-material-ui/Dumbbell'
 import { Link } from 'react-router-dom'
 import './Sidenav.scss'
 
@@ -8,7 +10,7 @@ const Sidenav = () => (
   <List>
     <ListItem button component={Link} to="/repository">
       <ListItemIcon>
-        <Icon>storage</Icon>
+        <Server />
       </ListItemIcon>
       <ListItemText>
         Repositorios
@@ -24,7 +26,7 @@ const Sidenav = () => (
     </ListItem>
     <ListItem button component={Link} to="/technical">
       <ListItemIcon>
-        <Database />
+        <Dumbbell />
       </ListItemIcon>
       <ListItemText>
         Objetos Técnicos
@@ -32,7 +34,7 @@ const Sidenav = () => (
     </ListItem>
     <ListItem button component={Link} to="/model">
       <ListItemIcon>
-        <Icon>bubble_chart</Icon>
+        <Group />
       </ListItemIcon>
       <ListItemText>
         Modelos
