@@ -13,11 +13,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -124,5 +122,28 @@ public class TechnicalObjectService extends EntityService<TechnicalObject> imple
             log.error(e.getMessage(), e);
             throw e;
         }
+    }
+
+    @Override
+    public Object getTechnicalObjectTypes(Long parentId) {
+        Stream<TechnicalTypes> typesStream = Arrays.stream(TechnicalTypes.values());
+        TechnicalObject parentObject = dao.findById(parentId).orElse(null);
+        if (parentObject != null) {
+            typesStream = typesStream
+                    .filter(x -> x.getParent() != null)
+                    .filter(x -> x.getParent().getTranslation().equalsIgnoreCase(parentObject.getType()));
+        } else {
+            typesStream = typesStream
+                    .filter(x -> x.getParent() != null)
+                    .filter(x -> x.getParent().ordinal() == 0);
+        }
+        return typesStream.map(x -> {
+            Map<String, Object> object = new HashMap<>();
+            object.put("id", x.ordinal());
+            object.put("name", x);
+            object.put("translation", x.getTranslation());
+            object.put("type", x.getType());
+            return object;
+        }).collect(Collectors.toList());
     }
 }

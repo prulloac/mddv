@@ -11,4 +11,6 @@ public interface ITechnicalObjectService extends IEntityService<TechnicalObject>
     Object getObjectsFromRepository(Long id);
 
     Object create(TechnicalObject entity, Long parent);
+
+    Object getTechnicalObjectTypes(Long parentId);
 }

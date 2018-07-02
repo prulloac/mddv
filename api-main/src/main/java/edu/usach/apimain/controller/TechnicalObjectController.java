@@ -14,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @CrossOrigin(maxAge = 7200)
 @RestController
@@ -46,8 +49,9 @@ public class TechnicalObjectController extends EntityController<TechnicalObject>
 	}
 
 	@RequestMapping(value = "/types", method = RequestMethod.GET)
-	public ResponseEntity<Object> getTypes() {
-		return response(Arrays.stream(TechnicalTypes.values()).map(TechnicalTypes::getTranslation).collect(Collectors.toList()));
+	public ResponseEntity<Object> getTypes(
+	        @RequestParam(value = "parentId", required = false) Long parentId) {
+		return response(this.service.getTechnicalObjectTypes(parentId));
 	}
 
 	@RequestMapping(value = "/repositories", method = RequestMethod.GET)
