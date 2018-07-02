@@ -46,7 +46,7 @@ const findByName = (name = 0) => httpClient.get({ endpoint: `technical-objects?n
 
 const getAll = () => httpClient.get({ endpoint: 'technical-objects?showAll=true' })
 
-const getTypes = () => httpClient.get({ endpoint: 'technical-objects/types' })
+const getTypes = ({ parentId } = { parentId: 0 }) => httpClient.get({ endpoint: `technical-objects/types?parentId=${parentId}` })
 
 const getRepositories = () => httpClient.get({ endpoint: 'technical-objects/repositories' })
 
