@@ -66,13 +66,13 @@ const getTypes = () => {
   }
 }
 
-const create = ({ name = '', description = '', type = '', version = '' }) => {
+const create = ({ name = '', description = '', type = '', version = '', parentId = 0 }) => {
   const request = (repository) => ({ type: objectActionTypes.C_T_OBJECT, payload: repository })
   const success = (repository) => ({ type: objectActionTypes.C_T_OBJECT_SUCCESS, payload: repository })
   const failure = (error) => ({ type: objectActionTypes.C_T_OBJECT_FAILURE, payload: error })
   return dispatch => {
-    dispatch(request({ name, type, version, description }))
-    ObjectService.create({ name, description, type, version }).then(
+    dispatch(request({ name, type, version, description, parentId }))
+    ObjectService.create({ name, description, type, version, parentId }).then(
       response => {
         dispatch(success(response))
         dispatch(notificationActions.notify('Objeto exitosamente registrado!'))
