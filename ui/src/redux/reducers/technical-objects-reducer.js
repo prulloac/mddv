@@ -23,6 +23,8 @@ const technicalObjectReducer = (state = initialState, action = { type: '', paylo
       return { ...state, loading: false, error: null, technicalObject: action.payload }
     case objectActionTypes.C_T_OBJECT_FAILURE:
       return { ...state, loading: false, error: action.payload, technicalObject: {} }
+    case objectActionTypes.T_OBJECT_TYPES_RESET:
+      return { ...state, loading: false, error: null, technicalObjectTypes: [], loadedTechnicalObjectTypes: false }
     case objectActionTypes.R_T_OBJECT_TYPES:
       return { ...state, loading: true, error: null }
     case objectActionTypes.R_T_OBJECT_TYPES_SUCCESS:

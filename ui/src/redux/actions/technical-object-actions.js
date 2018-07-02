@@ -50,13 +50,13 @@ const getAll = () => {
   }
 }
 
-const getTypes = () => {
+const getTypes = ({ parentId } = { parentId: 0 }) => {
   const request = (repository) => ({ type: objectActionTypes.R_T_OBJECT_TYPES, payload: repository })
   const success = (repository) => ({ type: objectActionTypes.R_T_OBJECT_TYPES_SUCCESS, payload: repository })
   const failure = (error) => ({ type: objectActionTypes.R_T_OBJECT_TYPES_FAILURE, payload: error })
   return dispatch => {
-    dispatch(request())
-    ObjectService.getTypes().then(
+    dispatch(request({ parentId }))
+    ObjectService.getTypes({ parentId }).then(
       response => dispatch(success(response.data.data)),
       error => {
         dispatch(failure(error))
@@ -181,6 +181,8 @@ const getGraphDataFromRepository = (id = 0) => {
   }
 }
 
+const resetTechnicalTypes = () => ({ type: objectActionTypes.T_OBJECT_TYPES_RESET, payload: {} })
+
 export default {
   resetObject,
   findById,
@@ -193,4 +195,5 @@ export default {
   getRepositories,
   getChildren,
   getGraphDataFromRepository,
+  resetTechnicalTypes,
 }
