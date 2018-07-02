@@ -1,5 +1,7 @@
 package edu.usach.apimain.service.impl;
 
+import edu.usach.apicommons.errorhandling.ApiException;
+import edu.usach.apicommons.errorhandling.ErrorCode;
 import edu.usach.apicommons.service.EntityService;
 import edu.usach.apicommons.util.TechnicalTypes;
 import edu.usach.apimain.dao.TechnicalObjectDAO;
@@ -83,7 +85,7 @@ public class TechnicalObjectService extends EntityService<TechnicalObject> imple
                     log.info("attribute: {}", y.getName());
                     Map<String, Object> column = new HashMap<>();
                     column.put("name", y.getName());
-                    column.put("type", y.getDescription());
+                    column.put("type", y.getDescription() != null ? y.getDescription() : "any");
                     return column;
                 }));
                 return table;
@@ -102,5 +104,25 @@ public class TechnicalObjectService extends EntityService<TechnicalObject> imple
         object.put("nodes", nodes);
         object.put("links", links);
         return object;
+    }
+
+    @Override
+    public Object create(TechnicalObject entity, Long parent) {
+        try {
+            TechnicalObject parentEntity = dao.findById(parent).orElse(null);
+            if (parentEntity != null) {
+                entity.setParentObject(parentEntity);
+                entity.setRepository(parentEntity.getRepository());
+                List<TechnicalObject> siblings = parentEntity.getChildrenObjects();
+                siblings.add(entity);
+                parentEntity.setChildrenObjects(siblings);
+                dao.saveAndFlush(parentEntity);
+            }
+            dao.saveAndFlush(entity);
+            return entity;
+        } catch (ApiException e) {
+            log.error(e.getMessage(), e);
+            throw e;
+        }
     }
 }

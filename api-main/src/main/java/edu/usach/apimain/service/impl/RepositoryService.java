@@ -56,7 +56,7 @@ public class RepositoryService extends EntityService<Repository> implements IRep
         JSONObject connectionParams = new JSONObject();
         repository.getConnectionParameters().forEach(x -> connectionParams.put(x.getName(), x.getValue()));
         try {
-            TechnicalObject parentObject = technicalObjectDAO.findRepositories().stream().filter(x -> x.getRepository().equals(repository)).findFirst().get();
+            TechnicalObject parentObject = technicalObjectDAO.findByRepositoryIdAndParentObjectIsNull(id);
             Map<String, Object> data = (Map<String, Object>) extractorService.callExtractor(engine, version, connectionParams, token).get("data");
             technicalObjectDAO.findByRepository(repository).stream().filter(x -> x.getParentObject() != null).forEach(technicalObjectDAO::delete);
             if (repository.getType().equals(TechnicalTypes.RDBMS.getTranslation())) {

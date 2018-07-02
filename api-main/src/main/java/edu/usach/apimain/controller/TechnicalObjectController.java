@@ -30,6 +30,21 @@ public class TechnicalObjectController extends EntityController<TechnicalObject>
 		return service;
 	}
 
+	@RequestMapping(value = "create", method = RequestMethod.POST)
+	public ResponseEntity<Object> create(@RequestBody TechnicalObject entity, @RequestParam(value = "parent", required = true) Long parent) {
+		if (!this.isAuthenticated()) {
+			return this.responseApiException(new ApiException(ErrorCode.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+		} else {
+			try {
+				String token = this.servletRequest.getHeader("Authorization");
+				return response(service.create(entity, parent));
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				return this.responseException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+	}
+
 	@RequestMapping(value = "/types", method = RequestMethod.GET)
 	public ResponseEntity<Object> getTypes() {
 		return response(Arrays.stream(TechnicalTypes.values()).map(TechnicalTypes::getTranslation).collect(Collectors.toList()));
