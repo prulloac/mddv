@@ -16,6 +16,7 @@ class NewTechnicalObject extends Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.props.dispatch(technicalObjectActions.resetTechnicalTypes())
   }
 
   handleChange = (name) => (event) => {
@@ -35,10 +36,18 @@ class NewTechnicalObject extends Component {
     }
   }
 
+  loadTechnicalObjectTypes = () => {
+    if (this.props.match.params.id === 0) {
+      this.props.dispatch(technicalObjectActions.getTypes())
+    } else {
+      this.props.dispatch(technicalObjectActions.getTypes({ parentId: this.props.match.params.id }))
+    }
+  }
+
   render() {
     const { technicalObjectTypes, loadedTechnicalObjectTypes } = this.props
     if (!loadedTechnicalObjectTypes) {
-      this.props.dispatch(technicalObjectActions.getTypes())
+      this.loadTechnicalObjectTypes()
       return null
     }
     return (
@@ -63,7 +72,7 @@ class NewTechnicalObject extends Component {
             >
               <option value="">Tipo</option>
               {technicalObjectTypes.map(x => (
-                <option key={x} value={x}>{x}</option>
+                <option key={x.id} value={x.translation}>{x.translation}</option>
               ))}
             </NativeSelect>
           </FormControl>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import { AppBar, Toolbar, withStyles, IconButton, Drawer, Typography, Icon, Button } from '@material-ui/core'
+import { AppBar, Toolbar, withStyles, IconButton, Drawer, Typography, Icon, Button, Avatar } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import Sidenav from '../Sidenav/Sidenav'
@@ -71,14 +71,23 @@ class Navigation extends Component {
           }}
           open={this.state.open}
         >
-          <div style={{ position: 'relative', marginTop: '0px', width: '100%', backgroundImage: `url(${Img.officeBackground})`, height: '176px' }}>
-            <div className={classes.toolbar} style={{ float: 'right' }}>
+          <div style={{
+            visibility: this.state.open ? 'visible' : 'hidden',
+            height: this.state.open ? '176px' : '3.5em',
+            position: 'relative',
+            marginTop: '0px',
+            width: '100%',
+            backgroundImage: `url(${Img.officeBackground})`,
+            backgroundPosition: '-450px -50px',
+            }}
+          >
+            <div className={classes.toolbar} style={{ position: 'relative', float: 'right', zIndex: 999 }}>
               <IconButton onClick={this.handleDrawerClose}>
                 <img alt="Mddv" src={Img.mddvLogo} width={45} />
               </IconButton>
             </div>
-            <div style={{ position: 'relative', padding: '32px 32px 0px' }}>
-              <img alt={Session.getUserData.username} src={Img.maleAvatar} width={64} style={{ marginLeft: '25%' }} />
+            <div style={{ position: 'relative', padding: '32px 32px 0px', zIndex: 0 }}>
+              <Avatar alt={Session.getUserData.username} src={Img.maleAvatar} style={{ marginLeft: '25%', width: '64px', height: '64px' }} />
               <Typography
                 variant="body2"
                 autoCapitalize="ok"
