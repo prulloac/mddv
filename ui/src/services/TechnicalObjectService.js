@@ -5,9 +5,10 @@ const create = ({
   description = '',
   type = '',
   version = '',
+  parentId = 0,
 }) =>
   httpClient.post({
-    endpoint: 'technical-objects',
+    endpoint: `technical-objects/create?parent=${parentId}`,
     data: {
       name,
       description,
