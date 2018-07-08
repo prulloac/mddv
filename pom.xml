@@ -29,7 +29,7 @@
       <swagger.version>2.8.0</swagger.version>
       <guava.version>18.0</guava.version>
       <json.simple.version>1.1.1</json.simple.version>
-      <jackson.version>2.9.4</jackson.version>
+      <jackson.version>2.9.5</jackson.version>
       <evo.inflector.version>1.2.2</evo.inflector.version>
       <jjwt.version>0.7.0</jjwt.version>
     </properties>
