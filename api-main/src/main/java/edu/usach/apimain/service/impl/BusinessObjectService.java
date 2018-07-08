@@ -39,7 +39,7 @@ public class BusinessObjectService extends EntityService<BusinessObject> impleme
 			throw new ApiException(ErrorCode.NO_OBJECTS_FOUND);
 		List<MetadataObject> related = metadataObjectDAO.findAllById(relatedObjects
 				.stream()
-				.map(x -> (Long)x.get("id"))
+				.map(x -> (long) (int) x.get("id"))
 				.collect(Collectors.toList()));
 		object.setLinkedObjects(related);
 		metadataObjectDAO.save(object);

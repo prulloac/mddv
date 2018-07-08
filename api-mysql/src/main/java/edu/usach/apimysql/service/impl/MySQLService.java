@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class MySQLService extends ExtractorService<MySQLExtractor> implements IMySQLService {
 
-	@Override
-	protected MySQLExtractor buildExtractor() {
-		return new MySQLExtractor();
-	}
+    @Override
+    protected MySQLExtractor buildExtractor() {
+        return new MySQLExtractor();
+    }
 
 }
