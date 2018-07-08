@@ -21,25 +21,25 @@ import java.util.List;
 @Setter
 @ToString
 public class Role extends AbstractDescriptableEntity implements IEntity {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ManyToMany
-	@JoinTable(
-			name = "userRoles",
-			joinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")},
-			inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")}
-	)
-	@JsonIgnore
-	private List<AppUser> appUserList;
-	@ManyToMany
-	@JoinTable(
-			name = "organizationalUnitRoles",
-			joinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")},
-			inverseJoinColumns = {@JoinColumn(name = "organizationalUnitId", referencedColumnName = "id")}
-	)
-	@JsonIgnore
-	private List<OrganizationalUnit> organizationalUnitList;
-	@ManyToMany(mappedBy = "accessRoles")
-	@JsonIgnore
-	private List<MetadataObject> metadataObjectList;
+    @ManyToMany
+    @JoinTable(
+            name = "userRoles",
+            joinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName = "id")}
+    )
+    @JsonIgnore
+    private List<AppUser> appUserList;
+    @ManyToMany
+    @JoinTable(
+            name = "organizationalUnitRoles",
+            joinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "organizationalUnitId", referencedColumnName = "id")}
+    )
+    @JsonIgnore
+    private List<OrganizationalUnit> organizationalUnitList;
+    @ManyToMany(mappedBy = "accessRoles")
+    @JsonIgnore
+    private List<MetadataObject> metadataObjectList;
 }

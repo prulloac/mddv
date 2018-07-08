@@ -16,14 +16,14 @@ import java.util.List;
 @Setter
 @ToString
 public class BusinessObject extends MetadataObject implements IEntity, ISecureEntity {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ManyToMany
-	@JoinTable(
-			name = "businessObjectsRepositories",
-			joinColumns = {@JoinColumn(name = "businessObjectId", referencedColumnName = "id")},
-			inverseJoinColumns = {@JoinColumn(name = "repositoryId", referencedColumnName = "id")}
-	)
-	@JsonIgnore
-	private List<Repository> linkedRepositories;
+    @ManyToMany
+    @JoinTable(
+            name = "businessObjectsRepositories",
+            joinColumns = {@JoinColumn(name = "businessObjectId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "repositoryId", referencedColumnName = "id")}
+    )
+    @JsonIgnore
+    private List<Repository> linkedRepositories;
 }

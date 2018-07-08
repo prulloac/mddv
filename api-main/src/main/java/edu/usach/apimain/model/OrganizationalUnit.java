@@ -9,10 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -21,17 +18,20 @@ import java.util.List;
 @Setter
 @ToString
 public class OrganizationalUnit extends AbstractAuditableDescriptableEntity implements IEntity {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ManyToOne
-	@JoinColumn(name = "parentUnitId")
-	@JsonIgnore
-	private OrganizationalUnit parentUnit;
+    @ManyToOne
+    @JoinColumn(name = "parentUnitId")
+    @JsonIgnore
+    private OrganizationalUnit parentUnit;
 
-	@ManyToMany(mappedBy = "organizationalUnitList")
-	@JsonIgnore
-	private List<AppUser> appUserList;
+    @ManyToMany(mappedBy = "organizationalUnitList")
+    @JsonIgnore
+    private List<AppUser> appUserList;
 
-	@ManyToMany(mappedBy = "organizationalUnitList")
-	private List<Role> roleList;
+    @ManyToMany(mappedBy = "organizationalUnitList")
+    private List<Role> roleList;
+
+    @OneToMany(mappedBy = "parentUnit")
+    private List<OrganizationalUnit> childrenUnits;
 }

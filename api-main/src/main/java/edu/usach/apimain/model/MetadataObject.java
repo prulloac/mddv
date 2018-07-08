@@ -24,37 +24,37 @@ import java.util.stream.Collectors;
 @Setter
 @ToString
 public class MetadataObject extends AbstractAuditableDescriptableEntity implements IEntity, ISecureEntity {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  private String version;
-	private String type;
-	@ManyToMany
-	@JoinTable(
-			name = "documentsObjects",
-			joinColumns = {@JoinColumn(name = "objectId", referencedColumnName = "id")},
-			inverseJoinColumns = {@JoinColumn(name = "documentId", referencedColumnName = "id")}
-	)
-	@JsonIgnore
-	private List<Document> documentList;
-	@ManyToMany
-	@JoinTable(
-			name = "linkedObjects",
-			joinColumns = {@JoinColumn(name = "objectA", referencedColumnName = "id")},
-			inverseJoinColumns = {@JoinColumn(name = "documentB", referencedColumnName = "id")}
-	)
-	private List<MetadataObject> linkedObjects;
-	@ManyToMany
-	@JoinTable(
-			name = "objectsRoles",
-			joinColumns = {@JoinColumn(name = "objectId", referencedColumnName = "id")},
-			inverseJoinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")}
-	)
-	@JsonIgnore
-	private List<Role> accessRoles;
+    private String version;
+    private String type;
+    @ManyToMany
+    @JoinTable(
+            name = "documentsObjects",
+            joinColumns = {@JoinColumn(name = "objectId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "documentId", referencedColumnName = "id")}
+    )
+    @JsonIgnore
+    private List<Document> documentList;
+    @ManyToMany
+    @JoinTable(
+            name = "linkedObjects",
+            joinColumns = {@JoinColumn(name = "objectA", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "documentB", referencedColumnName = "id")}
+    )
+    private List<MetadataObject> linkedObjects;
+    @ManyToMany
+    @JoinTable(
+            name = "objectsRoles",
+            joinColumns = {@JoinColumn(name = "objectId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "roleId", referencedColumnName = "id")}
+    )
+    @JsonIgnore
+    private List<Role> accessRoles;
 
-	@Override
-	public List<String> roleNames() {
-		return this.accessRoles.stream().map(AbstractNamedEntity::getName).collect(Collectors.toList());
-	}
+    @Override
+    public List<String> roleNames() {
+        return this.accessRoles.stream().map(AbstractNamedEntity::getName).collect(Collectors.toList());
+    }
 
 }

@@ -17,8 +17,8 @@ import javax.persistence.Entity;
 @ToString
 public class Extractor extends AbstractDeletableNamedEntity implements IEntity {
 
-	private String supportedEngine;
-	private String supportedVersions;
-	private String apiUrl;
+    private String supportedEngine;
+    private String supportedVersions;
+    private String apiUrl;
 
 }

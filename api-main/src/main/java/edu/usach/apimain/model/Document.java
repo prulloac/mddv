@@ -21,17 +21,17 @@ import java.util.List;
 @Setter
 @ToString
 public class Document extends AbstractAuditableDescriptableEntity implements IEntity {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  private String version;
-	private String size;
-	private String url;
-	@ManyToOne
-	@JoinColumn(name = "uploaderId")
-	@JsonIgnore
-	private AppUser uploader;
-	@ManyToMany(mappedBy = "documentList")
-	@JsonIgnore
-	private List<MetadataObject> metadataObjectList;
+    private String version;
+    private String size;
+    private String url;
+    @ManyToOne
+    @JoinColumn(name = "uploaderId")
+    @JsonIgnore
+    private AppUser uploader;
+    @ManyToMany(mappedBy = "documentList")
+    @JsonIgnore
+    private List<MetadataObject> metadataObjectList;
 
 }
