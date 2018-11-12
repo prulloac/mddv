@@ -86,7 +86,7 @@ class EditBusinessObject extends Component {
           <FormControl>
             <br />
             <Button size="small" variant="raised" onClick={this.handleSubmit} color="primary">
-              Actualizar Repositorio
+              Actualizar Objeto
               <Save className="icon-button" />
             </Button>
           </FormControl>

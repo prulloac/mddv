@@ -14,7 +14,7 @@ class BusinessObjects extends Component {
   constructor(props) {
     super(props)
     title('Objetos de Negocio')
-    this.props.dispatch(businessObjectActions.getTypes)
+    this.props.dispatch(businessObjectActions.getTypes())
   }
 
   render() {

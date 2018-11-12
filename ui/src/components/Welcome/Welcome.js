@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Paper, Typography } from '@material-ui/core'
 import { title } from '../../utils/UtilityFunctions'
-import Img from '../../utils/Img'
 
 import './Welcome.scss'
 
@@ -19,8 +18,6 @@ class Welcome extends Component {
         <Paper elevation={4}>
           <Typography variant="display1" align="center">Bienvenido!</Typography>
         </Paper>
-        <img alt="paragraph" src={Img.mediaParagraph} style={{ marginTop: '2em' }} />
-        <img alt="paragraph" src={Img.paragraph} style={{ marginTop: '2em' }} />
       </div>
     )
   }

@@ -5,8 +5,8 @@ import notificationActions from './notification-actions'
 const resetObject = () => ({ type: objectActionTypes.B_OBJECT_RESET, payload: {} })
 
 const findById = (id = 0) => {
-  const request = (repository) => ({ type: objectActionTypes.R_B_OBJECT, payload: repository })
-  const success = (repository) => ({ type: objectActionTypes.R_B_OBJECT_SUCCESS, payload: repository })
+  const request = (obj) => ({ type: objectActionTypes.R_B_OBJECT, payload: obj })
+  const success = (obj) => ({ type: objectActionTypes.R_B_OBJECT_SUCCESS, payload: obj })
   const failure = (error) => ({ type: objectActionTypes.R_B_OBJECT_FAILURE, payload: error })
   return dispatch => {
     dispatch(request(id))
@@ -21,8 +21,8 @@ const findById = (id = 0) => {
 }
 
 const findByName = (name = '') => {
-  const request = (repository) => ({ type: objectActionTypes.R_B_OBJECT, payload: repository })
-  const success = (repository) => ({ type: objectActionTypes.R_B_OBJECT_SUCCESS, payload: repository })
+  const request = (obj) => ({ type: objectActionTypes.R_B_OBJECT, payload: obj })
+  const success = (obj) => ({ type: objectActionTypes.R_B_OBJECT_SUCCESS, payload: obj })
   const failure = (error) => ({ type: objectActionTypes.R_B_OBJECT_FAILURE, payload: error })
   return dispatch => {
     dispatch(request(name))
@@ -34,8 +34,8 @@ const findByName = (name = '') => {
 }
 
 const getAll = () => {
-  const request = (repository) => ({ type: objectActionTypes.R_ALL_B_OBJECT, payload: repository })
-  const success = (repository) => ({ type: objectActionTypes.R_ALL_B_OBJECT_SUCCESS, payload: repository })
+  const request = (obj) => ({ type: objectActionTypes.R_ALL_B_OBJECT, payload: obj })
+  const success = (obj) => ({ type: objectActionTypes.R_ALL_B_OBJECT_SUCCESS, payload: obj })
   const failure = (error) => ({ type: objectActionTypes.R_ALL_B_OBJECT_FAILURE, payload: error })
   return dispatch => {
     dispatch(request())
@@ -50,8 +50,8 @@ const getAll = () => {
 }
 
 const getTypes = () => {
-  const request = (repository) => ({ type: objectActionTypes.R_B_OBJECT_TYPES, payload: repository })
-  const success = (repository) => ({ type: objectActionTypes.R_B_OBJECT_TYPES_SUCCESS, payload: repository })
+  const request = (obj) => ({ type: objectActionTypes.R_B_OBJECT_TYPES, payload: obj })
+  const success = (obj) => ({ type: objectActionTypes.R_B_OBJECT_TYPES_SUCCESS, payload: obj })
   const failure = (error) => ({ type: objectActionTypes.R_B_OBJECT_TYPES_FAILURE, payload: error })
   return dispatch => {
     dispatch(request())
@@ -66,8 +66,8 @@ const getTypes = () => {
 }
 
 const create = ({ name = '', description = '', type = '', version = '' }) => {
-  const request = (repository) => ({ type: objectActionTypes.C_B_OBJECT, payload: repository })
-  const success = (repository) => ({ type: objectActionTypes.C_B_OBJECT_SUCCESS, payload: repository })
+  const request = (obj) => ({ type: objectActionTypes.C_B_OBJECT, payload: obj })
+  const success = (obj) => ({ type: objectActionTypes.C_B_OBJECT_SUCCESS, payload: obj })
   const failure = (error) => ({ type: objectActionTypes.C_B_OBJECT_FAILURE, payload: error })
   return dispatch => {
     dispatch(request({ name, type, version, description }))
@@ -86,8 +86,8 @@ const create = ({ name = '', description = '', type = '', version = '' }) => {
 }
 
 const update = ({ id = 0, description = '', name = '', version = '', type = '' }) => {
-  const request = (repository) => ({ type: objectActionTypes.U_B_OBJECT, payload: repository })
-  const success = (repository) => ({ type: objectActionTypes.U_B_OBJECT_SUCCESS, payload: repository })
+  const request = (obj) => ({ type: objectActionTypes.U_B_OBJECT, payload: obj })
+  const success = (obj) => ({ type: objectActionTypes.U_B_OBJECT_SUCCESS, payload: obj })
   const failure = (error) => ({ type: objectActionTypes.U_B_OBJECT_FAILURE, payload: error })
   return dispatch => {
     dispatch(request({ name, type, version, description }))
@@ -104,9 +104,28 @@ const update = ({ id = 0, description = '', name = '', version = '', type = '' }
   }
 }
 
+const updateRelations = ({ id = 0, relatedObjects = [] }) => {
+  const request = (obj) => ({ type: objectActionTypes.U_B_OBJECT_RELATIONS, payload: obj })
+  const success = (obj) => ({ type: objectActionTypes.U_B_OBJECT_SUCCESS, payload: obj })
+  const failure = (error) => ({ type: objectActionTypes.U_B_OBJECT_FAILURE, payload: error })
+  return dispatch => {
+    dispatch(request(id))
+    ObjectService.updateRelations(id, relatedObjects).then(
+      response => {
+        dispatch(success(response))
+        dispatch(notificationActions.notify('Se han actualizado las relaciones del objeto'))
+      },
+      error => {
+        dispatch(failure(error))
+        dispatch(notificationActions.notify('Ha ocurrido un error al actualizar las relaciones del objeto'))
+      },
+    )
+  }
+}
+
 const del = (id = 0) => {
-  const request = (repository) => ({ type: objectActionTypes.D_B_OBJECT, payload: repository })
-  const success = (repository) => ({ type: objectActionTypes.D_B_OBJECT_SUCCESS, payload: repository })
+  const request = (obj) => ({ type: objectActionTypes.D_B_OBJECT, payload: obj })
+  const success = (obj) => ({ type: objectActionTypes.D_B_OBJECT_SUCCESS, payload: obj })
   const failure = (error) => ({ type: objectActionTypes.D_B_OBJECT_FAILURE, payload: error })
   return dispatch => {
     dispatch(request(id))
@@ -133,4 +152,5 @@ export default {
   create,
   getAll,
   getTypes,
+  updateRelations,
 }

@@ -13,8 +13,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,12 +39,21 @@ public class BusinessObjectService extends EntityService<BusinessObject> impleme
 		MetadataObject object = metadataObjectDAO.findById(id).orElse(null);
 		if (null == object)
 			throw new ApiException(ErrorCode.NO_OBJECTS_FOUND);
-		List<MetadataObject> related = metadataObjectDAO.findAllById(relatedObjects
+		Set<MetadataObject> oldRelations = object.getLinkedObjects();
+		metadataObjectDAO.saveAll(oldRelations
+				.stream()
+				.peek(x -> x.getLinkedObjects().remove(object))
+				.collect(Collectors.toSet()));
+		Set<MetadataObject> related = new HashSet<>(metadataObjectDAO.findAllById(relatedObjects
 				.stream()
 				.map(x -> (long) (int) x.get("id"))
-				.collect(Collectors.toList()));
+				.collect(Collectors.toList())));
 		object.setLinkedObjects(related);
-		metadataObjectDAO.save(object);
-		return this.findOne(id);
+		metadataObjectDAO.saveAll(related
+				.stream()
+				.peek(x -> x.addLinkedObject(object))
+				.collect(Collectors.toSet()));
+		metadataObjectDAO.saveAndFlush(object);
+		return object;
 	}
 }

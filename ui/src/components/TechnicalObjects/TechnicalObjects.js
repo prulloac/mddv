@@ -5,13 +5,16 @@ import { Typography, withStyles, Paper } from '@material-ui/core'
 import New from './NewTechnicalObject'
 import List from './ListTechnicalObject'
 import Edit from './EditTechnicalObject'
+import Relate from './RelateTechnicalObject'
 import { title } from '../../utils/UtilityFunctions'
+import { technicalObjectActions } from '../../redux/actions'
 import './TechnicalObjects.scss'
 
 class TechnicalObjects extends Component {
   constructor(props) {
     super(props)
     title('Objetos Técnicos')
+    this.props.dispatch(technicalObjectActions.getTypes())
   }
 
   render() {
@@ -23,7 +26,8 @@ class TechnicalObjects extends Component {
         </Paper>
         <Switch>
           <Route exact path={`${match.path}/new/:id?`} component={New} />
-          <Route path={`${match.path}/edit/:id`} component={Edit} />
+          <Route exact path={`${match.path}/edit/:id`} component={Edit} />
+          <Route exact path="/technical/relations/:id" component={Relate} />
           <Route exact path="/technical/:id?" component={List} />
         </Switch>
       </div>

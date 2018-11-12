@@ -47,6 +47,7 @@ const getAll = () => httpClient.get({ endpoint: 'business-objects?showAll=true' 
 
 const getTypes = () => httpClient.get({ endpoint: 'business-objects/types' })
 
+const updateRelations = (id = 0, relatedObjects = []) => httpClient.put({ endpoint: `business-objects/relations/${id}`, data: relatedObjects })
 
 const BusinessObjectService = {
   create,
@@ -56,6 +57,7 @@ const BusinessObjectService = {
   update,
   delete: del,
   getTypes,
+  updateRelations,
 }
 
 export default BusinessObjectService
