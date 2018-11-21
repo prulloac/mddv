@@ -8,6 +8,69 @@ const redgrad = $(go.Brush, 'Linear', { 0: 'rgb(206, 106, 100)', 1: 'rgb(180, 56
 const yellowgrad = $(go.Brush, 'Linear', { 0: 'rgb(254, 221, 50)', 1: 'rgb(254, 182, 50)' })
 const lightgrad = $(go.Brush, 'Linear', { 1: '#E6E6FA', 0: '#FFFAF0' })
 
+const umlCompositionLink = $(
+  go.Link,
+  {
+    selectionAdorned: true,
+    layerName: 'Foreground',
+    reshapable: true,
+    routing: go.Link.AvoidsNodes,
+    corner: 5,
+    curve: go.Link.JumpOver,
+  },
+  $(go.Shape),
+  $(
+    go.Shape,
+    { fromArrow: '', strokeWidth: 2 },
+  ),
+  $(
+    go.Shape,
+    { toArrow: 'StretchedDiamond', fill: 'black', strokeWidth: 2 },
+  ),
+)
+
+const umlAggregationLink = $(
+  go.Link,
+  {
+    selectionAdorned: true,
+    layerName: 'Foreground',
+    reshapable: true,
+    routing: go.Link.AvoidsNodes,
+    corner: 5,
+    curve: go.Link.JumpOver,
+  },
+  $(go.Shape),
+  $(
+    go.Shape,
+    { fromArrow: '', strokeWidth: 2 },
+  ),
+  $(
+    go.Shape,
+    { toArrow: 'StretchedDiamond', fill: 'white', strokeWidth: 2 },
+  ),
+)
+
+const umlGeneralizationLink = $(
+  go.Link,
+  {
+    selectionAdorned: true,
+    layerName: 'Foreground',
+    reshapable: true,
+    routing: go.Link.AvoidsNodes,
+    corner: 5,
+    curve: go.Link.JumpOver,
+  },
+  $(go.Shape),
+  $(
+    go.Shape,
+    { fromArrow: '', strokeWidth: 2 },
+  ),
+  $(
+    go.Shape,
+    { toArrow: 'Triangle', fill: 'white', strokeWidth: 2 },
+  ),
+)
+
 const manyToOneLink = $(
   go.Link,
   {
@@ -207,6 +270,9 @@ nodeTemplates.add('Colección', umlTable)
 
 const linkTemplates = new go.Map('string', go.Link)
 linkTemplates.add('Relación Muchos a Uno', manyToOneLink)
+linkTemplates.add('Relación de Dependencia', umlAggregationLink)
+linkTemplates.add('Relación de Uso', umlCompositionLink)
+linkTemplates.add('Relación de Generalización', umlGeneralizationLink)
 
 const diagram = ({ nodes, links, container } = { nodes: [], links: [], container: '' }) => {
   const diag = $(go.Diagram, container, {

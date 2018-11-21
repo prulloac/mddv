@@ -89,7 +89,10 @@ public class TechnicalObjectService extends EntityService<TechnicalObject> imple
                 return table;
             }).collect(Collectors.toList());
             repositoryObject.getChildrenObjects().stream().filter(x -> x.getType().equals(TechnicalTypes.COLLECTION.getTranslation())).forEach(x -> {
-                x.getChildrenObjects().stream().filter(y -> y.getType().equals(TechnicalTypes.RELATION_USE.getTranslation())).forEach(z -> {
+                x.getChildrenObjects().stream().filter(y ->
+                        y.getType().equals(TechnicalTypes.RELATION_USE.getTranslation()) ||
+                        y.getType().equals(TechnicalTypes.RELATION_GENERALIZATION.getTranslation()) ||
+                        y.getType().equals(TechnicalTypes.RELATION_DEPENDENCY.getTranslation())).forEach(z -> {
                     log.info("link: {}", z.getName());
                     Map<String, Object> relation = new HashMap<>();
                     relation.put("from", z.getDescription().split(":")[0]);
